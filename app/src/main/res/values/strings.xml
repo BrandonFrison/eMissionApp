@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">eMission Home</string>
+    <string name="result_name">CO2e Approximation</string>
+    <string name="survey_name">Food Survey</string>
+    <string name="about_name">The Green Food Challenge</string>
+    <string name="app_logo">eMission Logo</string>
+    <string name="group_logo">Green Goblin Logo</string>
+    <string name="btn_find">Find your CO2e Footprint</string>
+    <string name="btn_about">The Green Food Challenge</string>
+    <string name="question_title">Placeholder Question Text</string>
+    <string name="btn_smallserving">Small</string>
+    <string name="btn_medserving">Medium</string>
+    <string name="btn_largeserving">Large</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_previous">Prev</string>
+    <string name="btn_backtohome">Back To Home</string>
+    <string name="label_averageservingsize">approximately how much do you consume as one serving?</string>
+    <string name="label_timesperweek">approximately how many times per week do you consume this amount?</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.brandonnewpc.emission">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logodesign4"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logodesign4"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".homeActivity" />
+        <activity android:name=".SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".FoodSurveyActivity"
+            android:label="@string/survey_name" />
+        <activity android:name=".ResultsActivity"
+            android:label="@string/result_name"/>
+        <activity android:name=".AboutPage"
+            android:label="@string/about_name"></activity>
+    </application>
+
+</manifest>
