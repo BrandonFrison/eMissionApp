@@ -27,6 +27,11 @@ local.properties
 .idea/vcs.xml
 *.iml
 
+#Extra config files we might need
+.idea/gradle.xml
+.idea/runConfigurations.xml
+.idea/codeStyles/Project.xml
+
 # OS-specific files
 .DS_Store
 .DS_Store?
