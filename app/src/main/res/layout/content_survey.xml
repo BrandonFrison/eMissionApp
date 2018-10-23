@@ -224,266 +224,272 @@
             android:textStyle="bold|italic"
             app:layout_constraintTop_toBottomOf="@id/textViewVegetablesAmount" />
 
-        <ImageButton
-            android:id="@+id/imageButtonBeefleftarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/textViewBeefAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewFoodAmountLabel"
-            app:srcCompat="@drawable/leftarrow" />
+    <ImageButton
+        android:id="@+id/imageButtonBeefleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decreaseBeef"
+        app:layout_constraintEnd_toStartOf="@+id/textViewBeefAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodAmountLabel"
+        app:srcCompat="@drawable/leftarrow" />
 
-        <TextView
-            android:id="@+id/textViewBeefAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/label_placeholder_gram_amt"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/imageButtonBeefrightarrow"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/imageButtonBeefleftarrow"
-            app:layout_constraintTop_toBottomOf="@id/textViewFoodAmountLabel" />
+    <TextView
+        android:id="@+id/textViewBeefAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBeefrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonBeefleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodAmountLabel" />
+
+    <ImageButton
+        android:id="@+id/imageButtonBeefrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="increaseBeef"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodAmountLabel"
+        app:srcCompat="@drawable/rightarrow" />
+
+    <ImageButton
+        android:id="@+id/imageButtonPorkleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decreasePork"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPorkAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeefleftarrow"
+        app:srcCompat="@drawable/leftarrow" />
+
+    <TextView
+        android:id="@+id/textViewPorkAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBeefrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonPorkleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBeefAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonPorkrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="increasePork"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeefrightarrow"
+        app:srcCompat="@drawable/rightarrow" />
+
+    <ImageButton
+        android:id="@+id/imageButtonChickenleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decreaseChicken"
+        app:layout_constraintEnd_toStartOf="@+id/textViewChickenAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonPorkleftarrow"
+        app:srcCompat="@drawable/leftarrow" />
+
+    <TextView
+        android:id="@+id/textViewChickenAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonPorkrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonChickenleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPorkAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonChickenrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="increaseChicken"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonPorkrightarrow"
+        app:srcCompat="@drawable/rightarrow" />
+
+    <ImageButton
+        android:id="@+id/imageButtonFishleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decreaseFish"
+        app:layout_constraintEnd_toStartOf="@+id/textViewFishAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonChickenleftarrow"
+        app:srcCompat="@drawable/leftarrow" />
+
+    <TextView
+        android:id="@+id/textViewFishAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonChickenrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonFishleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewChickenAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonFishrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="increaseFish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonChickenrightarrow"
+        app:srcCompat="@drawable/rightarrow" />
+
+    <ImageButton
+        android:id="@+id/imageButtonEggsleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decreaseEggs"
+        app:layout_constraintEnd_toStartOf="@+id/textViewEggsAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonFishleftarrow"
+        app:srcCompat="@drawable/leftarrow" />
+
+    <TextView
+        android:id="@+id/textViewEggsAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonFishrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonEggsleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFishAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonEggsrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="increaseEggs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonFishrightarrow"
+        app:srcCompat="@drawable/rightarrow" />
 
 
-        <ImageButton
-            android:id="@+id/imageButtonBeefrightarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewFoodAmountLabel"
-            app:srcCompat="@drawable/rightarrow" />
+    <ImageButton
+        android:id="@+id/imageButtonBeansleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decreaseBeans"
+        app:layout_constraintEnd_toStartOf="@+id/textViewBeansAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonEggsleftarrow"
+        app:srcCompat="@drawable/leftarrow" />
 
-        <ImageButton
-            android:id="@+id/imageButtonPorkleftarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/textViewPorkAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonBeefleftarrow"
-            app:srcCompat="@drawable/leftarrow" />
+    <TextView
+        android:id="@+id/textViewBeansAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonEggsrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonBeansleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEggsAmount" />
 
-        <TextView
-            android:id="@+id/textViewPorkAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/label_placeholder_gram_amt"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/imageButtonPorkrightarrow"
-            app:layout_constraintStart_toEndOf="@id/imageButtonPorkleftarrow"
-            app:layout_constraintTop_toBottomOf="@id/textViewBeefAmount"/>
+    <ImageButton
+        android:id="@+id/imageButtonBeansrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="increaseBeans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonEggsrightarrow"
+        app:srcCompat="@drawable/rightarrow" />
 
-        <ImageButton
-            android:id="@+id/imageButtonPorkrightarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonBeefrightarrow"
-            app:srcCompat="@drawable/rightarrow" />
+    <ImageButton
+        android:id="@+id/imageButtonVegetablesleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decreaseVegetables"
+        app:layout_constraintEnd_toStartOf="@+id/textViewVegetablesAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeansleftarrow"
+        app:srcCompat="@drawable/leftarrow" />
 
-        <ImageButton
-            android:id="@+id/imageButtonChickenleftarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/textViewChickenAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonPorkleftarrow"
-            app:srcCompat="@drawable/leftarrow" />
+    <TextView
+        android:id="@+id/textViewVegetablesAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBeansrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonVegetablesleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBeansAmount" />
 
-        <TextView
-            android:id="@+id/textViewChickenAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/label_placeholder_gram_amt"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/imageButtonChickenrightarrow"
-            app:layout_constraintStart_toEndOf="@id/imageButtonChickenleftarrow"
-            app:layout_constraintTop_toBottomOf="@id/textViewPorkAmount" />
-
-        <ImageButton
-            android:id="@+id/imageButtonChickenrightarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonPorkrightarrow"
-            app:srcCompat="@drawable/rightarrow" />
-
-        <ImageButton
-            android:id="@+id/imageButtonFishleftarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/textViewFishAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonChickenleftarrow"
-            app:srcCompat="@drawable/leftarrow" />
-
-        <TextView
-            android:id="@+id/textViewFishAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/label_placeholder_gram_amt"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/imageButtonChickenrightarrow"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/imageButtonFishleftarrow"
-            app:layout_constraintTop_toBottomOf="@id/textViewChickenAmount" />
-
-        <ImageButton
-            android:id="@+id/imageButtonFishrightarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonChickenrightarrow"
-            app:srcCompat="@drawable/rightarrow" />
-
-        <ImageButton
-            android:id="@+id/imageButtonEggsleftarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/textViewEggsAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonFishleftarrow"
-            app:srcCompat="@drawable/leftarrow" />
-
-        <TextView
-            android:id="@+id/textViewEggsAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/label_placeholder_gram_amt"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/imageButtonFishrightarrow"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/imageButtonEggsleftarrow"
-            app:layout_constraintTop_toBottomOf="@id/textViewFishAmount" />
-
-        <ImageButton
-            android:id="@+id/imageButtonEggsrightarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonFishrightarrow"
-            app:srcCompat="@drawable/rightarrow" />
-
-
-        <ImageButton
-            android:id="@+id/imageButtonBeansleftarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/textViewBeansAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonEggsleftarrow"
-            app:srcCompat="@drawable/leftarrow" />
-
-        <TextView
-            android:id="@+id/textViewBeansAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/label_placeholder_gram_amt"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/imageButtonEggsrightarrow"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/imageButtonBeansleftarrow"
-            app:layout_constraintTop_toBottomOf="@id/textViewEggsAmount" />
-
-        <ImageButton
-            android:id="@+id/imageButtonBeansrightarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonEggsrightarrow"
-            app:srcCompat="@drawable/rightarrow" />
-
-        <ImageButton
-            android:id="@+id/imageButtonVegetablesleftarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/textViewVegetablesAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonBeansleftarrow"
-            app:srcCompat="@drawable/leftarrow" />
-
-        <TextView
-            android:id="@+id/textViewVegetablesAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/label_placeholder_gram_amt"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/imageButtonBeansrightarrow"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/imageButtonVegetablesleftarrow"
-            app:layout_constraintTop_toBottomOf="@id/textViewBeansAmount" />
-
-        <ImageButton
-            android:id="@+id/imageButtonVegetablesrightarrow"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageButtonBeansrightarrow"
-            app:srcCompat="@drawable/rightarrow" />
+    <ImageButton
+        android:id="@+id/imageButtonVegetablesrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="increaseVegetables"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeansrightarrow"
+        app:srcCompat="@drawable/rightarrow" />
 
         <TextView
             android:id="@+id/textViewTotalAmount"

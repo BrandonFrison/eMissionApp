@@ -25,6 +25,7 @@ local.properties
 .idea/modules.xml
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
+.idea/caches
 *.iml
 
 #Extra config files we might need
