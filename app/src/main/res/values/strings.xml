@@ -1,5 +1,44 @@
 <resources>
     <string name="app_name">eMission</string>
+    <!--Food Type Strings-->
+    <string name="table_category1">Beef</string>
+    <string name="table_category2">Pork</string>
+    <string name="table_category3">Chicken</string>
+    <string name="table_category4">Fish</string>
+    <string name="table_category5">Eggs</string>
+    <string name="table_category6">Beans</string>
+    <string name="table_category7">Vegetables</string>
+
+    <!--Preset Diet Strings-->
+    <string-array name="presets_array">
+        <item>Select a Preset Diet</item>
+        <item>Balanced Diet</item>
+        <item>Vegetarian</item>
+        <item>Vegan</item>
+        <item>High Meat Diet</item>
+        <item>High Beef Diet</item>
+        <item>High Chicken Diet</item>
+        <item>High Pork Diet</item>
+    </string-array>
+
+    <!--Generic UI Strings-->
+    <string name="btn_submit">Submit</string>
+
+    <!--Survey Activity Strings-->
+    <string name="survey_explanation">How many grams of each food type do you eat in an average week?</string>
+    <string name="label_age">Enter Age:</string>
+    <string name="label_gender">Enter Gender:</string>
+    <string name="radio_male">M</string>
+    <string name="radio_female">F</string>
+    <string name="label_foodtype">Food type</string>
+    <string name="label_foodamount">Amount in grams</string>
+    <string name="label_selectpreset">Choose a preset diet</string>
+    <string name="label_totalgrams">Total</string>
+    <string name="label_placeholder_gram_amt">0</string>
+    <string name="label_totalneeded">Total Needed</string>
+    <string name="survey_submission_message">Survey Saved</string>
+
+    <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
