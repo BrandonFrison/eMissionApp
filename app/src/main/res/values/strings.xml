@@ -41,8 +41,15 @@
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">eMission</string>
+    <string name="nav_header_subtitle">Green Food Challenge</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <!--Navigation Drawer Menu Strings-->
+    <string name="menu_nav_calculator">CO2e Calculator</string>
+    <string name="menu_nav_pledge">Pledge</string>
+    <string name="menu_nav_history">History</string>
+    <string name="menu_nav_about">About</string>
+    <string name="menu_title_network">Community</string>
+    <string name="menu_nav_community">Pledges</string>
 </resources>
