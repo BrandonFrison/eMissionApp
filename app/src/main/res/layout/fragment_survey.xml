@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+        <TextView
+            android:id="@+id/textViewExplanation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/survey_explanation"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewAgeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/label_age"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/editTextAgeAmount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewExplanation" />
+
+        <TextView
+            android:id="@+id/textViewGenderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/label_gender"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/radioGroupGender"
+            app:layout_constraintTop_toBottomOf="@id/textViewExplanation" />
+
+        <EditText
+            android:id="@+id/editTextAgeAmount"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintEnd_toStartOf="@id/textViewGenderLabel"
+            app:layout_constraintTop_toBottomOf="@id/textViewExplanation" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupGender"
+            android:layout_width="112dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewExplanation">
+
+            <RadioButton
+                android:id="@+id/radioButtonMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radio_male" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radio_female" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textViewFoodTypeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_foodtype"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinnerChooseMealPreset" />
+
+        <TextView
+            android:id="@+id/textViewFoodAmountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/label_foodamount"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toEndOf="@id/textViewFoodTypeLabel"
+            app:layout_constraintTop_toBottomOf="@id/spinnerChooseMealPreset" />
+
+        <TextView
+            android:id="@+id/textViewBeef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/table_category1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewFoodTypeLabel" />
+
+        <TextView
+            android:id="@+id/textViewPork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/table_category2"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewBeef" />
+
+        <TextView
+            android:id="@+id/textViewChicken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/table_category3"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewPork" />
+
+        <TextView
+            android:id="@+id/textViewFish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/table_category4"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewChicken" />
+
+        <TextView
+            android:id="@+id/textViewEggs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/table_category5"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewFish" />
+
+        <TextView
+            android:id="@+id/textViewBeans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/table_category6"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewEggs" />
+
+        <TextView
+            android:id="@+id/textViewVegetables"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:text="@string/table_category7"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewBeans" />
+
+        <Spinner
+            android:id="@+id/spinnerChooseMealPreset"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/colorPrimary"
+            android:entries="@array/presets_array"
+            android:popupBackground="@color/colorLightGreen"
+            android:popupElevation="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editTextAgeAmount" />
+
+        <TextView
+            android:id="@+id/textViewTotalLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/label_totalgrams"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold|italic"
+            app:layout_constraintTop_toBottomOf="@id/textViewVegetablesAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonBeefleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decrementButton"
+        android:tag="beef_button"
+        app:layout_constraintEnd_toStartOf="@+id/textViewBeefAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodAmountLabel"
+        app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/textViewBeefAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBeefrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonBeefleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodAmountLabel" />
+
+    <ImageButton
+        android:id="@+id/imageButtonBeefrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="incrementButton"
+        android:tag="beef_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodAmountLabel"
+        app:srcCompat="@drawable/baseline_arrow_right_24" />
+
+    <ImageButton
+        android:id="@+id/imageButtonPorkleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decrementButton"
+        android:tag="pork_button"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPorkAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeefleftarrow"
+        app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/textViewPorkAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBeefrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonPorkleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBeefAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonPorkrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="incrementButton"
+        android:tag="pork_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeefrightarrow"
+        app:srcCompat="@drawable/baseline_arrow_right_24" />
+
+    <ImageButton
+        android:id="@+id/imageButtonChickenleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decrementButton"
+        android:tag="chicken_button"
+        app:layout_constraintEnd_toStartOf="@+id/textViewChickenAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonPorkleftarrow"
+        app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/textViewChickenAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonPorkrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonChickenleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPorkAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonChickenrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="incrementButton"
+        android:tag="chicken_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonPorkrightarrow"
+        app:srcCompat="@drawable/baseline_arrow_right_24" />
+
+    <ImageButton
+        android:id="@+id/imageButtonFishleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decrementButton"
+        android:tag="fish_button"
+        app:layout_constraintEnd_toStartOf="@+id/textViewFishAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonChickenleftarrow"
+        app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/textViewFishAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonChickenrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonFishleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewChickenAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonFishrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="incrementButton"
+        android:tag="fish_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonChickenrightarrow"
+        app:srcCompat="@drawable/baseline_arrow_right_24" />
+
+    <ImageButton
+        android:id="@+id/imageButtonEggsleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decrementButton"
+        android:tag="eggs_button"
+        app:layout_constraintEnd_toStartOf="@+id/textViewEggsAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonFishleftarrow"
+        app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/textViewEggsAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonFishrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonEggsleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFishAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonEggsrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="incrementButton"
+        android:tag="eggs_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonFishrightarrow"
+        app:srcCompat="@drawable/baseline_arrow_right_24" />
+
+
+    <ImageButton
+        android:id="@+id/imageButtonBeansleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decrementButton"
+        android:tag="beans_button"
+        app:layout_constraintEnd_toStartOf="@+id/textViewBeansAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonEggsleftarrow"
+        app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/textViewBeansAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonEggsrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonBeansleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEggsAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonBeansrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="incrementButton"
+        android:tag="beans_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonEggsrightarrow"
+        app:srcCompat="@drawable/baseline_arrow_right_24" />
+
+    <ImageButton
+        android:id="@+id/imageButtonVegetablesleftarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="decrementButton"
+        android:tag="vegetables_button"
+        app:layout_constraintEnd_toStartOf="@+id/textViewVegetablesAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeansleftarrow"
+        app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+    <TextView
+        android:id="@+id/textViewVegetablesAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_placeholder_gram_amt"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonBeansrightarrow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonVegetablesleftarrow"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBeansAmount" />
+
+    <ImageButton
+        android:id="@+id/imageButtonVegetablesrightarrow"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:onClick="incrementButton"
+        android:tag="vegetables_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonBeansrightarrow"
+        app:srcCompat="@drawable/baseline_arrow_right_24" />
+
+        <TextView
+            android:id="@+id/textViewTotalAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="100dp"
+            android:text="@string/label_placeholder_gram_amt"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewVegetablesAmount" />
+
+        <!--<Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/btn_submit"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintStart_toStartOf="parent" />-->
+
+        <TextView
+            android:id="@+id/textViewTotalNeededLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/label_totalneeded"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold|italic"
+            app:layout_constraintTop_toBottomOf="@id/textViewTotalLabel" />
+
+        <TextView
+            android:id="@+id/textViewTotalNeededAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="100dp"
+            android:text="@string/label_placeholder_gram_amt"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewTotalAmount" />
+
+
+</android.support.constraint.ConstraintLayout>
