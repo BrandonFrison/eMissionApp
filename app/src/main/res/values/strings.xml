@@ -21,8 +21,9 @@
         <item>High Pork Diet</item>
     </string-array>
 
-    <!--Generic UI Strings-->
-    <string name="btn_submit">Submit</string>
+    <!--UI and Button Strings-->
+    <string name="button_submit">Submit</string>
+    <string name="button_reduce_footprint">Reduce my carbon footprint</string>
 
     <!--Survey Activity Strings-->
     <string name="survey_explanation">How many grams of each food type do you eat in an average week?</string>
@@ -36,7 +37,9 @@
     <string name="label_totalgrams">Total</string>
     <string name="label_placeholder_gram_amt">0</string>
     <string name="label_totalneeded">Total Needed</string>
-    <string name="survey_submission_message">Survey Saved</string>
+
+    <!--Debug/placeholder strings-->
+    <string name="text_view_placeholder">Could not load results.</string>
 
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
