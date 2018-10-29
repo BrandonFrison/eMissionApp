@@ -25,14 +25,5 @@ public class AboutPageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button mTestButton = view.findViewById(R.id.test_button);
-        //Since a fragment is not an Activity, we get context using getActivity()
-        final Context mActivityContext = getContext();
-        mTestButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Toast.makeText(mActivityContext, "You pressed a button in fragment_about_page", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 }
