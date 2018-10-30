@@ -1,12 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/test_button"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Click me!"/>
-
-</android.support.constraint.ConstraintLayout>
+        android:layout_marginHorizontal="8dp"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imageViewAboutGreenFoodChallenge"
+            android:layout_width="wrap_content"
+            android:layout_height="255dp"
+            android:contentDescription="@string/logo_description"
+            app:srcCompat="@drawable/aboutpic5" />
+        <TextView
+            android:id="@+id/textViewFirstParagraph"
+            android:textSize="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_text_1" />
+        <TextView
+            android:id="@+id/textViewFirstTitle"
+            android:layout_width="match_parent"
+            android:textSize="17sp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/about_text_header1" />
+        <TextView
+            android:id="@+id/textViewSecondParagraph"
+            android:textSize="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_text_2" />
+        <ImageView
+            android:id="@+id/imageViewAboutGHGemissions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/aboutpic1_desc"
+            app:srcCompat="@drawable/aboutpic1" />
+        <TextView
+            android:id="@+id/textViewSecondTitle"
+            android:textSize="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/about_text_header2" />
+        <TextView
+            android:id="@+id/textViewThirdParagraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="@string/about_text_3" />
+        <ImageView
+            android:id="@+id/imageViewAboutFlowChart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/aboutpic2_desc"
+            app:srcCompat="@drawable/aboutpic2" />
+        <TextView
+            android:id="@+id/textViewThirdTitle"
+            android:layout_width="match_parent"
+            android:textSize="17sp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/about_text_header3" />
+        <TextView
+            android:id="@+id/textViewFourthParagraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="@string/about_text_4" />
+        <ImageView
+            android:id="@+id/imageViewGraph1"
+            android:layout_width="match_parent"
+            android:layout_height="308dp"
+            android:contentDescription="@string/graph_description"
+            app:srcCompat="@drawable/graph_thing" />
+        <ImageView
+            android:id="@+id/imageViewAboutConsumptionEmissions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/aboutpic3_desc"
+            app:srcCompat="@drawable/aboutpic3" />
+        <TextView
+            android:id="@+id/textViewFourthTitle"
+            android:textSize="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/about_text_header4" />
+        <TextView
+            android:id="@+id/textViewFifthParagraph"
+            android:textSize="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_text_5" />
+    </LinearLayout>
+</ScrollView>

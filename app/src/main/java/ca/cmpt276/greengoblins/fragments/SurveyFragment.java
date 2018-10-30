@@ -1,10 +1,14 @@
 package ca.cmpt276.greengoblins.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 
 public class SurveyFragment extends Fragment {
@@ -23,6 +28,8 @@ public class SurveyFragment extends Fragment {
     private TextView mTotalServingValueField;
 
     private ArrayList<Integer> mServingSizeAmounts;
+
+    FloatingActionButton mActionButton;
 
     @Nullable
     @Override
@@ -51,6 +58,15 @@ public class SurveyFragment extends Fragment {
         }
 
         mTotalServingValueField = view.findViewById(R.id.textViewTotalAmount);
+
+        MainActivity mat = (MainActivity) getActivity();
+        mActionButton = mat.getActionButton();
+        mActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submitSurvey();
+            }
+        });
     }
 
     public void setServing(int servingIndex, int value){
@@ -62,6 +78,22 @@ public class SurveyFragment extends Fragment {
             mServingSizeAmounts.set(servingIndex, servingValue);
 
         updateFields();
+    }
+
+    private void submitSurvey(){
+        Bundle bundle = new Bundle();
+        bundle.putIntegerArrayList("survey_data", mServingSizeAmounts );
+
+        Fragment resultFragment = new HistoryFragment();
+        resultFragment.setArguments( bundle );
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace( R.id.frame_activity_content, resultFragment );
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+        mActionButton.hide();
     }
 
     private int getFieldsTotal(){

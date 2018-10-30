@@ -1,6 +1,7 @@
 package ca.cmpt276.greengoblins.emission;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,13 +17,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
+import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
 import ca.cmpt276.greengoblins.fragments.SurveyFragment;
 
 /**
- * The main activity which opens at app start providing a survey for the user to fill in.
- * Updates UI elements based on input and saves the data of the survey into a ConsumptionTable
- * object when the user presses submit button
+ * The main activity which handles navigation actions from the nav drawer
+ * by switching fragments into content_main.xml
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,7 +31,9 @@ public class MainActivity extends AppCompatActivity
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
 
+    FloatingActionButton mActionButton;
     SurveyFragment mSurveyFragment;
+    Fragment mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +42,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, R.string.survey_submission_message, Snackbar.LENGTH_LONG).setAction("Action", null);
-                //Saving ConsumptionTable goes here
-                //Start Result Activity here
+                Toast.makeText(MainActivity.this, "Action Button still set to default OnClickListener", Toast.LENGTH_LONG).show();
             }
-        });*/
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,13 +66,6 @@ public class MainActivity extends AppCompatActivity
 
         mFragmentTransaction.replace(R.id.frame_activity_content, mSurveyFragment);
         mFragmentTransaction.commit();
-    }
-
-    public void incrementButton(View view){
-        changeFieldValue(view, 10);
-    }
-    public void decrementButton(View view){
-        changeFieldValue(view, -10);
     }
 
     private void changeFieldValue (View view, int valueToAdd){
@@ -103,8 +97,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void fabButton (View view){
-        Toast.makeText(MainActivity.this, "Test", Toast.LENGTH_LONG).show();
+    public void incrementButton(View view){
+        changeFieldValue(view, 10);
+    }
+    public void decrementButton(View view){
+        changeFieldValue(view, -10);
+    }
+
+    public FloatingActionButton getActionButton (){
+        return mActionButton;
+    }
+
+    public boolean startFragment(Fragment newFragment, boolean addToBackStack){
+        if ( newFragment != null ) {
+            mFragmentTransaction = mFragmentManager.beginTransaction();
+
+            mFragmentTransaction.replace(R.id.frame_activity_content, newFragment);
+            if(addToBackStack) {
+                mFragmentTransaction.addToBackStack(null);
+            }
+            mFragmentTransaction.commit();
+            return true;
+        }
+        return false;
     }
 
     //Methods below related to Navigation Drawer
@@ -151,23 +166,21 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_calculator) {
             fragment = new SurveyFragment();
             mSurveyFragment = (SurveyFragment) fragment;
+            mActionButton.show();
         } else if (id == R.id.nav_pledge) {
             fragment = new PledgeFragment();
+            mActionButton.show();
         } else if (id == R.id.nav_history) {
-
+            fragment = new HistoryFragment();
+            mActionButton.hide();
         } else if (id == R.id.nav_about) {
             fragment = new AboutPageFragment();
+            mActionButton.hide();
         } else if (id == R.id.nav_community) {
 
         }
 
-        if ( fragment != null ) {
-            mFragmentTransaction = mFragmentManager.beginTransaction();
-
-            mFragmentTransaction.replace(R.id.frame_activity_content, fragment);
-            mFragmentTransaction.addToBackStack(null);
-            mFragmentTransaction.commit();
-        }
+        startFragment( fragment, true );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
