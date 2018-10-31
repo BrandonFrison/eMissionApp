@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ca.cmpt276.greengoblins.Subfragment.AllCo2ePledgeAmount;
+import ca.cmpt276.greengoblins.Subfragment.MakeMyOwnPledge;
 import ca.cmpt276.greengoblins.Subfragment.MyPledge;
 import ca.cmpt276.greengoblins.Subfragment.OtherPledges;
 import ca.cmpt276.greengoblins.emission.R;
@@ -22,24 +23,26 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
 
 
     private AllCo2ePledgeAmount allCo2ePledgeAmount_fragment;
-    private OtherPledges otherPledges_fragment;
+    private OtherPledges PledgesList_fragment;
     private MyPledge myPledge_fragment;
+    private MakeMyOwnPledge makeMyOwnPledge_fragment;
 
     private View ALLCo2ePledgeAmount_Layout;
-    private View OtherPledges_Layout;
+    private View PledgesList_Layout;
     private View MyPledge_Layout;
 
     private ImageView ALLCo2ePledgeAmount_Image;
-    private ImageView OtherPledges_Image;
+    private ImageView PledgesList_Image;
     private ImageView MyPledge_Image;
 
     private TextView ALLCo2ePledgeAmount_Text;
-    private TextView OtherPledges_Text;
+    private TextView PledgesList_Text;
     private TextView MyPledge_Text;
 
 
     private FragmentManager fragmentManager;
     View view = null;
+    boolean MyPledgeExist = false;//  user hasn't make his/her pledge yet
 
 
     @Nullable
@@ -80,24 +83,35 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                 break;
             case 1:
                 //OtherPledges_Image.setImageResource(R.drawable.contacts_selected);
-                OtherPledges_Text.setTextColor(Color.WHITE);
-                if (otherPledges_fragment == null) {
-                    otherPledges_fragment = new OtherPledges();
-                    transaction.add(R.id.Pledge_content, otherPledges_fragment);
+                PledgesList_Text.setTextColor(Color.WHITE);
+                if (PledgesList_fragment == null) {
+                    PledgesList_fragment = new OtherPledges();
+                    transaction.add(R.id.Pledge_content, PledgesList_fragment);
                 } else {
-                    transaction.show(otherPledges_fragment);
+                    transaction.show(PledgesList_fragment);
                 }
                 break;
             case 2:
                 //MyPledge_Image.setImageResource(R.drawable.news_selected);
                 MyPledge_Text.setTextColor(Color.WHITE);
-                if (myPledge_fragment == null) {
-                    myPledge_fragment = new MyPledge();
-                    transaction.add(R.id.Pledge_content, myPledge_fragment);
-                } else {
-                    transaction.show(myPledge_fragment);
+                if(MyPledgeExist==true) {
+                    if (myPledge_fragment == null) {
+                        myPledge_fragment = new MyPledge();
+                        transaction.add(R.id.Pledge_content, myPledge_fragment);
+                    } else {
+                        transaction.show(myPledge_fragment);
+                    }
+                    break;
+                }else{
+                    if (makeMyOwnPledge_fragment == null) {
+                        makeMyOwnPledge_fragment = new MakeMyOwnPledge();
+                        transaction.add(R.id.Pledge_content, makeMyOwnPledge_fragment);
+                    } else {
+                        transaction.show(makeMyOwnPledge_fragment);
+                    }
+                    break;
+
                 }
-                break;
         }
         transaction.commit();
 
@@ -107,39 +121,42 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
         if (allCo2ePledgeAmount_fragment != null) {
             transaction.hide(allCo2ePledgeAmount_fragment);
         }
-        if (otherPledges_fragment != null) {
-            transaction.hide(otherPledges_fragment);
+        if (PledgesList_fragment != null) {
+            transaction.hide(PledgesList_fragment);
         }
         if (myPledge_fragment != null) {
             transaction.hide(myPledge_fragment);
+        }
+        if (makeMyOwnPledge_fragment != null) {
+            transaction.hide(makeMyOwnPledge_fragment);
         }
     }
 
     private void clearSelection() {
         //ALLCo2ePledgeAmount_Image.setImageResource(R.drawable.contacts_unselected);
         ALLCo2ePledgeAmount_Text.setTextColor(Color.parseColor("#82858b"));
-        //OtherPledges_Image.setImageResource(R.drawable.contacts_unselected);
-        OtherPledges_Text.setTextColor(Color.parseColor("#82858b"));
+        //PledgesList_Image.setImageResource(R.drawable.contacts_unselected);
+        PledgesList_Text.setTextColor(Color.parseColor("#82858b"));
         //MyPledge_Layout.setImageResource(R.drawable.news_unselected);
         MyPledge_Text.setTextColor(Color.parseColor("#82858b"));
     }
 
     private void initViews() {
         ALLCo2ePledgeAmount_Layout = view.findViewById(R.id.ALLCo2ePledgeAmount_layout);
-        OtherPledges_Layout = view.findViewById(R.id.OtherPledges_layout);
+        PledgesList_Layout = view.findViewById(R.id.PledgesList_layout);
         MyPledge_Layout = view.findViewById(R.id.MyPledge_layout);
 
 
         ALLCo2ePledgeAmount_Image = (ImageView) view.findViewById(R.id.ALLCo2ePledgeAmount_image);
-        OtherPledges_Image = (ImageView) view.findViewById(R.id.OtherPledges_image);
+        PledgesList_Image = (ImageView) view.findViewById(R.id.PledgesList_image);
         MyPledge_Image = (ImageView) view.findViewById(R.id.MyPledge_image);
 
-        ALLCo2ePledgeAmount_Text = (TextView) view.findViewById(R.id.ALLCo2ePledgeAmount_text);
-        OtherPledges_Text = (TextView) view.findViewById(R.id.OtherPledges_text);
-        MyPledge_Text = (TextView) view.findViewById(R.id.MyPledge_text);
+        ALLCo2ePledgeAmount_Text = (TextView) view.findViewById(R.id.ALLCo2ePledgeAmount_textbutton);
+        PledgesList_Text = (TextView) view.findViewById(R.id.PledgesList_textbutton);
+        MyPledge_Text = (TextView) view.findViewById(R.id.MyPledge_textbutton);
 
         ALLCo2ePledgeAmount_Layout.setOnClickListener(this);
-        OtherPledges_Layout.setOnClickListener(this);
+        PledgesList_Layout.setOnClickListener(this);
         MyPledge_Layout.setOnClickListener(this);
 
 
@@ -154,7 +171,7 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                 // When the message tab is clicked, the first tab is selected
                 setTabSelection(0);
                 break;
-            case R.id.OtherPledges_layout:
+            case R.id.PledgesList_layout:
                 // When the message tab is clicked, the second tab is selected
                 setTabSelection(1);
                 break;

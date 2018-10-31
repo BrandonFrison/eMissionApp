@@ -45,7 +45,7 @@
                 //android:src="@drawable/message_unselected"
 
                 <TextView
-                    android:id="@+id/ALLCo2ePledgeAmount_text"
+                    android:id="@+id/ALLCo2ePledgeAmount_textbutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -55,7 +55,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/OtherPledges_layout"
+            android:id="@+id/PledgesList_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -67,18 +67,18 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/OtherPledges_image"
+                    android:id="@+id/PledgesList_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal" />
                 //android:src="@drawable/message_unselected" />
 
                 <TextView
-                    android:id="@+id/OtherPledges_text"
+                    android:id="@+id/PledgesList_textbutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Other Pledges"
+                    android:text="Pledeg List"
                     android:textColor="#82858b" />
             </LinearLayout>
         </RelativeLayout>
@@ -103,7 +103,7 @@
                 //android:src="@drawable/message_unselected" />
 
                 <TextView
-                    android:id="@+id/MyPledge_text"
+                    android:id="@+id/MyPledge_textbutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

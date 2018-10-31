@@ -4,25 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical" >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
-            //android:src="@drawable/message_selected"
+    <TextView
+        android:id="@+id/pledge_totalamount_text"
+        android:layout_width="242dp"
+        android:layout_height="151dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="72dp"
+        android:text="TextView" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="10dp"
-            android:text="All Co2e Pledge Amount"
-            android:textSize="20sp" />
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/convection_text"
+        android:layout_width="206dp"
+        android:layout_height="135dp"
+        android:layout_below="@+id/pledge_totalamount_text"
+        android:layout_alignStart="@+id/pledge_totalamount_text"
+        android:text="TextView" />
 </RelativeLayout>
