@@ -1,10 +1,12 @@
 package ca.cmpt276.greengoblins.emission;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +16,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
@@ -28,6 +37,10 @@ import ca.cmpt276.greengoblins.fragments.SurveyFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //Firebase authentication fields
+    private FirebaseAuth mAuthenticator;
+
+
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
 
@@ -35,12 +48,16 @@ public class MainActivity extends AppCompatActivity
     SurveyFragment mSurveyFragment;
     Fragment mCurrentFragment;
 
+    TextView mLoginTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mLoginTextView = (TextView) findViewById(R.id.username_textview);
 
         mActionButton = (FloatingActionButton) findViewById(R.id.fab);
         mActionButton.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +75,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mAuthenticator = FirebaseAuth.getInstance();
 
         mSurveyFragment = new SurveyFragment();
 
@@ -94,6 +113,60 @@ public class MainActivity extends AppCompatActivity
                 break;
             default:
                 Toast.makeText( MainActivity.this, "Button tag not properly set", Toast.LENGTH_SHORT ).show();
+        }
+    }
+
+    public void signIn(String userEmail, String userPassword){
+
+        if(userEmail.isEmpty() || userPassword.isEmpty()){
+            Log.d("SIGN_IN", "empty fields");
+            return;
+        }
+
+        mAuthenticator.signInWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("SIGN_IN", "signInWithEmail:success");
+                            FirebaseUser user = mAuthenticator.getCurrentUser();
+                            //Toast.makeText(MainActivity.this, "Authentication success.",Toast.LENGTH_SHORT).show();
+                            updateLoginUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.d("SIGN_IN", "signInWithEmail:failure", task.getException());
+                            //Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                            updateLoginUI(null);
+                        }
+                    }
+                });
+//        String msg = "finished signin method:: ";
+//        if(user == null){
+//            msg = msg + "user is null";
+//        }else {
+//            msg = msg + "email: " + user.getEmail();
+//        }
+//
+//        Log.d("SIGN_IN", msg);
+    }
+
+    public void checkUserLogin(){
+        FirebaseUser currentUser = mAuthenticator.getCurrentUser();
+        if(currentUser == null){
+            Log.d("SIGN_IN", "User is not logged in");
+            //Toast.makeText(MainActivity.this, "User is not logged in", Toast.LENGTH_LONG).show();
+        }else{
+            Log.d("SIGN_IN", "User is somehow logged in");
+            //Toast.makeText(MainActivity.this, "User is somehow logged in", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void updateLoginUI(FirebaseUser user){
+        if(user == null)
+            mLoginTextView.setText(R.string.nav_header_username); //set default
+        else{
+            mLoginTextView.setText(user.getEmail());
         }
     }
 

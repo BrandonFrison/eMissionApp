@@ -3,14 +3,23 @@ package ca.cmpt276.greengoblins.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 
 public class PledgeFragment extends Fragment {
+
+    TextView mUserNameField;
+    TextView mPasswordField;
+
+    MainActivity mat;
 
     @Nullable
     @Override
@@ -22,6 +31,19 @@ public class PledgeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mat = (MainActivity) getActivity();
+        FloatingActionButton fab = mat.getActionButton();
+
+        mUserNameField = (TextView) view.findViewById(R.id.username_input_field);
+        mPasswordField = (TextView) view.findViewById(R.id.password_input_field);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mat.signIn(String.valueOf(mUserNameField.getText()), String.valueOf(mPasswordField.getText()));
+                mat.checkUserLogin();
+            }
+        });
 
     }
 }
