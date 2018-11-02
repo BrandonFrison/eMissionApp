@@ -1,4 +1,4 @@
-package ca.cmpt276.greengoblins.Subfragment;
+package ca.cmpt276.greengoblins.fragments.subfragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +20,7 @@ public class OtherPledges extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.otherpledge,container,false);
+        view = inflater.inflate(R.layout.pledgelist,container,false);
         CurrentPledge = view.findViewById(R.id.mycurrentpledge);
         String CurrentPledge_text;
         if(MyPledgeExist == false){ //if users haven't made a pledge yet

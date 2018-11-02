@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ca.cmpt276.greengoblins.Subfragment.AllCo2ePledgeAmount;
-import ca.cmpt276.greengoblins.Subfragment.MakeMyOwnPledge;
-import ca.cmpt276.greengoblins.Subfragment.MyPledge;
-import ca.cmpt276.greengoblins.Subfragment.OtherPledges;
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.fragments.subfragments.AllCo2ePledgeAmount;
+import ca.cmpt276.greengoblins.fragments.subfragments.MakeMyOwnPledge;
+import ca.cmpt276.greengoblins.fragments.subfragments.MyPledge;
+import ca.cmpt276.greengoblins.fragments.subfragments.OtherPledges;
 
 public class PledgeFragment extends Fragment implements View.OnClickListener {
 

@@ -1,4 +1,4 @@
-package ca.cmpt276.greengoblins.Subfragment;
+package ca.cmpt276.greengoblins.fragments.subfragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
