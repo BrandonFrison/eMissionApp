@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="All"
-                    android:textColor="#82858b" />
+                    android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -78,8 +78,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Pledeg List"
-                    android:textColor="#82858b" />
+                    android:text="Pledge List"
+                    android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="My pledge"
-                    android:textColor="#82858b" />
+                    android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
         </RelativeLayout>
 

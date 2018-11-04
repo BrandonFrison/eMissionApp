@@ -192,8 +192,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-
     public void incrementButton(View view){
         changeFieldValue(view, 10);
     }

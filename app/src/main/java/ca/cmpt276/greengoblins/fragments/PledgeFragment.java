@@ -11,7 +11,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.fragments.subfragments.AllCo2ePledgeAmount;
 import ca.cmpt276.greengoblins.fragments.subfragments.MakeMyOwnPledge;
@@ -201,8 +204,8 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
         mat = (MainActivity) getActivity();
         FloatingActionButton fab = mat.getActionButton();
 
-        mUserNameField = (TextView) view.findViewById(R.id.username_input_field);
-        mPasswordField = (TextView) view.findViewById(R.id.password_input_field);
+       // mUserNameField = (TextView) view.findViewById(R.id.username_input_field);
+       // mPasswordField = (TextView) view.findViewById(R.id.password_input_field);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
