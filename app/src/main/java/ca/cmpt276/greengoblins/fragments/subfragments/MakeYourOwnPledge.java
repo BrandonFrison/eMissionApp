@@ -20,7 +20,7 @@ import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.fragments.ExplanationDialogFragment;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
 
-public class MakeMyOwnPledge extends Fragment  {
+public class MakeYourOwnPledge extends Fragment  {
     View view = null;
     TextView userInformation;
     TextView pledgeamount;
@@ -37,7 +37,7 @@ public class MakeMyOwnPledge extends Fragment  {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.makemyownpledge,container,false);
+        view = inflater.inflate(R.layout.make_your_own_pledge,container,false);
 
         userInformation = view.findViewById(R.id.UserInformation);
         String userInformation_text = "First Name: \t"+FirstName+
@@ -83,7 +83,7 @@ public class MakeMyOwnPledge extends Fragment  {
             @Override
             public void onClick(View v) {
                 explanationDialogFragment= new ExplanationDialogFragment();
-                explanationDialogFragment.setTargetFragment(MakeMyOwnPledge.this, 1);
+                explanationDialogFragment.setTargetFragment(MakeYourOwnPledge.this, 1);
                 explanationDialogFragment.show(getFragmentManager(), "login");
             }
         });
@@ -93,7 +93,7 @@ public class MakeMyOwnPledge extends Fragment  {
             @Override
             public void onClick(View v) {
                 Loginfragment= new LoginFragment();
-                Loginfragment.setTargetFragment(MakeMyOwnPledge.this, 1);
+                Loginfragment.setTargetFragment(MakeYourOwnPledge.this, 1);
                 Loginfragment.show(getFragmentManager(), "login");
             }
         });
