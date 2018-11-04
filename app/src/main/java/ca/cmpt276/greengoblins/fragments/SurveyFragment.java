@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,6 +42,8 @@ public class SurveyFragment extends Fragment {
     private ArrayList<Integer> mServingSizeAmounts;
     private EditText mAgeSelection;
     private Spinner mPresetMealSelection;
+    private RadioButton mGenderMale;
+    private RadioButton mGenderFemale;
     FloatingActionButton mActionButton;
     double multiplier = 1.0;
 
@@ -69,6 +73,8 @@ public class SurveyFragment extends Fragment {
         mGenderSelection = (RadioGroup)view.findViewById(R.id.radioGroupGender);
         mPresetMealSelection = (Spinner)view.findViewById(R.id.spinnerChooseMealPreset);
         mAgeSelection = (EditText)view.findViewById(R.id.editTextAgeAmount);
+        mGenderFemale = (RadioButton)view.findViewById(R.id.radioButtonFemale);
+        mGenderMale = (RadioButton)view.findViewById(R.id.radioButtonMale);
         ImageView ExplanationButton =(ImageView)view.findViewById(R.id.explanationButton);
 
         mGenderSelection.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()            {
@@ -84,6 +90,20 @@ public class SurveyFragment extends Fragment {
                 //Toast.makeText(getContext(),"mult is " + multiplier + "id is " + position,Toast.LENGTH_LONG).show();
             }
         });
+
+        mAgeSelection.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(mGenderMale.isChecked()){
+                    multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), 0);
+                }else if (mGenderFemale.isChecked()){
+                    multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), 1);
+                }
+                return false;
+            }
+        });
+
+
 
         mPresetMealSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -223,7 +243,7 @@ public class SurveyFragment extends Fragment {
             case 0:
                 if(age > 13){
                     mTotalServingNeededField.setText("225");
-                }else if(age < 13 && age > 9){
+                }else if(age <= 13 && age > 9){
                     mTotalServingNeededField.setText("150");
                     value = 0.68;
                 }else{
