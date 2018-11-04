@@ -91,4 +91,6 @@
         \nEnter your age and select your gender first. \nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n
         You can also create a custom diet from scratch.\n Try to estimate your daily intake in grams as best you can!</string>
 
+    <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
+
 </resources>
