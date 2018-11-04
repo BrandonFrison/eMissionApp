@@ -87,4 +87,8 @@
     <string name="aboutpic1_desc">This shows ghg emission sources</string>
     <string name="aboutpic2_desc">This shows emission sources more in depth</string>
     <string name="aboutpic3_desc">This shows how food emissions are so high</string>
+    <string name="explanation">How do you use this calculator?\n
+        \nEnter your age and select your gender first. \nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n
+        You can also create a custom diet from scratch.\n Try to estimate your daily intake in grams as best you can!</string>
+
 </resources>
