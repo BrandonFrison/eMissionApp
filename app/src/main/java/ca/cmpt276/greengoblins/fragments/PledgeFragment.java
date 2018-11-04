@@ -1,6 +1,5 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,22 +9,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Button;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
-import ca.cmpt276.greengoblins.fragments.subfragments.AllCo2ePledgeAmount;
-import ca.cmpt276.greengoblins.fragments.subfragments.MakeMyOwnPledge;
-import ca.cmpt276.greengoblins.fragments.subfragments.MyPledge;
-import ca.cmpt276.greengoblins.fragments.subfragments.OtherPledges;
 
-public class PledgeFragment extends Fragment implements View.OnClickListener {
+public class PledgeFragment extends Fragment{
 
 
-    private AllCo2ePledgeAmount allCo2ePledgeAmount_fragment;
-    private OtherPledges PledgesList_fragment;
+    /*private AllCo2ePledgeAmount allCo2ePledgeAmount_fragment;
+    private PledgeListFragment PledgesList_fragment;
     private MyPledge myPledge_fragment;
-    private MakeMyOwnPledge makeMyOwnPledge_fragment;
+    private MakePledgeFragment makeMyOwnPledge_fragment;
 
     private View ALLCo2ePledgeAmount_Layout;
     private View PledgesList_Layout;
@@ -42,24 +37,47 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
 
     private FragmentManager fragmentManager;
     View view = null;
-    boolean MyPledgeExist = false;//  user hasn't make his/her pledge yet
-
+    boolean MyPledgeExist = false;//  user hasn't make his/her pledge yet*/
+    MainActivity mMainActivity;
+    private Button mMakePledgeButton;
+    private Button mViewPledgeListButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_pledge,null);
-
-
-        //Initialize layout elements
-        initViews();
-        fragmentManager = getFragmentManager();
-        //The 0th tab is selected when starting for the first time.
-        setTabSelection(0);
-        return view;
+        return inflater.inflate(R.layout.fragment_pledge, container, false);
     }
 
-    private void setTabSelection(int index) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mMainActivity = (MainActivity) getActivity();
+
+        mMakePledgeButton = (Button) view.findViewById(R.id.button_make_pledge);
+        mViewPledgeListButton = (Button) view.findViewById(R.id.button_view_pledge_list);
+
+        mMakePledgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment newFragment = new MakePledgeFragment();
+                mMainActivity.startFragment( newFragment, true, false);
+            }
+        });
+        mViewPledgeListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment newFragment = new PledgeListFragment();
+                mMainActivity.startFragment( newFragment, true, false);
+            }
+        });
+        //Initialize layout elements
+        //initViews();
+        //fragmentManager = getFragmentManager();
+        //The 0th tab is selected when starting for the first time.
+        //setTabSelection(0);
+        //return view;
+    }
+
+    /*private void setTabSelection(int index) {
 
         // Clear the last selected state before each selection
         clearSelection();
@@ -85,7 +103,7 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                 //OtherPledges_Image.setImageResource(R.drawable.contacts_selected);
                 PledgesList_Text.setTextColor(Color.WHITE);
                 if (PledgesList_fragment == null) {
-                    PledgesList_fragment = new OtherPledges();
+                    PledgesList_fragment = new PledgeListFragment();
                     transaction.add(R.id.Pledge_content, PledgesList_fragment);
                 } else {
                     transaction.show(PledgesList_fragment);
@@ -104,7 +122,7 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                     break;
                 }else{
                     if (makeMyOwnPledge_fragment == null) {
-                        makeMyOwnPledge_fragment = new MakeMyOwnPledge();
+                        makeMyOwnPledge_fragment = new MakePledgeFragment();
                         transaction.add(R.id.Pledge_content, makeMyOwnPledge_fragment);
                     } else {
                         transaction.show(makeMyOwnPledge_fragment);
@@ -163,6 +181,7 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
     }
 
 
+
     @Override
     public void onClick(View v) {
 
@@ -183,17 +202,8 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
-    }
+    }*/
 
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-
-    }
 }
 
 

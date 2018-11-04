@@ -1,4 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/user_info_view"
+            android:drawableStart="@mipmap/ic_launcher_round"
+            android:drawablePadding="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_placeholder" />
+
+        <Button
+            android:id="@+id/button_share_pledge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_share_pledge" />
+
+        <Button
+            android:id="@+id/button_publish_pledge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_publish_pledge" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -74,4 +115,4 @@
         android:layout_marginBottom="0dp"
         android:text="Share your pledge!" />
 
-</RelativeLayout>
+</RelativeLayout>-->

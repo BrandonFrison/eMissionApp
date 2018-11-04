@@ -19,6 +19,7 @@ import android.widget.Toast;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
+import ca.cmpt276.greengoblins.fragments.PledgeListFragment;
 import ca.cmpt276.greengoblins.fragments.SurveyFragment;
 
 /**
@@ -68,6 +69,12 @@ public class MainActivity extends AppCompatActivity
         mFragmentTransaction.commit();
     }
 
+    public void incrementButton(View view){
+        changeFieldValue(view, 10);
+    }
+    public void decrementButton(View view){
+        changeFieldValue(view, -10);
+    }
     private void changeFieldValue (View view, int valueToAdd){
         String buttonTag = String.valueOf(view.getTag());
         switch(buttonTag){
@@ -97,29 +104,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void incrementButton(View view){
-        changeFieldValue(view, 10);
-    }
-    public void decrementButton(View view){
-        changeFieldValue(view, -10);
-    }
-
     public FloatingActionButton getActionButton (){
         return mActionButton;
     }
 
     public boolean startFragment(Fragment newFragment, boolean addToBackStack){
-        if ( newFragment != null ) {
-            mFragmentTransaction = mFragmentManager.beginTransaction();
+        if ( newFragment == null) return false;
+        mFragmentTransaction = mFragmentManager.beginTransaction();
 
-            mFragmentTransaction.replace(R.id.frame_activity_content, newFragment);
-            if(addToBackStack) {
-                mFragmentTransaction.addToBackStack(null);
-            }
-            mFragmentTransaction.commit();
-            return true;
+        mFragmentTransaction.replace(R.id.frame_activity_content, newFragment);
+        if(addToBackStack) {
+            mFragmentTransaction.addToBackStack(null);
         }
-        return false;
+        mFragmentTransaction.commit();
+        return true;
+    }
+
+    public boolean startFragment(Fragment newFragment, boolean addToBackStack, boolean showActionButton ){
+        if ((showActionButton)) {
+            mActionButton.show();
+        } else {
+            mActionButton.hide();
+        }
+        return startFragment( newFragment, addToBackStack );
     }
 
     //Methods below related to Navigation Drawer
@@ -162,25 +169,23 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        boolean showFloatingActionButton = false;
 
         if (id == R.id.nav_calculator) {
             fragment = new SurveyFragment();
             mSurveyFragment = (SurveyFragment) fragment;
-            mActionButton.show();
+            showFloatingActionButton = true;
         } else if (id == R.id.nav_pledge) {
             fragment = new PledgeFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_about) {
             fragment = new AboutPageFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_community) {
-
+            fragment = new PledgeListFragment();
         }
 
-        startFragment( fragment, true );
+        startFragment( fragment, true, showFloatingActionButton );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

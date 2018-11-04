@@ -1,4 +1,4 @@
-package ca.cmpt276.greengoblins.fragments.subfragments;
+package ca.cmpt276.greengoblins.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,14 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 import ca.cmpt276.greengoblins.emission.R;
 
-public class MakeMyOwnPledge extends Fragment {
-    View view = null;
+public class MakePledgeFragment extends Fragment {
+    /*View view = null;
     TextView userInformation;
     TextView pledgeamount;
     CheckBox ShowName;
@@ -23,13 +20,14 @@ public class MakeMyOwnPledge extends Fragment {
     String FirstName = "John";//should let user input this value
     String LastName = "Smith";//should let user input this value
     int ValueSavedFromMealPlan = 88;//should let user input this value
-    int CostomValue = 0;//should let user input this value
+    int CostomValue = 0;//should let user input this value*/
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.makemyownpledge,container,false);
-        userInformation = view.findViewById(R.id.UserInformation);
+        return inflater.inflate(R.layout.fragment_pledge_create, container,false);
+       /*userInformation = view.findViewById(R.id.UserInformation);
         String userInformation_text = "First Name: \t"+FirstName+
                 "Last Name: \t"+LastName;
         userInformation.setText(userInformation_text);
@@ -45,6 +43,11 @@ public class MakeMyOwnPledge extends Fragment {
         SharePledgeButton = view.findViewById(R.id.sharepledgebutton);
         PublishPleDgeButton = view.findViewById(R.id.publishpledgebutton);
 
-        return view;
+        return view;*/
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
     }
 }
