@@ -34,12 +34,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/about_text_2" />
+
         <ImageView
             android:id="@+id/imageViewAboutGHGemissions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/aboutpic1_desc"
-            app:srcCompat="@drawable/aboutpic1" />
+            app:srcCompat="@drawable/aboutpic1press"
+            />
+
         <TextView
             android:id="@+id/textViewSecondTitle"
             android:textSize="17sp"
@@ -58,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/aboutpic2_desc"
-            app:srcCompat="@drawable/aboutpic2" />
+            app:srcCompat="@drawable/aboutpic2press" />
         <TextView
             android:id="@+id/textViewThirdTitle"
             android:layout_width="match_parent"
@@ -77,13 +80,13 @@
             android:layout_width="match_parent"
             android:layout_height="308dp"
             android:contentDescription="@string/graph_description"
-            app:srcCompat="@drawable/graph_thing" />
+            app:srcCompat="@drawable/graph_thingpress" />
         <ImageView
             android:id="@+id/imageViewAboutConsumptionEmissions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/aboutpic3_desc"
-            app:srcCompat="@drawable/aboutpic3" />
+            app:srcCompat="@drawable/aboutpic3press" />
         <TextView
             android:id="@+id/textViewFourthTitle"
             android:textSize="17sp"

@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("eMission");
 
         mLoginTextView = (TextView) findViewById(R.id.username_textview);
 
@@ -116,6 +117,26 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void signUp(String userEmail, String userPassword){
+        mAuthenticator.createUserWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("SIGNED_UP", "createUserWithEmail:success");
+                            FirebaseUser user = mAuthenticator.getCurrentUser();
+                            updateLoginUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.d("SIGNED_UP", "createUserWithEmail:failure", task.getException());
+                          //  Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                            updateLoginUI(null);
+                        }
+                    }
+                });
+    }
+
     public void signIn(String userEmail, String userPassword){
 
         if(userEmail.isEmpty() || userPassword.isEmpty()){
@@ -155,6 +176,7 @@ public class MainActivity extends AppCompatActivity
         FirebaseUser currentUser = mAuthenticator.getCurrentUser();
         if(currentUser == null){
             Log.d("SIGN_IN", "User is not logged in");
+
             //Toast.makeText(MainActivity.this, "User is not logged in", Toast.LENGTH_LONG).show();
         }else{
             Log.d("SIGN_IN", "User is somehow logged in");
@@ -170,12 +192,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+
     public void incrementButton(View view){
         changeFieldValue(view, 10);
     }
     public void decrementButton(View view){
         changeFieldValue(view, -10);
     }
+
 
     public FloatingActionButton getActionButton (){
         return mActionButton;

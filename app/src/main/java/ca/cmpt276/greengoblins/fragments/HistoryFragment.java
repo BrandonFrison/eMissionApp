@@ -61,7 +61,7 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getActivity().setTitle("Previous CO2e");
         //pie chart part
         pieChart = (PieChart) view.findViewById(R.id.PieChart);
         pieChart.setRotationEnabled(true);
