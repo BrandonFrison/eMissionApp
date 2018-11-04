@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ca.cmpt276.greengoblins.emission.R;
-import ca.cmpt276.greengoblins.fragments.subfragments.AllCo2ePledgeAmount;
+import ca.cmpt276.greengoblins.fragments.subfragments.PledgeStatistics;
 import ca.cmpt276.greengoblins.fragments.subfragments.MakeMyOwnPledge;
 import ca.cmpt276.greengoblins.fragments.subfragments.MyPledge;
 import ca.cmpt276.greengoblins.fragments.subfragments.OtherPledges;
@@ -22,7 +22,7 @@ import ca.cmpt276.greengoblins.fragments.subfragments.OtherPledges;
 public class PledgeFragment extends Fragment implements View.OnClickListener {
 
 
-    private AllCo2ePledgeAmount allCo2ePledgeAmount_fragment;
+    private PledgeStatistics allCo2ePledgeAmount_fragment;
     private OtherPledges PledgesList_fragment;
     private MyPledge myPledge_fragment;
     private MakeMyOwnPledge makeMyOwnPledge_fragment;
@@ -74,7 +74,7 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                 ALLCo2ePledgeAmount_Text.setTextColor(Color.WHITE);
                 if (allCo2ePledgeAmount_fragment == null) {
                     //If the MessageFragment is empty, create one and add it to the interface.
-                    allCo2ePledgeAmount_fragment = new AllCo2ePledgeAmount();
+                    allCo2ePledgeAmount_fragment = new PledgeStatistics();
                     transaction.add(R.id.Pledge_content, allCo2ePledgeAmount_fragment);
                 } else {
                     //If the MessageFragment is not empty, display it directly
