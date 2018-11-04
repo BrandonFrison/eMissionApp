@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.fragments.subfragments.PledgeStatistics;
-import ca.cmpt276.greengoblins.fragments.subfragments.MakeYourOwnPledge;
+import ca.cmpt276.greengoblins.fragments.subfragments.MakeYourOwnPledgeFragment;
 import ca.cmpt276.greengoblins.fragments.subfragments.MyPledge;
 import ca.cmpt276.greengoblins.fragments.subfragments.OtherPledges;
 
@@ -25,7 +25,7 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
     private PledgeStatistics allCo2ePledgeAmount_fragment;
     private OtherPledges PledgesList_fragment;
     private MyPledge myPledge_fragment;
-    private MakeYourOwnPledge makeYourOwnPledge_fragment;
+    private MakeYourOwnPledgeFragment makeYourOwnPledge_Fragment_fragment;
 
     private View ALLCo2ePledgeAmount_Layout;
     private View PledgesList_Layout;
@@ -103,11 +103,11 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                     }
                     break;
                 }else{
-                    if (makeYourOwnPledge_fragment == null) {
-                        makeYourOwnPledge_fragment = new MakeYourOwnPledge();
-                        transaction.add(R.id.Pledge_content, makeYourOwnPledge_fragment);
+                    if (makeYourOwnPledge_Fragment_fragment == null) {
+                        makeYourOwnPledge_Fragment_fragment = new MakeYourOwnPledgeFragment();
+                        transaction.add(R.id.Pledge_content, makeYourOwnPledge_Fragment_fragment);
                     } else {
-                        transaction.show(makeYourOwnPledge_fragment);
+                        transaction.show(makeYourOwnPledge_Fragment_fragment);
                     }
                     break;
 
@@ -127,8 +127,8 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
         if (myPledge_fragment != null) {
             transaction.hide(myPledge_fragment);
         }
-        if (makeYourOwnPledge_fragment != null) {
-            transaction.hide(makeYourOwnPledge_fragment);
+        if (makeYourOwnPledge_Fragment_fragment != null) {
+            transaction.hide(makeYourOwnPledge_Fragment_fragment);
         }
     }
 

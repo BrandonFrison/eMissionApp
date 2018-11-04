@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ca.cmpt276.greengoblins.emission.R;
-import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 
 public class PledgeStatistics extends Fragment {
     View view = null;
@@ -53,7 +52,7 @@ public class PledgeStatistics extends Fragment {
         mMakeYourOwnPledge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment makeYourOwnPledge = new MakeYourOwnPledge();
+                Fragment makeYourOwnPledge = new MakeYourOwnPledgeFragment();
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
