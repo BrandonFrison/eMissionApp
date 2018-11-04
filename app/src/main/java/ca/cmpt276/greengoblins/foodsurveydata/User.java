@@ -6,17 +6,27 @@ public class User {
     private String lastName;
     private double pledgeAmount;
     private String emailAddress;
+    private String city;
 
     public User(String emailAddress, String firstName, String lastName) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.pledgeAmount = 0;
     }
 
     public User(String emailAddress, String firstName, String lastName, double pledgeAmount) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.pledgeAmount = pledgeAmount;
+    }
+
+    public User(String emailAddress, String firstName, String lastName, String city, double pledgeAmount) {
+        this.emailAddress = emailAddress;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.city = city;
         this.pledgeAmount = pledgeAmount;
     }
 
@@ -51,5 +61,13 @@ public class User {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
