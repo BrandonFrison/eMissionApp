@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity
             mActionButton.show();
         } else if (id == R.id.nav_pledge) {
             fragment = new PledgeFragment();
-            mActionButton.show();
+            mActionButton.hide();
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
             mActionButton.hide();
