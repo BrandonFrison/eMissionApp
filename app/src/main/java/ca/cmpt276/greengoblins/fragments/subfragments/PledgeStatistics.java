@@ -1,26 +1,27 @@
 package ca.cmpt276.greengoblins.fragments.subfragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import ca.cmpt276.greengoblins.emission.R;
 
-public class AllCo2ePledgeAmount extends Fragment {
+public class PledgeStatistics extends Fragment {
     View view = null;
     TextView TotalCo2eAmount_Pledge;
     TextView ConvectionText;
+    Button mMakeYourOwnPledge;
+
     int convectionNum_tree = 63;
     int convectionNum_forest = 2;
     int convectionNum_driving = 2222;
@@ -32,7 +33,7 @@ public class AllCo2ePledgeAmount extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.allco2eamount,container,false);
+        View view = inflater.inflate(R.layout.pledge_statistics,container,false);
 
 
         //total co2e
@@ -47,7 +48,19 @@ public class AllCo2ePledgeAmount extends Fragment {
         TotalCo2eAmount_Pledge.setText(ss1);
 
 
+        mMakeYourOwnPledge = view.findViewById(R.id.pledge_statistics_make_your_own_pledge);
+        mMakeYourOwnPledge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment makeYourOwnPledge = new MakeYourOwnPledgeFragment();
 
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace( R.id.frame_activity_content, makeYourOwnPledge );
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         //convection
         ConvectionText = view.findViewById(R.id.convection_text);

@@ -93,4 +93,6 @@
         How do you use this calculator?\n\n
         \nEnter your age and select your gender first.\n\nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\nYou can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
     <string name="label_help">How to use calculator</string>
+    <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
+
 </resources>
