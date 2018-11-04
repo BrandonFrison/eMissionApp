@@ -76,7 +76,11 @@ public class SurveyFragment extends Fragment {
             public void onCheckedChanged(RadioGroup arg0, int selectedId) {
                 View radioButton = mGenderSelection.findViewById(selectedId);
                 int position = mGenderSelection.indexOfChild(radioButton);
-                multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), position);
+                if(mAgeSelection.getText().toString().equals("")){
+                    Toast.makeText(getContext(), "Please enter your age", Toast.LENGTH_SHORT).show();
+                }else{
+                    multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), position);
+                }
                 //Toast.makeText(getContext(),"mult is " + multiplier + "id is " + position,Toast.LENGTH_LONG).show();
             }
         });

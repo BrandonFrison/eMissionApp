@@ -89,8 +89,8 @@
     <string name="aboutpic2_desc">This shows emission sources more in depth</string>
     <string name="aboutpic3_desc">This shows how food emissions are so high</string>
     <string name="close">close</string>
-    <string name="explanation">How do you use this calculator?\n\n
-        \nEnter your age and select your gender first.\n\n Then, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\n
-        You can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
+    <string name="explanation">
+        How do you use this calculator?\n\n
+        \nEnter your age and select your gender first.\n\nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\nYou can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
     <string name="label_help">How to use calculator</string>
 </resources>

@@ -93,7 +93,7 @@ public class HistoryFragment extends Fragment {
 
             String resultText = "Total CO2e Score: " + df.format(mCO2eScore) + " kg per year.\n\n" +
                     "That's equivalent to driving: " + df.format(mCO2eScore / DrivenConvectionNuder) + " km\n\n" +
-                    "Click events on pie chart to get details.\\nn" +
+                    "Click events on pie chart to get details.\n\n" +
                     "If you want to try different diets we provided, you can click the bottom button.";
             mCO2eDisplay.setText(resultText);
 
