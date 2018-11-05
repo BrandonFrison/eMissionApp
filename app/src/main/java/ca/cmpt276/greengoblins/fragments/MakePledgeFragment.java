@@ -46,6 +46,7 @@ public class MakePledgeFragment extends Fragment {
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mMainActivity.popupLogin();
                 //Fragment newFragment = new MakePledgeFragment();
                 //mMainActivity.startFragment( newFragment, true, false);
             }

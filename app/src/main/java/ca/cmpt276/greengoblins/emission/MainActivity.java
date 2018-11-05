@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
+import ca.cmpt276.greengoblins.fragments.LoginFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeListFragment;
 import ca.cmpt276.greengoblins.fragments.SurveyFragment;
@@ -122,6 +123,12 @@ public class MainActivity extends AppCompatActivity
             default:
                 Toast.makeText( MainActivity.this, "Button tag not properly set", Toast.LENGTH_SHORT ).show();
         }
+    }
+
+    public void popupLogin(){
+        LoginFragment loginFragment = new LoginFragment();
+        //Loginfragment.setTargetFragment(MakeYourOwnPledgeFragment.this, 1);
+        loginFragment.show(getSupportFragmentManager(), "login");
     }
 
     public void signUp(String userEmail, String userPassword){
