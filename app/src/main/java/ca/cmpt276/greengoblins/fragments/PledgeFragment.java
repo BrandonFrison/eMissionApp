@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,19 +14,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
-import ca.cmpt276.greengoblins.fragments.subfragments.AllCo2ePledgeAmount;
-import ca.cmpt276.greengoblins.fragments.subfragments.MakeMyOwnPledge;
+import ca.cmpt276.greengoblins.fragments.subfragments.PledgeStatistics;
+import ca.cmpt276.greengoblins.fragments.subfragments.MakeYourOwnPledgeFragment;
 import ca.cmpt276.greengoblins.fragments.subfragments.MyPledge;
 import ca.cmpt276.greengoblins.fragments.subfragments.OtherPledges;
 
 public class PledgeFragment extends Fragment implements View.OnClickListener {
 
 
-    private AllCo2ePledgeAmount allCo2ePledgeAmount_fragment;
+    private PledgeStatistics allCo2ePledgeAmount_fragment;
     private OtherPledges PledgesList_fragment;
     private MyPledge myPledge_fragment;
-    private MakeMyOwnPledge makeMyOwnPledge_fragment;
+    private MakeYourOwnPledgeFragment makeYourOwnPledge_Fragment_fragment;
 
     private View ALLCo2ePledgeAmount_Layout;
     private View PledgesList_Layout;
@@ -43,6 +45,12 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
     private FragmentManager fragmentManager;
     View view = null;
     boolean MyPledgeExist = false;//  user hasn't make his/her pledge yet
+
+
+    TextView mUserNameField;
+    TextView mPasswordField;
+
+    MainActivity mat;
 
 
     @Nullable
@@ -74,7 +82,7 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                 ALLCo2ePledgeAmount_Text.setTextColor(Color.WHITE);
                 if (allCo2ePledgeAmount_fragment == null) {
                     //If the MessageFragment is empty, create one and add it to the interface.
-                    allCo2ePledgeAmount_fragment = new AllCo2ePledgeAmount();
+                    allCo2ePledgeAmount_fragment = new PledgeStatistics();
                     transaction.add(R.id.Pledge_content, allCo2ePledgeAmount_fragment);
                 } else {
                     //If the MessageFragment is not empty, display it directly
@@ -103,11 +111,11 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
                     }
                     break;
                 }else{
-                    if (makeMyOwnPledge_fragment == null) {
-                        makeMyOwnPledge_fragment = new MakeMyOwnPledge();
-                        transaction.add(R.id.Pledge_content, makeMyOwnPledge_fragment);
+                    if (makeYourOwnPledge_Fragment_fragment == null) {
+                        makeYourOwnPledge_Fragment_fragment = new MakeYourOwnPledgeFragment();
+                        transaction.add(R.id.Pledge_content, makeYourOwnPledge_Fragment_fragment);
                     } else {
-                        transaction.show(makeMyOwnPledge_fragment);
+                        transaction.show(makeYourOwnPledge_Fragment_fragment);
                     }
                     break;
 
@@ -127,8 +135,8 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
         if (myPledge_fragment != null) {
             transaction.hide(myPledge_fragment);
         }
-        if (makeMyOwnPledge_fragment != null) {
-            transaction.hide(makeMyOwnPledge_fragment);
+        if (makeYourOwnPledge_Fragment_fragment != null) {
+            transaction.hide(makeYourOwnPledge_Fragment_fragment);
         }
     }
 
@@ -191,13 +199,21 @@ public class PledgeFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getActivity().setTitle("Sign in to eMission Pledge");
 
+        mat = (MainActivity) getActivity();
+        FloatingActionButton fab = mat.getActionButton();
+
+       // mUserNameField = (TextView) view.findViewById(R.id.username_input_field);
+       // mPasswordField = (TextView) view.findViewById(R.id.password_input_field);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mat.signIn(String.valueOf(mUserNameField.getText()), String.valueOf(mPasswordField.getText()));
+                mat.checkUserLogin();
+            }
+        });
 
     }
 }
-
-
-
-
-
-
