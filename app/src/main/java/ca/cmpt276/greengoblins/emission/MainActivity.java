@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
+import ca.cmpt276.greengoblins.fragments.SettingsFragment;
 import ca.cmpt276.greengoblins.fragments.SurveyFragment;
 
 /**
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     Fragment mCurrentFragment;
 
     TextView mLoginTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
 
         mAuthenticator = FirebaseAuth.getInstance();
 
@@ -246,6 +250,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Fragment fragment = new SettingsFragment();
+            mActionButton.hide();
+            startFragment( fragment, true );
             return true;
         }
 

@@ -94,10 +94,15 @@ public class SurveyFragment extends Fragment {
         mAgeSelection.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(mGenderMale.isChecked()){
-                    multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), 0);
-                }else if (mGenderFemale.isChecked()){
-                    multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), 1);
+                if(mAgeSelection.getText().toString().equals("")) {
+                   //do nothing as it would crash inputting null into the function
+                    return false;
+                }else{
+                    if (mGenderMale.isChecked()) {
+                        multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), 0);
+                    } else if (mGenderFemale.isChecked()) {
+                        multiplier = setAmountNeeded(parseInt(mAgeSelection.getText().toString()), 1);
+                    }
                 }
                 return false;
             }
@@ -123,6 +128,7 @@ public class SurveyFragment extends Fragment {
 
         MainActivity mat = (MainActivity) getActivity();
         mActionButton = mat.getActionButton();
+        mActionButton.show();
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

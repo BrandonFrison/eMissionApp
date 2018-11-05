@@ -53,9 +53,9 @@
     <string name="menu_nav_calculator">CO2e Calculator</string>
     <string name="menu_nav_pledge">Pledge</string>
     <string name="menu_nav_history">History</string>
-    <string name="menu_nav_about">About</string>
+    <string name="menu_nav_about">Learn More</string>
     <string name="menu_title_network">Community</string>
-    <string name="menu_nav_community">Pledges</string>
+    <string name="menu_nav_community">Vancouver Pledges</string>
     <string name="about_text_1">
     As Canadians, we often think of ourselves as surrounded by nature and thoughtful about the environment.
     Indeed, Vancouver has spearheaded the Greenest City Action Plan since 2011, with the goal of becoming the greenest city in the world by 2020.
@@ -94,5 +94,7 @@
         \nEnter your age and select your gender first.\n\nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\nYou can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
     <string name="label_help">How to use calculator</string>
     <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
+  <string name="btn_clear">Clear Local History</string>
+    <string name="btn_logout">Log Out</string>
 
 </resources>
