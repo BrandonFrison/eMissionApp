@@ -21,16 +21,6 @@
         <item>High Pork Diet</item>
     </string-array>
 
-    <!--Pledge List Filters-->
-    <string name="pledge_list_text">View the pledges made so far!</string>
-    <string name="pledge_filter_label">Sort by...</string>
-    <string-array name="pledge_list_filters">
-        <item>First Name</item>
-        <item>Last Name</item>
-        <item>City</item>
-        <item>Pledge Size</item>
-    </string-array>
-
     <!--UI and Button Strings-->
     <string name="button_submit">Submit</string>
     <string name="button_reduce_footprint">Reduce my carbon footprint</string>
@@ -64,6 +54,25 @@
         %,d Forests\n
         %,d Km of driving eMission™
     </string>
+
+    <!--Pledge List Filters-->
+    <string name="pledge_list_text">View the pledges made so far!</string>
+    <string name="pledge_filter_label">Sort by...</string>
+    <string-array name="pledge_list_filters">
+        <item>First Name</item>
+        <item>Last Name</item>
+        <item>City</item>
+        <item>Pledge Size</item>
+    </string-array>
+
+    <!--Make Pledge Strings-->
+    <string name="input_first_name">First Name</string>
+    <string name="input_last_name">Last Name</string>
+    <string name="input_municipality">Municipality</string>
+    <string name="input_pledge_amount_descriptor">CO2e reduction pledge:</string>
+    <string name="input_pledge_amount">#</string>
+    <string name="checkbox_showname_descriptor">Show my name next to my pledge</string>
+
 
     <!--Debug/placeholder strings-->
     <string name="text_view_placeholder">Could not load results.</string>
