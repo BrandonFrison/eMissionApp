@@ -46,7 +46,7 @@
 
     <!--Pledge Fragment Strings-->
     <string name="textview_world_pledge_summary">
-        tonnes of CO2e pledged to be saved by %,d worldwide. \n
+        tonnes of CO2e pledged to be saved by %,d worldwide.\n
         That\'s %,d tonnes of CO2e per person!
     </string>
     <string name="textview_world_breakdown_summary">
@@ -91,6 +91,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">eMission</string>
     <string name="nav_header_username">Not logged in</string>
+    <string name="nav_header_login">Log in</string>
+    <string name="nav_header_logout">Log out</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 

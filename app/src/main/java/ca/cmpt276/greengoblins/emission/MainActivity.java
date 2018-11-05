@@ -16,6 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 
 import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment mCurrentFragment;
 
     private TextView mLoginTextView;
+    private Spinner mLoginDropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +88,14 @@ public class MainActivity extends AppCompatActivity
 
         View header = navigationView.getHeaderView(0);
         mLoginTextView = (TextView) header.findViewById(R.id.username_textview);
+        mLoginDropdown = (Spinner) header.findViewById(R.id.dropdown_login);
 
         mAuthenticator = FirebaseAuth.getInstance();
-        mCurrentUser = getCurrentUser();
+/*        mCurrentUser = getCurrentUser();
         if(mCurrentUser != null){
             mLoginTextView.setText( mCurrentUser.getEmail() );
-        }
+        }*/
+        updateLoginUI();
 
         mSurveyFragment = new SurveyFragment();
 
@@ -133,6 +141,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public String getUserDisplayName(){
+        FirebaseUser user = mAuthenticator.getCurrentUser();
+        if(user == null){
+            return getString(R.string.nav_header_username);
+        }
+        return user.getEmail();
+    }
+
     public FirebaseUser getCurrentUser(){
         return mAuthenticator.getCurrentUser();
     }
@@ -155,13 +171,13 @@ public class MainActivity extends AppCompatActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("SIGNED_UP", "createUserWithEmail:success");
                             mCurrentUser = mAuthenticator.getCurrentUser();
-                            updateLoginUI(mCurrentUser);
+                            updateLoginUI();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d("SIGNED_UP", "createUserWithEmail:failure", task.getException());
                             mCurrentUser = null;
                           //  Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                            updateLoginUI(null);
+                            updateLoginUI();
                         }
                     }
                 });
@@ -185,13 +201,13 @@ public class MainActivity extends AppCompatActivity
                                 Log.d("SIGN_IN", "signInWithEmail:success");
                                 mCurrentUser = mAuthenticator.getCurrentUser();
                                 Toast.makeText(MainActivity.this, "Authentication success.", Toast.LENGTH_SHORT).show();
-                                updateLoginUI(mCurrentUser);
+                                updateLoginUI();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.d("SIGN_IN", "signInWithEmail:failure", task.getException());
                                 mCurrentUser = null;
                                 Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                updateLoginUI(null);
+                                updateLoginUI();
                             }
                         }
                     });
@@ -209,12 +225,60 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void updateLoginUI(FirebaseUser user){
-        if(user == null)
+    public void logout(){
+        mAuthenticator.signOut();
+        mCurrentUser = null;
+        updateLoginUI();
+    }
+
+    public void updateLoginUI(){
+        FirebaseUser currentUser = mAuthenticator.getCurrentUser();
+
+        ArrayList<String> loginDropdownItems = new ArrayList<String>();
+        loginDropdownItems.add( getUserDisplayName() );
+        if(currentUser == null){
+            loginDropdownItems.add( getString(R.string.nav_header_login) );
+        } else {
+            loginDropdownItems.add( getString(R.string.nav_header_logout) );
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                MainActivity.this,
+                android.R.layout.simple_spinner_item,
+                loginDropdownItems
+        );
+
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        mLoginDropdown.setAdapter(adapter);
+
+        mLoginDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        //popupLogin();
+                        break;
+                    case 1:
+                        if(checkUserLogin()) {
+                            logout();
+                        }else{
+                            popupLogin();
+                        }
+                        break;
+                    default:
+                        //intentionally empty
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        /*if(currentUser == null)
             mLoginTextView.setText(R.string.nav_header_username); //set default
         else{
-            mLoginTextView.setText(user.getEmail());
-        }
+            mLoginTextView.setText(currentUser.getEmail());
+        }*/
     }
 
     public FloatingActionButton getActionButton (){
