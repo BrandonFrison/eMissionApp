@@ -44,16 +44,17 @@ public class PledgeFragment extends Fragment{
 
         int totalWorldCO2ePledged = getCO2ePledgeTotal();
         int totalWorldPledges = getNumOfPledges();
+        int perPersonPledges = Math.round( totalWorldCO2ePledged / totalWorldPledges );
         int numTreesSaved = 10;
         int numForestsSaved = 1;
         int numDrivingSaved = 1500;
 
-        String pledgeWorldTotal = String.format( "%,d", totalWorldCO2ePledged )
+        String pledgeWorldTotal = String.format( "%,d", totalWorldCO2ePledged );
 
         String worldPledgeSummary = getString(R.string.textview_world_pledge_summary);
         worldPledgeSummary = String.format(worldPledgeSummary,
-                totalWorldCO2ePledged,
-                totalWorldPledges );
+                totalWorldPledges,
+                perPersonPledges );
 
         String worldBreakdownSummary = getString(R.string.textview_world_breakdown_summary);
         worldBreakdownSummary = String.format(worldBreakdownSummary,

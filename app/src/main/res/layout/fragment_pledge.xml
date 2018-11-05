@@ -18,7 +18,7 @@
             android:id="@+id/pledge_worldtotal_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:layout_gravity="center"
             android:text="@string/text_view_placeholder" />
 
@@ -26,6 +26,8 @@
             android:id="@+id/pledge_worldtotal_explanation_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/text_view_placeholder" />
 
         <TextView
@@ -33,15 +35,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
             android:text="@string/text_view_placeholder" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"/>
 
         <Button
             android:id="@+id/button_make_pledge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/button_make_pledge" />
 
         <Button
@@ -49,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="@string/button_view_pledge_list" />
 
