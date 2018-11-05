@@ -21,6 +21,16 @@
         <item>High Pork Diet</item>
     </string-array>
 
+    <!--Pledge List Filters-->
+    <string name="pledge_list_text">View the pledges made so far!</string>
+    <string name="pledge_filter_label">Sort by...</string>
+    <string-array name="pledge_list_filters">
+        <item>First Name</item>
+        <item>Last Name</item>
+        <item>City</item>
+        <item>Pledge Size</item>
+    </string-array>
+
     <!--UI and Button Strings-->
     <string name="button_submit">Submit</string>
     <string name="button_reduce_footprint">Reduce my carbon footprint</string>
@@ -28,6 +38,7 @@
     <string name="button_view_pledge_list">See who\'s pledged</string>
     <string name="button_publish_pledge">Publish your pledge</string>
     <string name="button_share_pledge">Share your pledge</string>
+    <string name="hint_search_box">Search...</string>
 
     <!--Survey Fragment Strings-->
     <string name="survey_explanation">How many grams of each food type do you eat in an average week?</string>
