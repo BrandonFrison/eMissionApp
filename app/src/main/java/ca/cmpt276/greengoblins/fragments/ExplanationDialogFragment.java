@@ -28,7 +28,7 @@ public class ExplanationDialogFragment extends DialogFragment implements View.On
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.explanation, null);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_explanation, null);
 
             builder.setView(view);
             return builder.create();

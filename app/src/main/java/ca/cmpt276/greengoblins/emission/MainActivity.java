@@ -27,8 +27,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
+import ca.cmpt276.greengoblins.fragments.LoginFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
 import ca.cmpt276.greengoblins.fragments.SettingsFragment;
+import ca.cmpt276.greengoblins.fragments.PledgeListFragment;
 import ca.cmpt276.greengoblins.fragments.SurveyFragment;
 
 /**
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity
     Fragment mCurrentFragment;
 
     TextView mLoginTextView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +80,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
         mAuthenticator = FirebaseAuth.getInstance();
 
         mSurveyFragment = new SurveyFragment();
@@ -92,6 +91,12 @@ public class MainActivity extends AppCompatActivity
         mFragmentTransaction.commit();
     }
 
+    public void incrementButton(View view){
+        changeFieldValue(view, 10);
+    }
+    public void decrementButton(View view){
+        changeFieldValue(view, -10);
+    }
     private void changeFieldValue (View view, int valueToAdd){
         String buttonTag = String.valueOf(view.getTag());
         switch(buttonTag){
@@ -119,6 +124,12 @@ public class MainActivity extends AppCompatActivity
             default:
                 Toast.makeText( MainActivity.this, "Button tag not properly set", Toast.LENGTH_SHORT ).show();
         }
+    }
+
+    public void popupLogin(){
+        LoginFragment loginFragment = new LoginFragment();
+        //Loginfragment.setTargetFragment(MakeYourOwnPledgeFragment.this, 1);
+        loginFragment.show(getSupportFragmentManager(), "login");
     }
 
     public void signUp(String userEmail, String userPassword){
@@ -166,14 +177,6 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
-//        String msg = "finished signin method:: ";
-//        if(user == null){
-//            msg = msg + "user is null";
-//        }else {
-//            msg = msg + "email: " + user.getEmail();
-//        }
-//
-//        Log.d("SIGN_IN", msg);
     }
 
     public void checkUserLogin(){
@@ -196,30 +199,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void incrementButton(View view){
-        changeFieldValue(view, 10);
-    }
-    public void decrementButton(View view){
-        changeFieldValue(view, -10);
-    }
-
-
     public FloatingActionButton getActionButton (){
         return mActionButton;
     }
 
     public boolean startFragment(Fragment newFragment, boolean addToBackStack){
-        if ( newFragment != null ) {
-            mFragmentTransaction = mFragmentManager.beginTransaction();
+        if ( newFragment == null) return false;
+        mFragmentTransaction = mFragmentManager.beginTransaction();
 
-            mFragmentTransaction.replace(R.id.frame_activity_content, newFragment);
-            if(addToBackStack) {
-                mFragmentTransaction.addToBackStack(null);
-            }
-            mFragmentTransaction.commit();
-            return true;
+        mFragmentTransaction.replace(R.id.frame_activity_content, newFragment);
+        if(addToBackStack) {
+            mFragmentTransaction.addToBackStack(null);
         }
-        return false;
+        mFragmentTransaction.commit();
+        return true;
+    }
+
+    public boolean startFragment(Fragment newFragment, boolean addToBackStack, boolean showActionButton ){
+        if ((showActionButton)) {
+            mActionButton.show();
+        } else {
+            mActionButton.hide();
+        }
+        return startFragment( newFragment, addToBackStack );
     }
 
     //Methods below related to Navigation Drawer
@@ -265,25 +267,23 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        boolean showFloatingActionButton = false;
 
         if (id == R.id.nav_calculator) {
             fragment = new SurveyFragment();
             mSurveyFragment = (SurveyFragment) fragment;
-            mActionButton.show();
+            showFloatingActionButton = true;
         } else if (id == R.id.nav_pledge) {
             fragment = new PledgeFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_about) {
             fragment = new AboutPageFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_community) {
-
+            fragment = new PledgeListFragment();
         }
 
-        startFragment( fragment, true );
+        startFragment( fragment, true, showFloatingActionButton );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

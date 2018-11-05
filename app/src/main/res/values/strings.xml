@@ -25,6 +25,11 @@
     <!--UI and Button Strings-->
     <string name="button_submit">Submit</string>
     <string name="button_reduce_footprint">Reduce my carbon footprint</string>
+    <string name="button_make_pledge">Make a pledge</string>
+    <string name="button_view_pledge_list">See who\'s pledged</string>
+    <string name="button_publish_pledge">Publish your pledge</string>
+    <string name="button_share_pledge">Share your pledge</string>
+    <string name="hint_search_box">Search...</string>
 
     <!--Survey Activity Strings-->
     <string name="survey_explanation">Approximate How many grams of each food type do you eat daily in an average week?</string>
@@ -39,6 +44,37 @@
     <string name="label_placeholder_gram_amt">0</string>
     <string name="label_totalneeded">Total Needed</string>
 
+    <!--Pledge Fragment Strings-->
+    <string name="textview_world_pledge_summary">
+        tonnes of CO2e pledged to be saved by %,d worldwide. \n
+        That\'s %,d tonnes of CO2e per person!
+    </string>
+    <string name="textview_world_breakdown_summary">
+        Together, we\'ve saved:\n
+        %,d Trees\n
+        %,d Forests\n
+        %,d Km of driving eMission™
+    </string>
+
+    <!--Pledge List Filters-->
+    <string name="pledge_list_text">View the pledges made so far!</string>
+    <string name="pledge_filter_label">Sort by...</string>
+    <string-array name="pledge_list_filters">
+        <item>First Name</item>
+        <item>Last Name</item>
+        <item>City</item>
+        <item>Pledge Size</item>
+    </string-array>
+
+    <!--Make Pledge Strings-->
+    <string name="input_first_name">First Name</string>
+    <string name="input_last_name">Last Name</string>
+    <string name="input_municipality">Municipality</string>
+    <string name="input_pledge_amount_descriptor">CO2e reduction pledge:</string>
+    <string name="input_pledge_amount">#</string>
+    <string name="checkbox_showname_descriptor">Show my name next to my pledge</string>
+
+
     <!--Debug/placeholder strings-->
     <string name="text_view_placeholder">Could not load results.</string>
 
@@ -49,6 +85,7 @@
     <string name="nav_header_username">Not logged in</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
     <!--Navigation Drawer Menu Strings-->
     <string name="menu_nav_calculator">CO2e Calculator</string>
     <string name="menu_nav_pledge">Pledge</string>
@@ -56,6 +93,7 @@
     <string name="menu_nav_about">Learn More</string>
     <string name="menu_title_network">Community</string>
     <string name="menu_nav_community">Vancouver Pledges</string>
+    <!--About Page Content Strings-->
     <string name="about_text_1">
     As Canadians, we often think of ourselves as surrounded by nature and thoughtful about the environment.
     Indeed, Vancouver has spearheaded the Greenest City Action Plan since 2011, with the goal of becoming the greenest city in the world by 2020.
@@ -83,6 +121,7 @@
     <string name="about_text_5">
     There are 2.46 million people living in the Metro Vancouver area, and about 90% of them eat food that are relatively high in CO2e (i.e., are non-vegetarian).
     If each of those people, for instance, reduced beef/lamb from 35% to 10% and instead ate chicken, Vancouver could save 900,000 to 1 million tonnes of CO2e per year.\n</string>
+    <!--About Page Descriptive Strings-->
     <string name="graph_description">this is about page graph thing</string>
     <string name="logo_description">This is the logo at the top</string>
     <string name="aboutpic1_desc">This shows ghg emission sources</string>

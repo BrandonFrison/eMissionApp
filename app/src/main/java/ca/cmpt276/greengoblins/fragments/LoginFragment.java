@@ -36,7 +36,7 @@ public class LoginFragment extends DialogFragment implements View.OnClickListene
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view= LayoutInflater.from(getActivity()).inflate(R.layout.op_up_login, null);
+        View view= LayoutInflater.from(getActivity()).inflate(R.layout.pop_up_login, null);
         toReg= view.findViewById(R.id.login_register);
         mUsername= view.findViewById(R.id.login_username);
         LoginBtn= view.findViewById(R.id.login_btn);
@@ -66,7 +66,4 @@ public class LoginFragment extends DialogFragment implements View.OnClickListene
                 break;
         }
     }
-    //public interface LoginInputListener{
-    //    void onLoginInputComplete(String userName, String password);
-   // }
 }

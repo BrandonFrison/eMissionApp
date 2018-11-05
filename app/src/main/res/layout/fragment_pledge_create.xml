@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintStart_toStartOf="@id/make_pledge_table_layout"
+        app:layout_constraintTop_toTopOf="@id/make_pledge_table_layout"
+        />
+
+    <TableLayout
+        android:id="@+id/make_pledge_table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/input_first_name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="@string/input_first_name"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorAccent"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space />
+
+            <EditText
+                android:id="@+id/input_last_name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="@string/input_last_name"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorAccent" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space />
+
+            <EditText
+                android:id="@+id/input_municipality"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="@string/input_municipality"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textColor="@color/colorAccent" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp">
+
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/input_pledge_amount_descriptor" />
+
+            <EditText
+                android:id="@+id/input_pledge_amount"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="@string/input_pledge_amount"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:textColor="@color/colorAccent" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="40dp"
+        app:layout_constraintTop_toBottomOf="@id/make_pledge_table_layout">
+
+        <CheckBox
+            android:id="@+id/checkbox_show_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:text="@string/checkbox_showname_descriptor" />
+
+        <Button
+            android:id="@+id/button_share_pledge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_share_pledge" />
+
+        <Button
+            android:id="@+id/button_publish_pledge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_publish_pledge" />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
