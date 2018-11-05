@@ -8,41 +8,48 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="495dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_margin="40dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="8dp">
 
         <TextView
-            android:id="@+id/pledge_totalamount_text"
-            android:layout_width="match_parent"
+            android:id="@+id/pledge_worldtotal_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:textSize="32dp"
+            android:layout_gravity="center"
             android:text="@string/text_view_placeholder" />
 
         <TextView
-            android:id="@+id/convection_text"
+            android:id="@+id/pledge_worldtotal_explanation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_placeholder" />
+
+        <TextView
+            android:id="@+id/pledge_worldbreakdown_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/text_view_placeholder" />
 
         <Button
             android:id="@+id/button_make_pledge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/button_make_pledge" />
 
         <Button
             android:id="@+id/button_view_pledge_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:text="@string/button_view_pledge_list" />
 

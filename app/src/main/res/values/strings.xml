@@ -29,7 +29,7 @@
     <string name="button_publish_pledge">Publish your pledge</string>
     <string name="button_share_pledge">Share your pledge</string>
 
-    <!--Survey Activity Strings-->
+    <!--Survey Fragment Strings-->
     <string name="survey_explanation">How many grams of each food type do you eat in an average week?</string>
     <string name="label_age">Enter Age:</string>
     <string name="label_gender">Enter Gender:</string>
@@ -42,6 +42,18 @@
     <string name="label_placeholder_gram_amt">0</string>
     <string name="label_totalneeded">Total Needed</string>
 
+    <!--Pledge Fragment Strings-->
+    <string name="textview_world_pledge_summary">
+        tonnes of CO2e pledged to be saved by %,d worldwide. \n
+        That\'s %,d tonnes of CO2e per person!
+    </string>
+    <string name="textview_world_breakdown_summary">
+        Together, we\'ve saved:\n
+        %,d Trees\n
+        %,d Forests\n
+        %,d Km of driving eMission™
+    </string>
+
     <!--Debug/placeholder strings-->
     <string name="text_view_placeholder">Could not load results.</string>
 
@@ -52,6 +64,7 @@
     <string name="nav_header_subtitle">Green Food Challenge</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
     <!--Navigation Drawer Menu Strings-->
     <string name="menu_nav_calculator">CO2e Calculator</string>
     <string name="menu_nav_pledge">Pledge</string>
@@ -59,6 +72,7 @@
     <string name="menu_nav_about">About</string>
     <string name="menu_title_network">Community</string>
     <string name="menu_nav_community">Pledges</string>
+
     <!--About Page Content Strings-->
     <string name="about_text_1">
     As Canadians, we often think of ourselves as surrounded by nature and thoughtful about the environment.
