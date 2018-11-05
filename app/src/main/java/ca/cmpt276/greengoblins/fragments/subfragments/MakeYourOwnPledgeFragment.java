@@ -12,26 +12,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.ExplanationDialogFragment;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
 
 public class MakeYourOwnPledgeFragment extends Fragment  {
     View view = null;
-    TextView userInformation;
-    TextView pledgeamount;
-    CheckBox ShowName;
+
+    EditText mFirstNameInputField;
+    EditText mLastNameInputField;
+    EditText mCityInputField;
+    EditText mCO2ePledgedInputField;
+
     Button SharePledgeButton;
     Button PublishPleDgeButton;
+
     private ExplanationDialogFragment explanationDialogFragment;
-    String FirstName = "John";//should let user input this value
-    String LastName = "Smith";//should let user input this value
-    int ValueSavedFromMealPlan = 88;//should let user input this value
-    int CostomValue = 0;//should let user input this value
+
     private LoginFragment Loginfragment;
 
     @Nullable
@@ -39,19 +45,14 @@ public class MakeYourOwnPledgeFragment extends Fragment  {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_make_your_own_pledge,container,false);
 
-        userInformation = view.findViewById(R.id.UserInformation);
-        String userInformation_text = "First Name: \t"+FirstName+
-                "Last Name: \t"+LastName;
-        userInformation.setText(userInformation_text);
+        mFirstNameInputField = (EditText) view.findViewById(R.id.first_name_input);
+        mLastNameInputField = (EditText) view.findViewById(R.id.last_name_input);
+        mCityInputField = (EditText) view.findViewById(R.id.city_input);
+        mCO2ePledgedInputField = (EditText) view.findViewById(R.id.co2e_input);
 
 
-        pledgeamount = view.findViewById(R.id.PledgeAmount);
-        String pledgeamount_text ="Pledge Amount:" +
-                "   Saving from Meal Plan:\t"+ValueSavedFromMealPlan+"\tTonnes CO2e"+
-                "Custom: \t\t\t"+CostomValue+"\tTonnes CO2e";
-        pledgeamount.setText(pledgeamount_text);
 
-        ShowName = view.findViewById(R.id.checkBox);
+
         SharePledgeButton = view.findViewById(R.id.sharepledgebutton);
         SharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +83,28 @@ public class MakeYourOwnPledgeFragment extends Fragment  {
         PublishPleDgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                explanationDialogFragment= new ExplanationDialogFragment();
-                explanationDialogFragment.setTargetFragment(MakeYourOwnPledgeFragment.this, 1);
-                explanationDialogFragment.show(getFragmentManager(), "login");
+
+                // *********************   NEED TO IMPLEMENT INPUT CHECKING (VERY IMPORTANT)  *************************************
+                String firstName = "";
+                String lastName = "";
+                String city = "";
+                Double pledgeAmount = 0.0;
+
+
+                firstName = mFirstNameInputField.getText().toString().trim();
+                lastName = mLastNameInputField.getText().toString().trim();
+                city = mCityInputField.getText().toString().trim();
+
+                String pledgeAmountString = mCO2ePledgedInputField.getText().toString().trim();
+                pledgeAmount = Double.parseDouble(pledgeAmountString);
+
+                DatabaseReference usersDatabase;
+                usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+
+                String uniqueID = usersDatabase.push().getKey();
+                User user = new User("tempEmail@test.com", firstName, lastName, city, pledgeAmount);
+                usersDatabase.child(uniqueID).setValue(user);
+
             }
         });
 
