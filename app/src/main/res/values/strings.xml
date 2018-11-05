@@ -19,6 +19,7 @@
         <item>High Beef Diet</item>
         <item>High Chicken Diet</item>
         <item>High Pork Diet</item>
+        <item>High Fish Diet</item>
     </string-array>
 
     <!--UI and Button Strings-->
@@ -30,14 +31,14 @@
     <string name="button_share_pledge">Share your pledge</string>
     <string name="hint_search_box">Search...</string>
 
-    <!--Survey Fragment Strings-->
-    <string name="survey_explanation">How many grams of each food type do you eat in an average week?</string>
+    <!--Survey Activity Strings-->
+    <string name="survey_explanation">Approximate How many grams of each food type do you eat daily in an average week?</string>
     <string name="label_age">Enter Age:</string>
     <string name="label_gender">Enter Gender:</string>
     <string name="radio_male">M</string>
     <string name="radio_female">F</string>
     <string name="label_foodtype">Food type</string>
-    <string name="label_foodamount">Amount in grams</string>
+    <string name="label_foodamount">Amount in grams (Daily)</string>
     <string name="label_selectpreset">Choose a preset diet</string>
     <string name="label_totalgrams">Total</string>
     <string name="label_placeholder_gram_amt">0</string>
@@ -81,7 +82,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">eMission</string>
-    <string name="nav_header_subtitle">Green Food Challenge</string>
+    <string name="nav_header_username">Not logged in</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -127,4 +128,11 @@
     <string name="aboutpic1_desc">This shows ghg emission sources</string>
     <string name="aboutpic2_desc">This shows emission sources more in depth</string>
     <string name="aboutpic3_desc">This shows how food emissions are so high</string>
+    <string name="close">close</string>
+    <string name="explanation">
+        How do you use this calculator?\n\n
+        \nEnter your age and select your gender first.\n\nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\nYou can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
+    <string name="label_help">How to use calculator</string>
+    <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
+
 </resources>
