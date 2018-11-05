@@ -75,8 +75,16 @@
     <string name="checkbox_showname_descriptor">Show my name next to my pledge</string>
 
 
-    <!--Debug/placeholder strings-->
+    <!--Debug/Error message strings-->
     <string name="text_view_placeholder">Could not load results.</string>
+    <string name="empty_username_message">Please enter an email</string>
+    <string name="empty_password_message">Please fill in password</string>
+    <string name="empty_firstname_message">Please enter your first name</string>
+    <string name="empty_lastname_message">Please enter your last name</string>
+    <string name="empty_pledge_message">Please enter a pledge amount</string>
+    <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
+    <string name="error_bad_pledge_format">Please enter a numerical value for pledge</string>
+
 
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -25,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
@@ -41,16 +42,18 @@ public class MainActivity extends AppCompatActivity
 
     //Firebase authentication fields
     private FirebaseAuth mAuthenticator;
+    private FirebaseUser mCurrentUser;
 
+    private User mUserData;
 
-    FragmentManager mFragmentManager;
-    FragmentTransaction mFragmentTransaction;
+    private FragmentManager mFragmentManager;
+    private FragmentTransaction mFragmentTransaction;
 
-    FloatingActionButton mActionButton;
-    SurveyFragment mSurveyFragment;
-    Fragment mCurrentFragment;
+    private FloatingActionButton mActionButton;
+    private SurveyFragment mSurveyFragment;
+    private Fragment mCurrentFragment;
 
-    TextView mLoginTextView;
+    private TextView mLoginTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +61,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("eMission");
-
-        mLoginTextView = (TextView) findViewById(R.id.username_textview);
+        toolbar.setTitle(R.string.app_name);
 
         mActionButton = (FloatingActionButton) findViewById(R.id.fab);
         mActionButton.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +80,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
+        mLoginTextView = (TextView) header.findViewById(R.id.username_textview);
+
         mAuthenticator = FirebaseAuth.getInstance();
+        mCurrentUser = getCurrentUser();
+        if(mCurrentUser != null){
+            mLoginTextView.setText( mCurrentUser.getEmail() );
+        }
 
         mSurveyFragment = new SurveyFragment();
 
@@ -125,6 +133,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public FirebaseUser getCurrentUser(){
+        return mAuthenticator.getCurrentUser();
+    }
+    public void updateUserData(User newUserData){
+        mUserData = newUserData;
+    }
+
     public void popupLogin(){
         LoginFragment loginFragment = new LoginFragment();
         //Loginfragment.setTargetFragment(MakeYourOwnPledgeFragment.this, 1);
@@ -139,11 +154,12 @@ public class MainActivity extends AppCompatActivity
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("SIGNED_UP", "createUserWithEmail:success");
-                            FirebaseUser user = mAuthenticator.getCurrentUser();
-                            updateLoginUI(user);
+                            mCurrentUser = mAuthenticator.getCurrentUser();
+                            updateLoginUI(mCurrentUser);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d("SIGNED_UP", "createUserWithEmail:failure", task.getException());
+                            mCurrentUser = null;
                           //  Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
                             updateLoginUI(null);
                         }
@@ -153,41 +169,44 @@ public class MainActivity extends AppCompatActivity
 
     public void signIn(String userEmail, String userPassword){
 
-        if(userEmail.isEmpty() || userPassword.isEmpty()){
-            Log.d("SIGN_IN", "empty fields");
+        if(userEmail.isEmpty()){
+            Toast.makeText(MainActivity.this, R.string.empty_username_message, Toast.LENGTH_SHORT).show();
             return;
-        }
-
-        mAuthenticator.signInWithEmailAndPassword(userEmail, userPassword)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("SIGN_IN", "signInWithEmail:success");
-                            FirebaseUser user = mAuthenticator.getCurrentUser();
-                            //Toast.makeText(MainActivity.this, "Authentication success.",Toast.LENGTH_SHORT).show();
-                            updateLoginUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.d("SIGN_IN", "signInWithEmail:failure", task.getException());
-                            //Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                            updateLoginUI(null);
+        }else if( userPassword.isEmpty()){
+            Toast.makeText(MainActivity.this, R.string.empty_password_message, Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            mAuthenticator.signInWithEmailAndPassword(userEmail, userPassword)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("SIGN_IN", "signInWithEmail:success");
+                                mCurrentUser = mAuthenticator.getCurrentUser();
+                                Toast.makeText(MainActivity.this, "Authentication success.", Toast.LENGTH_SHORT).show();
+                                updateLoginUI(mCurrentUser);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.d("SIGN_IN", "signInWithEmail:failure", task.getException());
+                                mCurrentUser = null;
+                                Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                updateLoginUI(null);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
-    public void checkUserLogin(){
+    public boolean checkUserLogin(){
         FirebaseUser currentUser = mAuthenticator.getCurrentUser();
         if(currentUser == null){
             Log.d("SIGN_IN", "User is not logged in");
 
-            //Toast.makeText(MainActivity.this, "User is not logged in", Toast.LENGTH_LONG).show();
-        }else{
-            Log.d("SIGN_IN", "User is somehow logged in");
-            //Toast.makeText(MainActivity.this, "User is somehow logged in", Toast.LENGTH_LONG).show();
+            return false;
         }
+        Log.d("SIGN_IN", "User is somehow logged in");
+        return true;
     }
 
     public void updateLoginUI(FirebaseUser user){

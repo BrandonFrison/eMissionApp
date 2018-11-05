@@ -69,8 +69,12 @@ public class PledgeFragment extends Fragment{
         mMakePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new MakePledgeFragment();
-                mMainActivity.startFragment( newFragment, true, false);
+                if( !mMainActivity.checkUserLogin() ) {
+                    mMainActivity.popupLogin();
+                } else {
+                    Fragment newFragment = new MakePledgeFragment();
+                    mMainActivity.startFragment( newFragment, true, false);
+                }
             }
         });
         mViewPledgeListButton.setOnClickListener(new View.OnClickListener() {

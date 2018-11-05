@@ -8,18 +8,18 @@ public class User {
     private String emailAddress;
     private String city;
 
+    private boolean showNamePublic;
+
+    public User(String emailAddress) {
+        this( emailAddress, "", "", 0 );
+    }
+
     public User(String emailAddress, String firstName, String lastName) {
-        this.emailAddress = emailAddress;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.pledgeAmount = 0;
+        this( emailAddress, firstName, lastName, 0 );
     }
 
     public User(String emailAddress, String firstName, String lastName, double pledgeAmount) {
-        this.emailAddress = emailAddress;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.pledgeAmount = pledgeAmount;
+        this( emailAddress, firstName, lastName, "", pledgeAmount );
     }
 
     public User(String emailAddress, String firstName, String lastName, String city, double pledgeAmount) {
@@ -28,8 +28,8 @@ public class User {
         this.lastName = lastName;
         this.city = city;
         this.pledgeAmount = pledgeAmount;
+        this.showNamePublic = false;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -69,5 +69,13 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public boolean isShowNamePublic() {
+        return showNamePublic;
+    }
+
+    public void setShowNamePublic(boolean showNamePublic) {
+        this.showNamePublic = showNamePublic;
     }
 }

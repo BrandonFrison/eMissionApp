@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.foodsurveydata.User;
 
 public class MakePledgeFragment extends Fragment {
     MainActivity mMainActivity;
@@ -38,15 +40,28 @@ public class MakePledgeFragment extends Fragment {
         mPublishPledgeButton = (Button) view.findViewById(R.id.button_publish_pledge);
 
         mFirstName = (TextView) view.findViewById(R.id.input_first_name);
+        mFirstName.setText(mMainActivity.getCurrentUser().getEmail());
         mLastName = (TextView) view.findViewById(R.id.input_last_name);
         mMunicipality = (TextView) view.findViewById(R.id.input_municipality);
         mPledgeAmount = (TextView) view.findViewById(R.id.input_pledge_amount);
         mShowNameCheckbox = (CheckBox) view.findViewById(R.id.checkbox_show_name);
 
+
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMainActivity.popupLogin();
+                if( !mMainActivity.checkUserLogin() ){
+                    Toast.makeText( mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG ).show();
+                } else {
+                    User newUser = createUserFromForm( mMainActivity.getCurrentUser().getEmail() );
+                    if( newUser != null ) {
+                        mMainActivity.updateUserData(newUser);
+                        Toast.makeText(mMainActivity, "success", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+
                 //Fragment newFragment = new MakePledgeFragment();
                 //mMainActivity.startFragment( newFragment, true, false);
             }
@@ -58,5 +73,44 @@ public class MakePledgeFragment extends Fragment {
                 //mMainActivity.startFragment( newFragment, true, false);
             }
         });
+    }
+
+    private User createUserFromForm(String userEmail){
+        String firstName = mFirstName.getText().toString();
+        String lastName = mLastName.getText().toString();
+        String municipality = mMunicipality.getText().toString();
+        String pledgeAmount = mPledgeAmount.getText().toString();
+        User userData = null;
+
+        if( firstName.isEmpty() ){
+            Toast.makeText( mMainActivity, R.string.empty_firstname_message, Toast.LENGTH_SHORT ).show();
+            return userData;
+        }else if( lastName.isEmpty() ){
+            Toast.makeText( mMainActivity, R.string.empty_lastname_message, Toast.LENGTH_SHORT ).show();
+            return  userData;
+        }else if( pledgeAmount.isEmpty() ){
+            Toast.makeText( mMainActivity, R.string.empty_pledge_message, Toast.LENGTH_SHORT ).show();
+            return  userData;
+        }else{
+            double pledgeValue;
+            try{
+                pledgeValue = Double.parseDouble(pledgeAmount);
+            } catch (Exception e){
+                pledgeValue = 0;
+                Toast.makeText( mMainActivity, R.string.error_bad_pledge_format, Toast.LENGTH_LONG ).show();
+            }
+            userData = new User(
+                    userEmail,
+                    firstName,
+                    lastName,
+                    pledgeValue );
+            if( !municipality.isEmpty() ){
+                userData.setCity( municipality );
+            }
+            if( mShowNameCheckbox.isChecked() ){
+                userData.setShowNamePublic( true );
+            }
+        }
+        return userData;
     }
 }

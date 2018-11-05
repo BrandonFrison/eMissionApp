@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 
 public class LoginFragment extends DialogFragment implements View.OnClickListener{
+
+    private MainActivity mMainActivity;
     private EditText mUsername;
     private EditText mPassword;
     private Button LoginBtn;
@@ -35,6 +38,8 @@ public class LoginFragment extends DialogFragment implements View.OnClickListene
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mMainActivity = (MainActivity) getActivity();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view= LayoutInflater.from(getActivity()).inflate(R.layout.pop_up_login, null);
         toReg= view.findViewById(R.id.login_register);
@@ -52,6 +57,11 @@ public class LoginFragment extends DialogFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_btn:// if u want to send data to an activity/fragment:
+                String userEmail = mUsername.getText().toString();
+                String userPassword = mPassword.getText().toString();
+
+                mMainActivity.signIn( userEmail, userPassword );
+                dismiss();
                 //LoginInputListener listener= (LoginInputListener) getActivity();
                 //listener.onLoginInputComplete(mUsername.getText().toString(), mPassword.getText().toString());
 
@@ -62,7 +72,7 @@ public class LoginFragment extends DialogFragment implements View.OnClickListene
                 //public void onLoginInputComplete(String userName, String userPassword) {
                 //name.setText(userName);
                 //password.setText(userPassword);
-                dismiss();
+
                 break;
         }
     }
