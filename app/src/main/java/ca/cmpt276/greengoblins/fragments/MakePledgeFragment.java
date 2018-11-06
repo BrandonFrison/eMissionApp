@@ -18,8 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
@@ -36,6 +39,8 @@ public class MakePledgeFragment extends Fragment {
     EditText mPledgeAmountInputField;
     private CheckBox mShowNameCheckbox;
 
+    private boolean mUserHasPledged;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +54,6 @@ public class MakePledgeFragment extends Fragment {
         mPublishPledgeButton = (Button) view.findViewById(R.id.button_publish_pledge);
 
         mFirstNameInputField = (EditText) view.findViewById(R.id.input_first_name);
-        //mFirstNameInputField.setText(mMainActivity.getCurrentUser().getU());
         mLastNameInputField = (EditText) view.findViewById(R.id.input_last_name);
         mMunicipalityInputField = (EditText) view.findViewById(R.id.input_municipality);
         mPledgeAmountInputField = (EditText) view.findViewById(R.id.input_pledge_amount);
@@ -63,15 +67,6 @@ public class MakePledgeFragment extends Fragment {
                     Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
                     mMainActivity.popupLogin();
                 } else { //  TO DO: Add another else if condition to check if the account has a valid pledge to share
-
-                    // Just commented out temporarily since it could potentially lead to bugs
-                    /*
-                    User newUser = createUserFromForm( mMainActivity.getCurrentUser().getEmail() );
-                    if( newUser != null ) {
-                        mMainActivity.updateUserData(newUser);
-                        Toast.makeText(mMainActivity, "success", Toast.LENGTH_SHORT).show();
-                    }
-                    */
                     Toast.makeText(mMainActivity, "TO DO: Implement a share pop up", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -83,32 +78,16 @@ public class MakePledgeFragment extends Fragment {
                     Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
                     mMainActivity.popupLogin();
                 }
+                else if (!pledgeExists(mMainActivity.getCurrentUser().getUid())) {
+                    publishPledge();
+                }
                 else {
-                    String firstName = "";
-                    String lastName = "";
-                    String city = "";
-                    String email = "";
-                    Double pledgeAmount = 0.0;
-
-                    firstName = mFirstNameInputField.getText().toString().trim();
-                    lastName = mLastNameInputField.getText().toString().trim();
-                    city = mMunicipalityInputField.getText().toString().trim();
-                    email = mMainActivity.getCurrentUser().getEmail();
-                    String pledgeAmountString = mPledgeAmountInputField.getText().toString().trim();
-
-                    if(isInputValid(firstName, lastName, pledgeAmountString)) {
-                        pledgeAmount = Double.parseDouble(pledgeAmountString);
-
-                        DatabaseReference usersDatabase;
-                        usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
-
-                        String userID = mMainActivity.getCurrentUser().getUid();
-                        User user = new User(email, firstName, lastName, city, pledgeAmount);
-                        usersDatabase.child(userID).setValue(user);
-                    }
+                    Toast.makeText(mMainActivity, R.string.pledge_already_exists, Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+        // CHANGE PLEDGE BUTTON GOES HERE
     }
 
     private User createUserFromForm(String userEmail){
@@ -168,5 +147,66 @@ public class MakePledgeFragment extends Fragment {
         }
 
         return isValid;
+    }
+
+    private boolean pledgeExists(final String userID) {
+        final DatabaseReference usersDatabase;
+        usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+
+        usersDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    User userInfo = (User) dataSnapshot.child(userID).getValue(User.class);
+                    if(userInfo.getPledgeAmount() > 0 ) {
+                        mUserHasPledged = true;
+                    }
+                    else
+                    {
+                        mUserHasPledged = false;
+                    }
+                }
+                catch (Exception e){
+                    mUserHasPledged = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                mUserHasPledged = false;
+                Toast.makeText(mMainActivity, R.string.pledge_does_not_exist, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return mUserHasPledged;
+    }
+
+
+    private void publishPledge() {
+        String firstName = "";
+        String lastName = "";
+        String city = "";
+        String email = "";
+        Double pledgeAmount = 0.0;
+
+        firstName = mFirstNameInputField.getText().toString().trim();
+        lastName = mLastNameInputField.getText().toString().trim();
+        city = mMunicipalityInputField.getText().toString().trim();
+        email = mMainActivity.getCurrentUser().getEmail();
+        String pledgeAmountString = mPledgeAmountInputField.getText().toString().trim();
+
+        if(isInputValid(firstName, lastName, pledgeAmountString)) {
+            pledgeAmount = Double.parseDouble(pledgeAmountString);
+
+            final DatabaseReference usersDatabase;
+            usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+
+            final String userID = mMainActivity.getCurrentUser().getUid();
+            //pledgeExists(userID);
+            User user = new User(email, firstName, lastName, city, pledgeAmount);
+            usersDatabase.child(userID).setValue(user);
+
+            Toast.makeText(mMainActivity, R.string.pledge_published, Toast.LENGTH_SHORT).show();
+        }
     }
 }

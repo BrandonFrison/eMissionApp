@@ -73,6 +73,8 @@
     <string name="input_pledge_amount_descriptor">CO2e reduction pledge:</string>
     <string name="input_pledge_amount">#</string>
     <string name="checkbox_showname_descriptor">Show my name next to my pledge</string>
+    <string name="pledge_published">Your pledge has successfully been published.</string>
+    <string name="pledge_already_exists">You have already made a pledge. Try clicking the "Change my pledge" button.</string>
 
 
     <!--Debug/Error message strings-->
@@ -84,6 +86,7 @@
     <string name="empty_pledge_message">Please enter a pledge amount</string>
     <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
     <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
+    <string name="pledge_does_not_exist">There is no pledge associated with this account. Please make a pledge first.</string>
 
 
     <!--Navigation Drawer Strings-->
