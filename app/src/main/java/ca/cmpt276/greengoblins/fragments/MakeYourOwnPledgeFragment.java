@@ -1,4 +1,4 @@
-package ca.cmpt276.greengoblins.fragments.subfragments;
+package ca.cmpt276.greengoblins.fragments;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,19 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.User;
-import ca.cmpt276.greengoblins.fragments.ExplanationDialogFragment;
-import ca.cmpt276.greengoblins.fragments.LoginFragment;
 
 public class MakeYourOwnPledgeFragment extends Fragment  {
     View view = null;
@@ -57,7 +53,7 @@ public class MakeYourOwnPledgeFragment extends Fragment  {
         SharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View popupView = getLayoutInflater().inflate(R.layout.op_up_login, null);
+                View popupView = getLayoutInflater().inflate(R.layout.pop_up_login, null);
 
                 PopupWindow popupWindow = new PopupWindow(popupView,
                         RelativeLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
