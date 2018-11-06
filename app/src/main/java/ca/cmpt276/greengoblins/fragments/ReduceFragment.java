@@ -3,107 +3,180 @@ package ca.cmpt276.greengoblins.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
+import ca.cmpt276.greengoblins.foodsurveydata.MealPlan;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ReduceFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ReduceFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class ReduceFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    final static int MIN_VALUE_FOR_CHART = 0;
+    final static double METRO_VANCOUVER_POPULATION = 2.463E6;
 
-    private OnFragmentInteractionListener mListener;
+    private Button mMealPlan1;
+    private Button mMealPlan2;
+    private Button mMealPlan3;
+    private Button mMealPlan4;
+    private TextView mSavingsAfterNewPlan;
+    private TextView mCollectiveSavings;
+    ConsumptionTable mOldMealPlan;
+    HorizontalBarChart mCO2eComparisonChart;
 
-    public ReduceFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ReduceFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ReduceFragment newInstance(String param1, String param2) {
-        ReduceFragment fragment = new ReduceFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Reduce CO2e emissions");
+
+        mOldMealPlan = (ConsumptionTable) getActivity().getIntent().getSerializableExtra("resultTable");
+        mSavingsAfterNewPlan = (TextView) view.findViewById(R.id.meal_plan_savings);
+        mCollectiveSavings = (TextView) view.findViewById(R.id.meal_plan_collective_savings);
+
+        mCO2eComparisonChart = (HorizontalBarChart) view.findViewById(R.id.meal_plan_co2e_chart);
+        setGraph(0, mOldMealPlan.calculateTotalCO2e()); // Set newPlanCO2e 0 as default
+
+        // Vegetarian meal plan
+        mMealPlan1 = (Button) view.findViewById(R.id.meal_plan_1);
+        mMealPlan1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MealPlan chickenOnlyMealPlan = new MealPlan();
+                double co2eForNewPlan = chickenOnlyMealPlan.switchToChickenOnly(mOldMealPlan);
+                calculateSavingsAndUpdateGraph(co2eForNewPlan);
+            }
+
+        });
+        // Reduce all meat consumption by 50% but keep vegetable consumption the same
+        mMealPlan2 = (Button) view.findViewById(R.id.meal_plan_2);
+        mMealPlan2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MealPlan reducedMeatMealPlan = new MealPlan();
+                double co2eForNewPlan = reducedMeatMealPlan.reduceMeatByHalf(mOldMealPlan);
+                calculateSavingsAndUpdateGraph(co2eForNewPlan);
+            }
+        });
+
+        // Remove all meats except for fish
+        mMealPlan3 = (Button) view.findViewById(R.id.meal_plan_3);
+        mMealPlan3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MealPlan fishOnlyMealPlan = new MealPlan();
+                double co2eForNewPlan = fishOnlyMealPlan.switchToFishOnly(mOldMealPlan);
+                calculateSavingsAndUpdateGraph(co2eForNewPlan);
+            }
+        });
+
+        mMealPlan4 = (Button) view.findViewById(R.id.meal_plan_4);
+        mMealPlan4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MealPlan vegetarianMealPlan = new MealPlan();
+                double co2eForNewPlan = vegetarianMealPlan.removeMeatFromPlan(mOldMealPlan);
+                calculateSavingsAndUpdateGraph(co2eForNewPlan);
+            }
+        });
+
+    }
+        private void calculateSavingsAndUpdateGraph(double co2eForNewPlan) {
+            double savings = mOldMealPlan.calculateTotalCO2e() - co2eForNewPlan;
+            String savingsText = "You have saved: " + String.format(Locale.US, "%.1f", savings) + " CO2e";
+            mSavingsAfterNewPlan.setText(savingsText);
+
+            // TO DO: Implement collective savings using convertor class
+            double collectiveSavings = savings * METRO_VANCOUVER_POPULATION;
+            String collectiveSavingsText = "If everyone in Metro Vancouver implemented these " +
+                    "changes, together we could save: " +  String.format(Locale.US, "%.1f", collectiveSavings) + " CO2e!";
+
+            mCollectiveSavings.setText(collectiveSavingsText);
+
+            setGraph((float) co2eForNewPlan, mOldMealPlan.calculateTotalCO2e());
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reduce, container, false);
-    }
+        private void setGraph(float newPlanCO2e, float oldPlanCO2e) {
+            mCO2eComparisonChart.invalidate(); // Refreshes chart
+            ArrayList<BarEntry> co2eValues = new ArrayList<>();
+            float barWidth = 1f;
+            float spaceBetweenBars = 1.5f;
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            co2eValues.add(new BarEntry(1 * spaceBetweenBars, newPlanCO2e));
+            co2eValues.add(new BarEntry(2 * spaceBetweenBars, oldPlanCO2e));
+
+            // Add data
+            BarDataSet co2eValuesDataSet;
+            co2eValuesDataSet = new BarDataSet(co2eValues, "CO2 Values");
+            co2eValuesDataSet.setColors(getResources().getColor(R.color.colorPrimary));
+            co2eValuesDataSet.setValueTextSize(13f);
+            BarData co2eData = new BarData(co2eValuesDataSet);
+
+            // Disables interactivity, removes description, and removes label
+            applyChartSettings(mCO2eComparisonChart);
+
+            // Set chart to present CO2e data
+            mCO2eComparisonChart.setData(co2eData);
         }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        // Disables interactivity, removes description, and removes label
+        private void applyChartSettings(HorizontalBarChart chart) {
+            // Disable interactivity
+            chart.setTouchEnabled(false);
+            chart.setDragEnabled(false);
+            chart.setScaleEnabled(false);
+            chart.setScaleXEnabled(false);
+            chart.setScaleYEnabled(false);
+            chart.setPinchZoom(false);
+            chart.setDoubleTapToZoomEnabled(false);
+
+            // Remove chart description
+            Description desc = new Description();
+            desc.setText("");
+            chart.setDescription(desc);
+
+            // Remove legend
+            Legend legend = chart.getLegend();
+            legend.setEnabled(false);
+
+            //Start axis from min value which is 0
+            chart.getAxisLeft().setAxisMinimum(MIN_VALUE_FOR_CHART);
+
+            // Disable all axises
+            chart.getAxisRight().setEnabled(false);
+            chart.getXAxis().setEnabled(false);
+            chart.getXAxis().setDrawGridLines(false);
+            chart.getAxisLeft().setEnabled(false);
         }
+
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-}

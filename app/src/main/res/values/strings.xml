@@ -133,7 +133,18 @@
         \nEnter your age and select your gender first.\n\nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\nYou can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
     <string name="label_help">How to use calculator</string>
     <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
-  <string name="btn_clear">Clear Local History</string>
+    <string name="btn_clear">Clear Local History</string>
     <string name="btn_logout">Log Out</string>
+
+    <string name="meal_plan">Chicken Only</string>
+    <string name="meal_plan_2">Reduce your meat consumption by half</string>
+    <string name="meal_plan_3">Fish Only</string>
+    <string name="meal_plan_4">Vegetarian</string>
+    <string name="meal_plan_introduction">Choose one of the meal plans below!</string>
+    <string name="meal_plan_savings">You have saved: </string>
+    <string name="old_plan">Old Meal Plan:</string>
+    <string name="new_plan">New Meal Plan:</string>
+    <string name="meal_plan_collective_savings">If everyone in Metro Vancouver implemented these
+        changes, together we could save: </string>
 
 </resources>
