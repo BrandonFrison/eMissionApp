@@ -10,6 +10,11 @@ public class User {
 
     private boolean showNamePublic;
 
+    // Need this default constructor in order for datasnapshot to work
+    public User() {
+
+    }
+
     public User(String emailAddress) {
         this( emailAddress, "", "", 0 );
     }
