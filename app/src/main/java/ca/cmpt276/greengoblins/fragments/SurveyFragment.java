@@ -146,12 +146,12 @@ public class SurveyFragment extends Fragment {
 
     }
     public void setServingFromPreset(int servingIndex, int value){
-        mServingSizeAmounts.set(servingIndex, value);
+        mServingSizeAmounts.set(servingIndex,(int)(value*multiplier));
         updateFields();
     }
 
     public void setServing(int servingIndex, int value){
-        int servingValue = mServingSizeAmounts.get(servingIndex) + value;
+        int servingValue = mServingSizeAmounts.get(servingIndex) + (int)(value*multiplier);
 
         if ( servingValue < 0)
             mServingSizeAmounts.set(servingIndex, 0);
@@ -300,9 +300,9 @@ public class SurveyFragment extends Fragment {
 
     private void updateFields(){
         for( int i = 0; i < mServingValueFields.size(); i++){
-            mServingValueFields.get( i ).setText( String.valueOf( (int)(mServingSizeAmounts.get( i ) *multiplier)) );
+            mServingValueFields.get( i ).setText( String.valueOf( mServingSizeAmounts.get( i ) ) );
         }
-        mTotalServingValueField.setText( String.valueOf( (int)(getFieldsTotal() *multiplier)) );
+        mTotalServingValueField.setText( String.valueOf( getFieldsTotal() ) );
     }
 
 

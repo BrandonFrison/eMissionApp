@@ -149,7 +149,7 @@ public class ConsumptionTable implements Serializable {
         if(index >= foodServingSizeGrams.size())
             return 0;
         float servingSizeKg = foodServingSizeGrams.get(index) / 1000f;
-        return servingSizeKg * foodCO2eConversionRate.get(index);
+        return 365*servingSizeKg * foodCO2eConversionRate.get(index);
     }
 
     public float calculateTotalCO2e(){

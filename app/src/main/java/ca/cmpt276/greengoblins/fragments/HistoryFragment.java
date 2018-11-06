@@ -109,7 +109,7 @@ public class HistoryFragment extends Fragment {
 
             for (int i = 0; i < servingSizes.size(); i++) {
                 if (servingSizes.get(i) > 0 && servingSizes.get(i) != null)
-                    pieEntries.add(new PieEntry(servingSizes.get(i), categories.get(i)));
+                    pieEntries.add(new PieEntry(servingTable.calculateServingCO2e(i), categories.get(i)));
                 else
                     continue;
             }
@@ -138,7 +138,7 @@ public class HistoryFragment extends Fragment {
                 @Override
                 public void onValueSelected(Entry e, Highlight h) {
                     int xCategory = (int) h.getX();
-                    String toastText = categories.get(xCategory) + ": " + df.format(h.getY()) + " Co2e/g";
+                    String toastText = categories.get(xCategory) + ": " + df.format(h.getY()) + " kg of CO2e";
                     Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
                 }
 

@@ -43,7 +43,6 @@ public class ReduceFragment extends Fragment {
     private Button mMealPlan2;
     private Button mMealPlan3;
     private Button mMealPlan4;
-    private Button mBackButton;
     private TextView mSavingsAfterNewPlan;
     private TextView mCollectiveSavings;
     ConsumptionTable mOldMealPlan;
@@ -136,7 +135,7 @@ public class ReduceFragment extends Fragment {
             double collectiveSavings = savings * METRO_VANCOUVER_POPULATION;
             String collectiveSavingsText = "If everyone in Metro Vancouver made these " +
                     "changes, together we could save: " +  String.format(Locale.US, "%.1f", collectiveSavings) + " kg CO2e per year!\n"+
-                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNumber)/365.0)+" km!";
+                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNumber))+" km!";
 
             mCollectiveSavings.setText(collectiveSavingsText);
 
