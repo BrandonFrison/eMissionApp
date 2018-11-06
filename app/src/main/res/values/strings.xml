@@ -146,5 +146,5 @@
     <string name="new_plan">New Meal Plan:</string>
     <string name="meal_plan_collective_savings">If everyone in Metro Vancouver implemented these
         changes, together we could save: </string>
-
+    <string name="meal_plan_negative_savings_toast">You\'d be saving more by sticking with your current plan!</string>
 </resources>

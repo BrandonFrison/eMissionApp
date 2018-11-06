@@ -31,10 +31,6 @@ import java.util.List;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 
-
-/**
- * For now this fragment will serve as the survey result. We may change this.
- */
 public class HistoryFragment extends Fragment {
 
     final double DrivenConvectionNuder = .200;  // 1 kg per 5 km
@@ -42,7 +38,7 @@ public class HistoryFragment extends Fragment {
     TextView mCO2eDisplay;
     PieChart pieChart;
     boolean flag =false;
-
+    ConsumptionTable servingTable;
     float mCO2eScore = 0;
     ArrayList<String> categories;
 
@@ -86,7 +82,7 @@ public class HistoryFragment extends Fragment {
         }
 
         if(flag==true) { // pie chart will work only after receiving data
-        ConsumptionTable servingTable = new ConsumptionTable( servingSizes );
+        servingTable = new ConsumptionTable( servingSizes );
         mCO2eScore = servingTable.calculateTotalCO2e();
 
 
@@ -158,16 +154,9 @@ public class HistoryFragment extends Fragment {
         mReduceFootPrintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* this should probably be fragment as well instead of new activity
 
-               Intent intent = new Intent(ResultsActivity.this, MealPlanActivity.class);
-                ConsumptionTable results = (ConsumptionTable) getIntent().getSerializableExtra("resultTable");
-                intent.putExtra("resultTable", results);
-                startActivity(intent);*/
-                ConsumptionTable results = (ConsumptionTable) getActivity().getIntent().getSerializableExtra("resultTable");
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("resultTable", results);
-
+                bundle.putSerializable("resultTable", servingTable);
 
                 Fragment reduceFragment = new ReduceFragment();
                 reduceFragment.setArguments( bundle );

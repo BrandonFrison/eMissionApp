@@ -4,34 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/meal_plan_introduction"
-            android:text="@string/meal_plan_introduction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/meal_plan_introduction"
+            app:layout_constraintBottom_toTopOf="@id/meal_plan_1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/meal_plan_1"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/meal_plan_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/meal_plan"
-            app:layout_constraintTop_toBottomOf="@id/meal_plan_introduction"
             app:layout_constraintBottom_toTopOf="@+id/meal_plan_2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/meal_plan_introduction" />
 
         <Button
             android:id="@+id/meal_plan_2"
@@ -51,7 +53,7 @@
             app:layout_constraintBottom_toTopOf="@id/meal_plan_4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/meal_plan_2"/>
+            app:layout_constraintTop_toBottomOf="@id/meal_plan_2" />
 
         <Button
             android:id="@+id/meal_plan_4"
@@ -60,7 +62,7 @@
             android:text="@string/meal_plan_4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/meal_plan_3"/>
+            app:layout_constraintTop_toBottomOf="@id/meal_plan_3" />
     </LinearLayout>
 
     <TextView
@@ -78,8 +80,8 @@
         android:id="@+id/bar_2_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="57dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="57dp"
         android:text="@string/new_plan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -116,14 +118,14 @@
     <TextView
         android:id="@+id/meal_plan_collective_savings"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
         android:text="@string/meal_plan_collective_savings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/meal_plan_savings"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/meal_plan_savings" />
+
+
 
 </android.support.constraint.ConstraintLayout>

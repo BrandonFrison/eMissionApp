@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -30,11 +31,11 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class ReduceFragment extends Fragment {
-
     final static int MIN_VALUE_FOR_CHART = 0;
     final static double METRO_VANCOUVER_POPULATION = 2.463E6;
 
@@ -42,24 +43,30 @@ public class ReduceFragment extends Fragment {
     private Button mMealPlan2;
     private Button mMealPlan3;
     private Button mMealPlan4;
+    private Button mBackButton;
     private TextView mSavingsAfterNewPlan;
     private TextView mCollectiveSavings;
     ConsumptionTable mOldMealPlan;
     HorizontalBarChart mCO2eComparisonChart;
+    public  float DrivenConvectionNuder = 200;  // 200 g per 1 km
+    //round number  to 2 decimal
+    public DecimalFormat df = new DecimalFormat(".00");
+
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.fragment_reduce, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Reduce CO2e emissions");
+        getActivity().setTitle("Reduce CO2e");
 
-        mOldMealPlan = (ConsumptionTable) getActivity().getIntent().getSerializableExtra("resultTable");
+        Bundle historyBundle = getArguments();
+        mOldMealPlan = (ConsumptionTable) historyBundle.getSerializable("resultTable");
         mSavingsAfterNewPlan = (TextView) view.findViewById(R.id.meal_plan_savings);
         mCollectiveSavings = (TextView) view.findViewById(R.id.meal_plan_collective_savings);
 
@@ -75,8 +82,8 @@ public class ReduceFragment extends Fragment {
                 double co2eForNewPlan = chickenOnlyMealPlan.switchToChickenOnly(mOldMealPlan);
                 calculateSavingsAndUpdateGraph(co2eForNewPlan);
             }
-
         });
+
         // Reduce all meat consumption by 50% but keep vegetable consumption the same
         mMealPlan2 = (Button) view.findViewById(R.id.meal_plan_2);
         mMealPlan2.setOnClickListener(new View.OnClickListener() {
@@ -110,15 +117,26 @@ public class ReduceFragment extends Fragment {
         });
 
     }
+
         private void calculateSavingsAndUpdateGraph(double co2eForNewPlan) {
             double savings = mOldMealPlan.calculateTotalCO2e() - co2eForNewPlan;
-            String savingsText = "You have saved: " + String.format(Locale.US, "%.1f", savings) + " CO2e";
+
+            // If negative savings
+            if(savings < 0) {
+                String toastString = getResources().getString(R.string.meal_plan_negative_savings_toast);
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
+                toast.show();
+                return;
+            }
+
+            String savingsText = "You have saved: " + String.format(Locale.US, "%.1f", savings) + " kg CO2e / year";
             mSavingsAfterNewPlan.setText(savingsText);
 
             // TO DO: Implement collective savings using convertor class
             double collectiveSavings = savings * METRO_VANCOUVER_POPULATION;
             String collectiveSavingsText = "If everyone in Metro Vancouver implemented these " +
-                    "changes, together we could save: " +  String.format(Locale.US, "%.1f", collectiveSavings) + " CO2e!";
+                    "changes, together we could save: " +  String.format(Locale.US, "%.1f", collectiveSavings) + " kg CO2e per year!\n"+
+                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNuder)/365.0)+" km!";
 
             mCollectiveSavings.setText(collectiveSavingsText);
 
@@ -128,7 +146,6 @@ public class ReduceFragment extends Fragment {
         private void setGraph(float newPlanCO2e, float oldPlanCO2e) {
             mCO2eComparisonChart.invalidate(); // Refreshes chart
             ArrayList<BarEntry> co2eValues = new ArrayList<>();
-            float barWidth = 1f;
             float spaceBetweenBars = 1.5f;
 
             co2eValues.add(new BarEntry(1 * spaceBetweenBars, newPlanCO2e));
@@ -177,6 +194,4 @@ public class ReduceFragment extends Fragment {
             chart.getXAxis().setDrawGridLines(false);
             chart.getAxisLeft().setEnabled(false);
         }
-
     }
-
