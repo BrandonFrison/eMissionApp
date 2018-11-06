@@ -1,119 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/Pledge_content"
-        android:layout_width="0dp"
-        android:layout_height="467dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Pledge_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="40dp">
 
-        <RelativeLayout
-            android:id="@+id/ALLCo2ePledgeAmount_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        <TextView
+            android:id="@+id/pledge_worldtotal_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:layout_gravity="center"
+            android:text="@string/text_view_placeholder" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/pledge_worldtotal_explanation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/text_view_placeholder" />
 
-                <ImageView
-                    android:id="@+id/ALLCo2ePledgeAmount_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" />
-                //android:src="@drawable/message_unselected"
+        <TextView
+            android:id="@+id/pledge_worldbreakdown_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_view_placeholder" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"/>
 
-                <TextView
-                    android:id="@+id/ALLCo2ePledgeAmount_textbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="All"
-                    android:textColor="#82858b" />
-            </LinearLayout>
-        </RelativeLayout>
+        <Button
+            android:id="@+id/button_make_pledge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/button_make_pledge" />
 
-        <RelativeLayout
-            android:id="@+id/PledgesList_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/PledgesList_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" />
-                //android:src="@drawable/message_unselected" />
-
-                <TextView
-                    android:id="@+id/PledgesList_textbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Pledeg List"
-                    android:textColor="#82858b" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/MyPledge_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/MyPledge_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" />
-                //android:src="@drawable/message_unselected" />
-
-                <TextView
-                    android:id="@+id/MyPledge_textbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="My pledge"
-                    android:textColor="#82858b" />
-            </LinearLayout>
-        </RelativeLayout>
-
+        <Button
+            android:id="@+id/button_view_pledge_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/button_view_pledge_list" />
 
     </LinearLayout>
-
 
 </android.support.constraint.ConstraintLayout>

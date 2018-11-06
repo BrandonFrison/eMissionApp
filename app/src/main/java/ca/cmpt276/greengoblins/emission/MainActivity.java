@@ -1,10 +1,12 @@
 package ca.cmpt276.greengoblins.emission;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,11 +16,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+
+import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
+import ca.cmpt276.greengoblins.fragments.LoginFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
+import ca.cmpt276.greengoblins.fragments.PledgeListFragment;
 import ca.cmpt276.greengoblins.fragments.SurveyFragment;
 
 /**
@@ -28,12 +45,21 @@ import ca.cmpt276.greengoblins.fragments.SurveyFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    FragmentManager mFragmentManager;
-    FragmentTransaction mFragmentTransaction;
+    //Firebase authentication fields
+    private FirebaseAuth mAuthenticator;
+    private FirebaseUser mCurrentUser;
 
-    FloatingActionButton mActionButton;
-    SurveyFragment mSurveyFragment;
-    Fragment mCurrentFragment;
+    private User mUserData;
+
+    private FragmentManager mFragmentManager;
+    private FragmentTransaction mFragmentTransaction;
+
+    private FloatingActionButton mActionButton;
+    private SurveyFragment mSurveyFragment;
+    private Fragment mCurrentFragment;
+
+    private TextView mLoginTextView;
+    private Spinner mLoginDropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.app_name);
 
         mActionButton = (FloatingActionButton) findViewById(R.id.fab);
         mActionButton.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +86,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
+        mLoginTextView = (TextView) header.findViewById(R.id.username_textview);
+        mLoginDropdown = (Spinner) header.findViewById(R.id.dropdown_login);
+
+        mAuthenticator = FirebaseAuth.getInstance();
+/*        mCurrentUser = getCurrentUser();
+        if(mCurrentUser != null){
+            mLoginTextView.setText( mCurrentUser.getEmail() );
+        }*/
+        updateLoginUI();
+
         mSurveyFragment = new SurveyFragment();
 
         mFragmentManager = getSupportFragmentManager();
@@ -68,6 +106,12 @@ public class MainActivity extends AppCompatActivity
         mFragmentTransaction.commit();
     }
 
+    public void incrementButton(View view){
+        changeFieldValue(view, 10);
+    }
+    public void decrementButton(View view){
+        changeFieldValue(view, -10);
+    }
     private void changeFieldValue (View view, int valueToAdd){
         String buttonTag = String.valueOf(view.getTag());
         switch(buttonTag){
@@ -97,11 +141,144 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void incrementButton(View view){
-        changeFieldValue(view, 10);
+    public String getUserDisplayName(){
+        FirebaseUser user = mAuthenticator.getCurrentUser();
+        if(user == null){
+            return getString(R.string.nav_header_username);
+        }
+        return user.getEmail();
     }
-    public void decrementButton(View view){
-        changeFieldValue(view, -10);
+
+    public FirebaseUser getCurrentUser(){
+        return mAuthenticator.getCurrentUser();
+    }
+    public void updateUserData(User newUserData){
+        mUserData = newUserData;
+    }
+
+    public void popupLogin(){
+        LoginFragment loginFragment = new LoginFragment();
+        //Loginfragment.setTargetFragment(MakeYourOwnPledgeFragment.this, 1);
+        loginFragment.show(getSupportFragmentManager(), "login");
+    }
+
+    public void signUp(String userEmail, String userPassword){
+        mAuthenticator.createUserWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("SIGNED_UP", "createUserWithEmail:success");
+                            mCurrentUser = mAuthenticator.getCurrentUser();
+                            updateLoginUI();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.d("SIGNED_UP", "createUserWithEmail:failure", task.getException());
+                            mCurrentUser = null;
+                          //  Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                            updateLoginUI();
+                        }
+                    }
+                });
+    }
+
+    public void signIn(String userEmail, String userPassword){
+
+        if(userEmail.isEmpty()){
+            Toast.makeText(MainActivity.this, R.string.empty_username_message, Toast.LENGTH_SHORT).show();
+            return;
+        }else if( userPassword.isEmpty()){
+            Toast.makeText(MainActivity.this, R.string.empty_password_message, Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            mAuthenticator.signInWithEmailAndPassword(userEmail, userPassword)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("SIGN_IN", "signInWithEmail:success");
+                                mCurrentUser = mAuthenticator.getCurrentUser();
+                                Toast.makeText(MainActivity.this, "Authentication success.", Toast.LENGTH_SHORT).show();
+                                updateLoginUI();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.d("SIGN_IN", "signInWithEmail:failure", task.getException());
+                                mCurrentUser = null;
+                                Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                updateLoginUI();
+                            }
+                        }
+                    });
+        }
+    }
+
+    public boolean checkUserLogin(){
+        FirebaseUser currentUser = mAuthenticator.getCurrentUser();
+        if(currentUser == null){
+            Log.d("SIGN_IN", "User is not logged in");
+
+            return false;
+        }
+        Log.d("SIGN_IN", "User is somehow logged in");
+        return true;
+    }
+
+    public void logout(){
+        mAuthenticator.signOut();
+        mCurrentUser = null;
+        updateLoginUI();
+    }
+
+    public void updateLoginUI(){
+        FirebaseUser currentUser = mAuthenticator.getCurrentUser();
+
+        ArrayList<String> loginDropdownItems = new ArrayList<String>();
+        loginDropdownItems.add( getUserDisplayName() );
+        if(currentUser == null){
+            loginDropdownItems.add( getString(R.string.nav_header_login) );
+        } else {
+            loginDropdownItems.add( getString(R.string.nav_header_logout) );
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                MainActivity.this,
+                android.R.layout.simple_spinner_item,
+                loginDropdownItems
+        );
+
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        mLoginDropdown.setAdapter(adapter);
+
+        mLoginDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        //popupLogin();
+                        break;
+                    case 1:
+                        if(checkUserLogin()) {
+                            logout();
+                        }else{
+                            popupLogin();
+                        }
+                        break;
+                    default:
+                        //intentionally empty
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        /*if(currentUser == null)
+            mLoginTextView.setText(R.string.nav_header_username); //set default
+        else{
+            mLoginTextView.setText(currentUser.getEmail());
+        }*/
     }
 
     public FloatingActionButton getActionButton (){
@@ -109,17 +286,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     public boolean startFragment(Fragment newFragment, boolean addToBackStack){
-        if ( newFragment != null ) {
-            mFragmentTransaction = mFragmentManager.beginTransaction();
+        if ( newFragment == null) return false;
+        mFragmentTransaction = mFragmentManager.beginTransaction();
 
-            mFragmentTransaction.replace(R.id.frame_activity_content, newFragment);
-            if(addToBackStack) {
-                mFragmentTransaction.addToBackStack(null);
-            }
-            mFragmentTransaction.commit();
-            return true;
+        mFragmentTransaction.replace(R.id.frame_activity_content, newFragment);
+        if(addToBackStack) {
+            mFragmentTransaction.addToBackStack(null);
         }
-        return false;
+        mFragmentTransaction.commit();
+        return true;
+    }
+
+    public boolean startFragment(Fragment newFragment, boolean addToBackStack, boolean showActionButton ){
+        if ((showActionButton)) {
+            mActionButton.show();
+        } else {
+            mActionButton.hide();
+        }
+        return startFragment( newFragment, addToBackStack );
     }
 
     //Methods below related to Navigation Drawer
@@ -162,25 +346,23 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        boolean showFloatingActionButton = false;
 
         if (id == R.id.nav_calculator) {
             fragment = new SurveyFragment();
             mSurveyFragment = (SurveyFragment) fragment;
-            mActionButton.show();
+            showFloatingActionButton = true;
         } else if (id == R.id.nav_pledge) {
             fragment = new PledgeFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_about) {
             fragment = new AboutPageFragment();
-            mActionButton.hide();
         } else if (id == R.id.nav_community) {
-
+            fragment = new PledgeListFragment();
         }
 
-        startFragment( fragment, true );
+        startFragment( fragment, true, showFloatingActionButton );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
