@@ -48,7 +48,7 @@ public class ReduceFragment extends Fragment {
     private TextView mCollectiveSavings;
     ConsumptionTable mOldMealPlan;
     HorizontalBarChart mCO2eComparisonChart;
-    public  float DrivenConvectionNuder = 200;  // 200 g per 1 km
+    public  float DrivenConvectionNumber = .200f;  // 200 g per 1 km
     //round number  to 2 decimal
     public DecimalFormat df = new DecimalFormat(".00");
 
@@ -134,9 +134,9 @@ public class ReduceFragment extends Fragment {
 
             // TO DO: Implement collective savings using convertor class
             double collectiveSavings = savings * METRO_VANCOUVER_POPULATION;
-            String collectiveSavingsText = "If everyone in Metro Vancouver implemented these " +
+            String collectiveSavingsText = "If everyone in Metro Vancouver made these " +
                     "changes, together we could save: " +  String.format(Locale.US, "%.1f", collectiveSavings) + " kg CO2e per year!\n"+
-                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNuder)/365.0)+" km!";
+                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNumber)/365.0)+" km!";
 
             mCollectiveSavings.setText(collectiveSavingsText);
 
