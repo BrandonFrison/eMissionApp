@@ -8,9 +8,9 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round"
+        android:layout_width="140dp"
+        android:layout_height="110dp"
+        android:src="@drawable/treepledge"
         app:layout_constraintStart_toStartOf="@id/make_pledge_table_layout"
         app:layout_constraintTop_toTopOf="@id/make_pledge_table_layout"
         />

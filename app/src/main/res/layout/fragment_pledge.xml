@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="16sp"
             android:layout_marginBottom="10dp"
             android:text="@string/text_view_placeholder" />
 
@@ -31,6 +32,7 @@
             android:id="@+id/pledge_worldbreakdown_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:text="@string/text_view_placeholder" />
         <Space

@@ -33,6 +33,7 @@ public class MakePledgeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        getActivity().setTitle("Make a Pledge");
         mMainActivity = (MainActivity) getActivity();
         mSharePledgeButton = (Button) view.findViewById(R.id.button_share_pledge);
         mPublishPledgeButton = (Button) view.findViewById(R.id.button_publish_pledge);

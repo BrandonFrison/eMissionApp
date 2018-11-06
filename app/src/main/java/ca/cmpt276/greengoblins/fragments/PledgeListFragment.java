@@ -31,6 +31,7 @@ public class PledgeListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        getActivity().setTitle("Viewing All Pledges");
         mMainActivity = (MainActivity) getActivity();
 
         mPledgeListView = (TextView) view.findViewById(R.id.pledge_list_text);

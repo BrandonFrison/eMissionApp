@@ -114,6 +114,7 @@ public class SurveyFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 fillAmountInGrams(position);
+                mPresetMealSelection.setSelection(0);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
