@@ -46,13 +46,13 @@
 
     <!--Pledge Fragment Strings-->
     <string name="textview_world_pledge_summary">
-        tonnes of CO2e pledged to be saved by %,d worldwide. \n
-        That\'s %,d tonnes of CO2e per person!
+        tonnes of CO2e pledged to be saved by %,d worldwide.\n
+        That\'s %,.2f tonnes of CO2e per person!
     </string>
     <string name="textview_world_breakdown_summary">
         Together, we\'ve saved:\n
-        %,d Trees\n
-        %,d Forests\n
+        %,d Acres of forests\n
+        %,d Gallons of gasoline\n
         %,d Km of driving eMission™
     </string>
 
@@ -73,16 +73,29 @@
     <string name="input_pledge_amount_descriptor">CO2e reduction pledge:</string>
     <string name="input_pledge_amount">#</string>
     <string name="checkbox_showname_descriptor">Show my name next to my pledge</string>
+    <string name="pledge_published">Your pledge has successfully been published.</string>
+    <string name="pledge_already_exists">You have already made a pledge. Try clicking the "Change my pledge" button.</string>
 
 
-    <!--Debug/placeholder strings-->
+    <!--Debug/Error message strings-->
     <string name="text_view_placeholder">Could not load results.</string>
+    <string name="empty_username_message">Please enter an email</string>
+    <string name="empty_password_message">Please fill in password</string>
+    <string name="empty_firstname_message">Please enter your first name</string>
+    <string name="empty_lastname_message">Please enter your last name</string>
+    <string name="empty_pledge_message">Please enter a pledge amount</string>
+    <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
+    <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
+    <string name="pledge_does_not_exist">There is no pledge associated with this account. Please make a pledge first.</string>
+
 
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">eMission</string>
     <string name="nav_header_username">Not logged in</string>
+    <string name="nav_header_login">Log in</string>
+    <string name="nav_header_logout">Log out</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 

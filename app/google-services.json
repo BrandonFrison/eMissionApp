@@ -23,6 +23,38 @@
           }
         },
         {
+          "client_id": "72927277927-lucgvasrbtt41175202umdr46up766cn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.cmpt276.greengoblins.emission",
+            "certificate_hash": "31653f549321bcd739a37a9370e8e77a585b850c"
+          }
+        },
+        {
+          "client_id": "72927277927-8mf3733h7jnq41k5chdkvcfegfl931bh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.cmpt276.greengoblins.emission",
+            "certificate_hash": "9fa699b5ae0bf2e6d71f9d289a389f61948f5ade"
+          }
+        },
+        {
+          "client_id": "72927277927-3eahqtgfdsdqug86d2cf01kakttcfkjd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.cmpt276.greengoblins.emission",
+            "certificate_hash": "22f220b66ef4b1421a0b3fb172edbe5d3b234175"
+          }
+        },
+        {
+          "client_id": "72927277927-7cs3j3ehunpsea84f946jj4b2p4oeis7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.cmpt276.greengoblins.emission",
+            "certificate_hash": "63c62d8ee446e1a6f949012717a2e602c40f5867"
+          }
+        },
+        {
           "client_id": "72927277927-900u8v07cefbgsjv4ctd4m2oq2m6g3uu.apps.googleusercontent.com",
           "client_type": 3
         }

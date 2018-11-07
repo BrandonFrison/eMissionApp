@@ -99,7 +99,7 @@
                 android:ems="10"
                 android:hint="@string/input_pledge_amount"
                 android:importantForAutofill="no"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:textColor="@color/colorAccent" />
         </TableRow>
     </TableLayout>
