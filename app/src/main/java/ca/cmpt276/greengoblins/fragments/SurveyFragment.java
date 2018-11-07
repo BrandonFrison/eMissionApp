@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import ca.cmpt276.greengoblins.emission.ExplanationActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 
 import static java.lang.Integer.parseInt;
 
@@ -44,6 +45,14 @@ public class SurveyFragment extends Fragment {
     private Spinner mPresetMealSelection;
     private RadioButton mGenderMale;
     private RadioButton mGenderFemale;
+    private TextView mTextMessage;
+    private TextView mBeefTextView;
+    private TextView mPorkTextView;
+    private TextView mChickenTextView;
+    private TextView mFishTextView;
+    private TextView mEggsTextView;
+    private TextView mBeanTextView;
+    private TextView mVegetablesTextView;
     FloatingActionButton mActionButton;
     double multiplier = 1.0;
 
@@ -134,6 +143,7 @@ public class SurveyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 submitSurvey();
+                saveSurvey();
             }
         });
 
@@ -273,6 +283,21 @@ public class SurveyFragment extends Fragment {
                 break;
         }
         return value;
+    }
+
+    private void saveSurvey(){
+        ConsumptionTable newTable = new ConsumptionTable();
+        int fieldValue;
+        for ( int i = 0; i < mServingValueFields.size(); i++) {
+            fieldValue = parseInt(mServingValueFields.get(i).getText().toString());
+            newTable.addServing(fieldValue);
+        }
+        try {
+            newTable.saveTable(getContext(), "table_01.csv");
+            Log.d("SAVE_TEST", "save successful?");
+        }catch(Exception e){
+            Log.d("SAVE_TEST", e.getMessage());
+        }
     }
 
     private void submitSurvey(){

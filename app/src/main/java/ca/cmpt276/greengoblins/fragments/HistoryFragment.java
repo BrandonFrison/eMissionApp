@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,13 @@ public class HistoryFragment extends Fragment {
     TextView mCO2eDisplay;
     PieChart pieChart;
     boolean flag =false;
+    boolean flag2 =false;
     ConsumptionTable servingTable;
+    ConsumptionTable previousTable;
     float mCO2eScore = 0;
     ArrayList<String> categories;
+    List<PieEntry> pieEntries = new ArrayList<PieEntry>();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,82 +76,41 @@ public class HistoryFragment extends Fragment {
 
         mCO2eDisplay = (TextView) view.findViewById(R.id.textViewResult);
 
+        previousTable = new ConsumptionTable();
+        try {
+            previousTable.loadTable(getContext(), "table_01.csv");
+            Log.d("SAVE_TEST", "load successful?");
+        }catch(Exception e){
+            Log.d("SAVE_TEST", e.getMessage());
+        }
+
         Bundle surveyBundle = getArguments();
         if(surveyBundle == null) {
             String resultText = "No data yet, please do the Co2e calculator";
             mCO2eDisplay.setText(resultText);
-        }
-        else{
+            if (previousTable != null) {
+                //if previous meal plan is saved to csv file
+                flag2 = true;
+            }
+        }else{
             flag = true;
             servingSizes = surveyBundle.getIntegerArrayList("survey_data");
         }
 
-        if(flag==true) { // pie chart will work only after receiving data
+        categories = new ArrayList<String>();
+        categories.add(getString(R.string.table_category1));
+        categories.add(getString(R.string.table_category2));
+        categories.add(getString(R.string.table_category3));
+        categories.add(getString(R.string.table_category4));
+        categories.add(getString(R.string.table_category5));
+        categories.add(getString(R.string.table_category6));
+        categories.add(getString(R.string.table_category7));
+
+        if(flag) { // pie chart will work only after receiving data
         servingTable = new ConsumptionTable( servingSizes );
-        mCO2eScore = servingTable.calculateTotalCO2e();
-
-
-            //round number  to 2 decimal
-            final DecimalFormat df = new DecimalFormat(".00");
-
-            String resultText = "Total CO2e Score: " + df.format(mCO2eScore) + " kg per year.\n\n" +
-                    "That's equivalent to driving: " + df.format(mCO2eScore / DrivenConvectionNuder) + " km\n\n" +
-                    "Click events on pie chart to get details.\n\n" +
-                    "If you want to try different diets we provided, you can click the bottom button.";
-            mCO2eDisplay.setText(resultText);
-
-            //We should be able to get most or all of this from the new consumptiontable
-            categories = new ArrayList<String>();
-            categories.add(getString(R.string.table_category1));
-            categories.add(getString(R.string.table_category2));
-            categories.add(getString(R.string.table_category3));
-            categories.add(getString(R.string.table_category4));
-            categories.add(getString(R.string.table_category5));
-            categories.add(getString(R.string.table_category6));
-            categories.add(getString(R.string.table_category7));
-
-            List<PieEntry> pieEntries = new ArrayList<PieEntry>();
-
-            for (int i = 0; i < servingSizes.size(); i++) {
-                if (servingSizes.get(i) > 0 && servingSizes.get(i) != null)
-                    pieEntries.add(new PieEntry(servingTable.calculateServingCO2e(i), categories.get(i)));
-                else
-                    continue;
-            }
-
-            //create the data set
-            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Emission");
-            pieDataSet.setSliceSpace(2);
-            pieDataSet.setValueTextSize(12);
-            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            pieDataSet.setValueTextColor(3);
-
-
-            //add legend to chart
-            Legend legend = pieChart.getLegend();
-            legend.setForm(Legend.LegendForm.CIRCLE);
-            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-            //legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
-
-            //create pie data object
-            PieData pieData = new PieData(pieDataSet);
-            pieChart.setData(pieData);
-            pieChart.invalidate();
-
-
-            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-                @Override
-                public void onValueSelected(Entry e, Highlight h) {
-                    int xCategory = (int) h.getX();
-                    String toastText = categories.get(xCategory) + ": " + df.format(h.getY()) + " kg of CO2e";
-                    Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onNothingSelected() {
-
-                }
-            });
+        setUpPieChart(servingTable);
+        }else if(flag2){
+            setUpPieChart(previousTable);
         }
         // Reduce Carbon button
         // Takes user to another activity where they can choose a meal plan
@@ -170,6 +134,63 @@ public class HistoryFragment extends Fragment {
             }
         });
     }
+
+    private void setUpPieChart(ConsumptionTable tableUsed){
+        mCO2eScore = tableUsed.calculateTotalCO2e();
+
+        //round number  to 2 decimal
+        final DecimalFormat df = new DecimalFormat(".00");
+
+        String resultText = "Total CO2e Score: " + df.format(mCO2eScore) + " kg per year.\n\n" +
+                "That's equivalent to driving: " + df.format(mCO2eScore / DrivenConvectionNuder) + " km\n\n" +
+                "Click events on pie chart to get details.\n\n" +
+                "If you want to try different diets we provided, you can click the bottom button.";
+        mCO2eDisplay.setText(resultText);
+
+        //We should be able to get most or all of this from the new consumptiontable
+        
+        for (int i = 0; i < tableUsed.getSize(); i++) {
+            if (tableUsed.getServingSize(i) > 0)
+                pieEntries.add(new PieEntry(tableUsed.calculateServingCO2e(i), categories.get(i)));
+            else
+                continue;
+        }
+
+        //create the data set
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Emission");
+        pieDataSet.setSliceSpace(2);
+        pieDataSet.setValueTextSize(12);
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextColor(3);
+
+
+        //add legend to chart
+        Legend legend = pieChart.getLegend();
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        //legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+
+        //create pie data object
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int xCategory = (int) h.getX();
+                String toastText = categories.get(xCategory) + ": " + df.format(h.getY()) + " kg of CO2e";
+                Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+    }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
