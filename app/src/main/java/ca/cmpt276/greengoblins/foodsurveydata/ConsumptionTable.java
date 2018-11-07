@@ -87,6 +87,8 @@ public class ConsumptionTable implements Serializable {
         isMale = male;
     }
 
+
+
     public int saveTable(Context context, String fileName) throws FileNotFoundException, IOException {
         FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
         ObjectOutputStream os = new ObjectOutputStream(fos);

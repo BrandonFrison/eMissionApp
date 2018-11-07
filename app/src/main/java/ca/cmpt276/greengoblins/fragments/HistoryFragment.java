@@ -118,21 +118,27 @@ public class HistoryFragment extends Fragment {
         mReduceFootPrintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("resultTable", servingTable);
-
-                Fragment reduceFragment = new ReduceFragment();
-                reduceFragment.setArguments( bundle );
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace( R.id.frame_activity_content, reduceFragment );
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
+                if(flag){
+                    passToReduce(servingTable);
+                }else if(flag2){
+                    passToReduce(previousTable);
+                }
             }
         });
+    }
+
+    private void passToReduce(ConsumptionTable tableUsed){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("resultTable", tableUsed);
+
+        Fragment reduceFragment = new ReduceFragment();
+        reduceFragment.setArguments( bundle );
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace( R.id.frame_activity_content, reduceFragment );
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void setUpPieChart(ConsumptionTable tableUsed){
@@ -148,7 +154,7 @@ public class HistoryFragment extends Fragment {
         mCO2eDisplay.setText(resultText);
 
         //We should be able to get most or all of this from the new consumptiontable
-        
+
         for (int i = 0; i < tableUsed.getSize(); i++) {
             if (tableUsed.getServingSize(i) > 0)
                 pieEntries.add(new PieEntry(tableUsed.calculateServingCO2e(i), categories.get(i)));
