@@ -47,12 +47,12 @@
     <!--Pledge Fragment Strings-->
     <string name="textview_world_pledge_summary">
         tonnes of CO2e pledged to be saved by %,d worldwide.\n
-        That\'s %,d tonnes of CO2e per person!
+        That\'s %,.2f tonnes of CO2e per person!
     </string>
     <string name="textview_world_breakdown_summary">
         Together, we\'ve saved:\n
-        %,d Trees\n
-        %,d Forests\n
+        %,d Acres of forests\n
+        %,d Gallons of gasoline\n
         %,d Km of driving eMission™
     </string>
 
