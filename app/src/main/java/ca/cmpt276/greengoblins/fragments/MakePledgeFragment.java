@@ -86,7 +86,7 @@ public class MakePledgeFragment extends Fragment {
                         ShareLinkContent mLinkContent = new ShareLinkContent.Builder()
                                 .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
                                 //this is where we would need to put our app information but im not sure how to get it working
-                                .setQuote("I challenge everyone from " + mMunicipalityInputField.getText() + " to the Green Challenge! " +
+                                .setQuote("I challenge everyone from " + mMunicipalityInputField.getText() + " to the Green Food Challenge! " +
                                         "Try to beat my pledge of " + mPledgeAmountInputField.getText() + " tonnes of CO2e reduced!\n")
                                 .setShareHashtag(new ShareHashtag.Builder()
                                         .setHashtag("#ReduceEmission") //lol we can change this to whatever we want
