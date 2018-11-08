@@ -46,15 +46,15 @@ public class MakePledgeFragment extends Fragment {
     MainActivity mMainActivity;
     private Button mSharePledgeButton;
     private Button mPublishPledgeButton;
-    private ShareActionProvider mShareActionProvider;
+    private Button mRemovePledgeButton;
 
-    CallbackManager mCallbackManager;
-    ShareDialog mShareDialog;
+    private CallbackManager mCallbackManager;
+    private ShareDialog mShareDialog;
 
-    EditText mFirstNameInputField;
-    EditText mLastNameInputField;
-    EditText mMunicipalityInputField;
-    EditText mPledgeAmountInputField;
+    private EditText mFirstNameInputField;
+    private EditText mLastNameInputField;
+    private EditText mMunicipalityInputField;
+    private EditText mPledgeAmountInputField;
     private CheckBox mShowNameCheckbox;
 
     private boolean mUserHasPledged;
@@ -71,12 +71,17 @@ public class MakePledgeFragment extends Fragment {
         mMainActivity = (MainActivity) getActivity();
         mSharePledgeButton = (Button) view.findViewById(R.id.button_share_pledge);
         mPublishPledgeButton = (Button) view.findViewById(R.id.button_publish_pledge);
+        mRemovePledgeButton = (Button) view.findViewById(R.id.button_remove_pledge);
 
         mFirstNameInputField = (EditText) view.findViewById(R.id.input_first_name);
         mLastNameInputField = (EditText) view.findViewById(R.id.input_last_name);
         mMunicipalityInputField = (EditText) view.findViewById(R.id.input_municipality);
         mPledgeAmountInputField = (EditText) view.findViewById(R.id.input_pledge_amount);
         mShowNameCheckbox = (CheckBox) view.findViewById(R.id.checkbox_show_name);
+
+        mUserHasPledged = false;
+
+        populateForm( mMainActivity.getCurrentUser().getUid() );
 
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,42 +115,80 @@ public class MakePledgeFragment extends Fragment {
                     Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
                     mMainActivity.popupLogin();
                 }
-                else if (!pledgeExists(mMainActivity.getCurrentUser().getUid())) {
-                    publishPledge();
-                }
-                else {
-                    Toast.makeText(mMainActivity, R.string.pledge_already_exists, Toast.LENGTH_LONG).show();
+                if( publishPledge() ) {
+                    if( mUserHasPledged ) {
+                        Toast.makeText(mMainActivity, R.string.pledge_updated, Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(mMainActivity, R.string.pledge_published, Toast.LENGTH_SHORT).show();
+                    }
+                    mUserHasPledged = true;
+                    updatePublishButtonText();
                 }
             }
         });
 
-        // CHANGE PLEDGE BUTTON GOES HERE
+        mRemovePledgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( !mMainActivity.checkUserLogin() ) {
+                    Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
+                    mMainActivity.popupLogin();
+                }
+                else if ( !mUserHasPledged ) {
+                    Toast.makeText(mMainActivity, R.string.pledge_does_not_exist, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    removePledge();
+                    mUserHasPledged = false;
+                    clearForm();
+                    updatePublishButtonText();
+                    Toast.makeText(mMainActivity, R.string.pledge_removed, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-    private User createUserFromForm(String userEmail){
-        String firstName = mFirstNameInputField.getText().toString();
-        String lastName = mLastNameInputField.getText().toString();
-        String municipality = mMunicipalityInputField.getText().toString();
-        String pledgeAmount = mPledgeAmountInputField.getText().toString();
-        User userData = null;
-
-        if( !isInputValid(firstName, lastName, pledgeAmount) ) {
-            return userData;
-        }else {
-            double pledgeValue = Double.parseDouble(pledgeAmount);
-            userData = new User(
-                    userEmail,
-                    firstName,
-                    lastName,
-                    pledgeValue );
-            if( !municipality.isEmpty() ){
-                userData.setCity( municipality );
-            }
-            if( mShowNameCheckbox.isChecked() ){
-                userData.setShowNamePublic( true );
-            }
+    private void updatePublishButtonText(){
+        if(mUserHasPledged){
+            mPublishPledgeButton.setText(R.string.button_update_pledge);
+        }else{
+            mPublishPledgeButton.setText(R.string.button_publish_pledge);
         }
-        return userData;
+    }
+
+    private void clearForm(){
+        mFirstNameInputField.setText( "" );
+        mLastNameInputField.setText( "" );
+        mMunicipalityInputField.setText( "" );
+        mPledgeAmountInputField.setText( "" );
+        mShowNameCheckbox.setChecked( false );
+    }
+
+    private void populateForm(final String userID){
+        final DatabaseReference usersDatabase;
+        usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+
+        usersDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(userID)){
+                    mUserHasPledged = true;
+                    User user = (User) dataSnapshot.child(userID).getValue(User.class);
+                    mFirstNameInputField.setText( user.getFirstName() );
+                    mLastNameInputField.setText( user.getLastName() );
+                    mMunicipalityInputField.setText( user.getCity() );
+                    mPledgeAmountInputField.setText( String.valueOf( user.getPledgeAmount() ) );
+                    mShowNameCheckbox.setChecked( user.isShowNamePublic() );
+                }else{
+                    mUserHasPledged = false;
+                }
+                updatePublishButtonText();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                mUserHasPledged = false;
+            }
+        });
     }
 
     private boolean isInputValid(String firstName, String lastName, String pledgeAmount) {
@@ -181,40 +224,18 @@ public class MakePledgeFragment extends Fragment {
         return isValid;
     }
 
-    private boolean pledgeExists(final String userID) {
-        final DatabaseReference usersDatabase;
+    private void removePledge(){
+        DatabaseReference usersDatabase;
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
-        usersDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    User userInfo = (User) dataSnapshot.child(userID).getValue(User.class);
-                    if(userInfo.getPledgeAmount() > 0 ) {
-                        mUserHasPledged = true;
-                    }
-                    else
-                    {
-                        mUserHasPledged = false;
-                    }
-                }
-                catch (Exception e){
-                    mUserHasPledged = false;
-                }
-            }
+        String userID = mMainActivity.getCurrentUser().getUid();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                mUserHasPledged = false;
-                Toast.makeText(mMainActivity, R.string.pledge_does_not_exist, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        return mUserHasPledged;
+        usersDatabase.child(userID).removeValue();
     }
 
+    private boolean publishPledge() {
+        boolean success = false;
 
-    private void publishPledge() {
         String firstName = "";
         String lastName = "";
         String city = "";
@@ -228,20 +249,20 @@ public class MakePledgeFragment extends Fragment {
         String pledgeAmountString = mPledgeAmountInputField.getText().toString().trim();
         boolean showName = mShowNameCheckbox.isChecked();
 
-        if(isInputValid(firstName, lastName, pledgeAmountString)) {
+        if(isInputValid( firstName, lastName, pledgeAmountString )) {
             pledgeAmount = Double.parseDouble(pledgeAmountString);
 
             final DatabaseReference usersDatabase;
             usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
             final String userID = mMainActivity.getCurrentUser().getUid();
-            User user = new User(email, firstName, lastName, city, pledgeAmount);
-            user.setShowNamePublic(showName);
 
+            User user = new User(email, firstName, lastName, city, pledgeAmount, showName);
             usersDatabase.child(userID).setValue(user);
 
-            Toast.makeText(mMainActivity, R.string.pledge_published, Toast.LENGTH_SHORT).show();
+            success = true;
         }
+        return success;
     }
 
     @Override
