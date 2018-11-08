@@ -49,7 +49,7 @@
             android:id="@+id/pledge_list_view"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:background="@color/common_google_signin_btn_text_dark_default"
+            android:background="?android:attr/colorBackground"
             android:scrollbars="vertical" />
 
         <Button
