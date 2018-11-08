@@ -1,21 +1,24 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.graphics.drawable.ColorDrawable;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,9 +27,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.User;
+import ca.cmpt276.greengoblins.foodsurveydata.Utils;
+
+import static android.app.Activity.RESULT_OK;
 
 public class MakePledgeFragment extends Fragment {
     MainActivity mMainActivity;
@@ -38,6 +46,13 @@ public class MakePledgeFragment extends Fragment {
     EditText mMunicipalityInputField;
     EditText mPledgeAmountInputField;
     private CheckBox mShowNameCheckbox;
+
+    protected static final int CHOOSE_PICTURE = 0;
+    protected static final int TAKE_PICTURE = 1;
+    private static final int CROP_SMALL_PICTURE = 2;
+    protected static Uri tempUri;
+    private ImageView iv_personal_icon;
+    private ca.cmpt276.greengoblins.foodsurveydata.Utils Utils = null;
 
     private boolean mUserHasPledged;
 
@@ -59,6 +74,15 @@ public class MakePledgeFragment extends Fragment {
         mMunicipalityInputField = (EditText) view.findViewById(R.id.input_municipality);
         mPledgeAmountInputField = (EditText) view.findViewById(R.id.input_pledge_amount);
         mShowNameCheckbox = (CheckBox) view.findViewById(R.id.checkbox_show_name);
+        iv_personal_icon = (ImageView) view.findViewById(R.id.iv_personal_icon);
+        Utils = new Utils();
+
+        iv_personal_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChoosePicDialog();
+            }
+        });
 
 
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +115,37 @@ public class MakePledgeFragment extends Fragment {
         // CHANGE PLEDGE BUTTON GOES HERE
     }
 
+    private void showChoosePicDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mMainActivity);
+        builder.setTitle("Edit Avatar");
+        String[] items = { "Select from Album", "Take Photo" };
+        builder.setNegativeButton("Cancel", null);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case CHOOSE_PICTURE: // Select from Album
+                        Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                        openAlbumIntent.setType("image/*");
+                        startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
+
+                        break;
+                    case TAKE_PICTURE: //Take Photo
+                        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        tempUri = Uri.fromFile(
+                                new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon", "image.jpg"));
+                        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+                        startActivityForResult(openCameraIntent, TAKE_PICTURE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        builder.create().show();
+    }
+
     private User createUserFromForm(String userEmail){
         String firstName = mFirstNameInputField.getText().toString();
         String lastName = mLastNameInputField.getText().toString();
@@ -115,6 +170,65 @@ public class MakePledgeFragment extends Fragment {
             }
         }
         return userData;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case TAKE_PICTURE:
+                    startPhotoZoom(tempUri);
+                    break;
+                case CHOOSE_PICTURE:
+                    startPhotoZoom(data.getData());
+                    break;
+                case CROP_SMALL_PICTURE:
+                    if (data != null) {
+                        setImageToView(data);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void setImageToView(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            Bitmap photo = extras.getParcelable("data");
+            photo = Utils.toRoundBitmap(photo, tempUri); 
+            iv_personal_icon.setImageBitmap(photo);
+            uploadPic(photo);
+        }
+    }
+
+
+    private void uploadPic(Bitmap photo) {
+        String imagePath = Utils.savePhoto(photo,
+                Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidPersonal_icon", "image_icon");
+        Log.d("imagePath", imagePath + "");
+        if (imagePath != null) {
+
+        }
+    }
+
+    private void startPhotoZoom(Uri uri) {
+        if (uri == null) {
+            Log.i("tag", "The uri is not exist.");
+        }
+        tempUri = uri;
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // 设置裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 150);
+        intent.putExtra("outputY", 150);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 
     private boolean isInputValid(String firstName, String lastName, String pledgeAmount) {
