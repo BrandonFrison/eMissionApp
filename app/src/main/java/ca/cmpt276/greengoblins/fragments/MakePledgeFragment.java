@@ -1,6 +1,7 @@
 package ca.cmpt276.greengoblins.fragments;
 
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +37,9 @@ public class MakePledgeFragment extends Fragment {
     MainActivity mMainActivity;
     private Button mSharePledgeButton;
     private Button mPublishPledgeButton;
+
+    CallbackManager mCallbackManager;
+    ShareDialog mShareDialog;
 
     EditText mFirstNameInputField;
     EditText mLastNameInputField;
@@ -68,7 +76,24 @@ public class MakePledgeFragment extends Fragment {
                     Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
                     mMainActivity.popupLogin();
                 } else { //  TO DO: Add another else if condition to check if the account has a valid pledge to share
-                    Toast.makeText(mMainActivity, "TO DO: Implement a share pop up", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mMainActivity, "TO DO: Implement a share pop up", Toast.LENGTH_SHORT).show();
+
+
+                    mCallbackManager = CallbackManager.Factory.create();
+                    mShareDialog = new ShareDialog(getActivity());
+
+                    if(ShareDialog.canShow(ShareLinkContent.class)){
+                        ShareLinkContent mLinkContent = new ShareLinkContent.Builder()
+                                .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                                //this is where we would need to put our app information but im not sure how to get it working
+                                .setQuote("I challenge everyone from " + mMunicipalityInputField.getText() + " to the Green Challenge! " +
+                                        "Try to beat my pledge of " + mPledgeAmountInputField.getText() + " tonnes of CO2e reduced!\n")
+                                .setShareHashtag(new ShareHashtag.Builder()
+                                        .setHashtag("#ReduceEmission") //lol we can change this to whatever we want
+                                        .build())
+                                .build();
+                        mShareDialog.show(mLinkContent);
+                    }
                 }
             }
         });
