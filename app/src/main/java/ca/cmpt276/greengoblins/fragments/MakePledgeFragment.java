@@ -2,6 +2,8 @@ package ca.cmpt276.greengoblins.fragments;
 
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +30,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.widget.ShareActionProvider;
+
+
+import com.facebook.CallbackManager;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
@@ -37,6 +46,10 @@ public class MakePledgeFragment extends Fragment {
     MainActivity mMainActivity;
     private Button mSharePledgeButton;
     private Button mPublishPledgeButton;
+    private ShareActionProvider mShareActionProvider;
+
+    CallbackManager mCallbackManager;
+    ShareDialog mShareDialog;
 
     CallbackManager mCallbackManager;
     ShareDialog mShareDialog;
@@ -67,7 +80,6 @@ public class MakePledgeFragment extends Fragment {
         mMunicipalityInputField = (EditText) view.findViewById(R.id.input_municipality);
         mPledgeAmountInputField = (EditText) view.findViewById(R.id.input_pledge_amount);
         mShowNameCheckbox = (CheckBox) view.findViewById(R.id.checkbox_show_name);
-
 
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,4 +247,12 @@ public class MakePledgeFragment extends Fragment {
             Toast.makeText(mMainActivity, R.string.pledge_published, Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void  onActivityResult(final int requestCode, final int resultCode, final Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }

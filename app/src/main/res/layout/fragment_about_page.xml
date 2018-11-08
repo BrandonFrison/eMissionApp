@@ -8,11 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical" tools:targetApi="o">
+
         <ImageView
             android:id="@+id/imageViewAboutGreenFoodChallenge"
             android:layout_width="wrap_content"
-            android:layout_height="255dp"
+            android:layout_height="168dp"
             android:contentDescription="@string/logo_description"
             app:srcCompat="@drawable/aboutpic5" />
         <TextView
@@ -38,10 +39,9 @@
         <ImageView
             android:id="@+id/imageViewAboutGHGemissions"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="185dp"
             android:contentDescription="@string/aboutpic1_desc"
-            app:srcCompat="@drawable/aboutpic1press"
-            />
+            app:srcCompat="@drawable/aboutpic1press" />
 
         <TextView
             android:id="@+id/textViewSecondTitle"
@@ -56,10 +56,11 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             android:text="@string/about_text_3" />
+
         <ImageView
             android:id="@+id/imageViewAboutFlowChart"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="224dp"
             android:contentDescription="@string/aboutpic2_desc"
             app:srcCompat="@drawable/aboutpic2press" />
         <TextView
@@ -81,10 +82,11 @@
             android:layout_height="308dp"
             android:contentDescription="@string/graph_description"
             app:srcCompat="@drawable/graph_thingpress" />
+
         <ImageView
             android:id="@+id/imageViewAboutConsumptionEmissions"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="237dp"
             android:contentDescription="@string/aboutpic3_desc"
             app:srcCompat="@drawable/aboutpic3press" />
         <TextView

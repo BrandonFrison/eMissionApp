@@ -32,7 +32,7 @@
                 android:inputType="textFilter"
                 android:hint="@string/hint_search_box"
                 android:textAlignment="textEnd"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no" tools:targetApi="o"/>
 
             <Spinner
                 android:id="@+id/dropdown_filter"

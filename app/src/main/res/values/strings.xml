@@ -157,6 +157,10 @@
     <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
     <string name="btn_clear">Clear Local History</string>
     <string name="btn_logout">Log Out</string>
+    <string name="image_for_the_splash_screen">image for the splash screen</string>
+    <string name="profile_picture">profile picture</string>
+
+    <string name="facebook_app_id">250420315633894</string>
 
     <string name="meal_plan">Chicken Only</string>
     <string name="meal_plan_2">Reduce your meat consumption by half</string>

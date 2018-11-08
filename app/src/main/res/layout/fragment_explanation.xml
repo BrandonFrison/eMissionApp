@@ -23,7 +23,7 @@
             android:paddingRight="20dp">
 
             <TextView
-                android:layout_width="263dp"
+                android:layout_width="253dp"
                 android:layout_height="307dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
