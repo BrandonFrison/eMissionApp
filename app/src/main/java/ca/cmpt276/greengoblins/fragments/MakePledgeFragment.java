@@ -10,6 +10,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;;
 import android.view.LayoutInflater;
@@ -55,11 +57,14 @@ public class MakePledgeFragment extends Fragment {
     private ca.cmpt276.greengoblins.foodsurveydata.Utils Utils = null;
 
     private boolean mUserHasPledged;
+    private int id_avatar = 0;
+    View view= null;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_pledge_create, container,false);
+        view = inflater.inflate(R.layout.fragment_pledge_create, container,false);
+        return view;
     }
 
     @Override
@@ -80,7 +85,12 @@ public class MakePledgeFragment extends Fragment {
         iv_personal_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showChoosePicDialog();
+                Fragment newFragment = new Provided_Avater();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace( R.id.frame_activity_content, newFragment );
+                fragmentTransaction.commit();
+                //showChoosePicDialog();
             }
         });
 
@@ -113,12 +123,51 @@ public class MakePledgeFragment extends Fragment {
         });
 
         // CHANGE PLEDGE BUTTON GOES HERE
+        Bundle surveyBundle = getArguments();
+        if(surveyBundle == null) {
+
+        }
+        else {
+            id_avatar = surveyBundle.getInt("id_avatar");
+            switchAvater();
+        }
+    }
+
+    private void switchAvater() {
+        if(id_avatar == 1){
+            iv_personal_icon.setImageResource(R.drawable.avatar1);
+        }
+        if(id_avatar == 2){
+            iv_personal_icon.setImageResource(R.drawable.avatar2);
+        }
+        if(id_avatar == 3){
+            iv_personal_icon.setImageResource(R.drawable.avatar3);
+        }
+        if(id_avatar == 4){
+            iv_personal_icon.setImageResource(R.drawable.avatar4);
+        }
+        if(id_avatar == 5){
+            iv_personal_icon.setImageResource(R.drawable.avatar5);
+        }
+        if(id_avatar == 6){
+            iv_personal_icon.setImageResource(R.drawable.avatar6);
+        }
+        if(id_avatar == 7){
+            iv_personal_icon.setImageResource(R.drawable.avatar7);
+        }
+        if(id_avatar == 8){
+            iv_personal_icon.setImageResource(R.drawable.avatar8);
+        }
+        if(id_avatar == 9){
+            iv_personal_icon.setImageResource(R.drawable.avatar9);
+        }
+
     }
 
     private void showChoosePicDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mMainActivity);
         builder.setTitle("Edit Avatar");
-        String[] items = { "Select from Album", "Take Photo" };
+        String[] items = { "Select from Album", "Take Photo","Provided Avtar" };
         builder.setNegativeButton("Cancel", null);
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
@@ -138,6 +187,9 @@ public class MakePledgeFragment extends Fragment {
                         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                         startActivityForResult(openCameraIntent, TAKE_PICTURE);
                         break;
+                    case 3:
+                        Fragment newFragment = new Provided_Avater();
+                        mMainActivity.startFragment( newFragment, true, false);
                     default:
                         break;
                 }
