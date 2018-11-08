@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity
                 loginDropdownItems
         );
 
+
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         mLoginDropdown.setAdapter(adapter);
@@ -263,8 +264,10 @@ public class MainActivity extends AppCompatActivity
                     case 1:
                         if(checkUserLogin()) {
                             logout();
+                            mLoginDropdown.setSelection(0);
                         }else{
                             popupLogin();
+                            mLoginDropdown.setSelection(0);
                         }
                         break;
                     default:

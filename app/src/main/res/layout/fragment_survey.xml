@@ -219,6 +219,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/label_totalgrams"
         android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold|italic"
         app:layout_constraintTop_toBottomOf="@id/textViewVegetablesAmount" />
@@ -509,7 +510,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="150dp"
+        android:layout_marginEnd="140dp"
         android:text="@string/label_placeholder_gram_amt"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
@@ -535,6 +536,7 @@
         android:textAllCaps="true"
         android:textColor="@color/colorAccent"
         android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewTotalLabel" />
 
     <TextView
@@ -542,7 +544,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="150dp"
+        android:layout_marginEnd="140dp"
         android:text="@string/label_placeholder_gram_amt"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
