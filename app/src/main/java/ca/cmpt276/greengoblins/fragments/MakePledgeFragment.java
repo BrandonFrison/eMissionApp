@@ -51,9 +51,6 @@ public class MakePledgeFragment extends Fragment {
     CallbackManager mCallbackManager;
     ShareDialog mShareDialog;
 
-    CallbackManager mCallbackManager;
-    ShareDialog mShareDialog;
-
     EditText mFirstNameInputField;
     EditText mLastNameInputField;
     EditText mMunicipalityInputField;
@@ -88,9 +85,6 @@ public class MakePledgeFragment extends Fragment {
                     Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
                     mMainActivity.popupLogin();
                 } else { //  TO DO: Add another else if condition to check if the account has a valid pledge to share
-                    //Toast.makeText(mMainActivity, "TO DO: Implement a share pop up", Toast.LENGTH_SHORT).show();
-
-
                     mCallbackManager = CallbackManager.Factory.create();
                     mShareDialog = new ShareDialog(getActivity());
 
