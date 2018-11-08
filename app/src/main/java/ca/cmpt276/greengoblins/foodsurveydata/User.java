@@ -7,7 +7,6 @@ public class User {
     private double pledgeAmount;
     private String emailAddress;
     private String city;
-
     private boolean showNamePublic;
 
     // Need this default constructor in order for datasnapshot to work
@@ -16,24 +15,24 @@ public class User {
     }
 
     public User(String emailAddress) {
-        this( emailAddress, "", "", 0 );
+        this( emailAddress, "", "", 0);
     }
 
     public User(String emailAddress, String firstName, String lastName) {
-        this( emailAddress, firstName, lastName, 0 );
+        this( emailAddress, firstName, lastName, 0);
     }
 
     public User(String emailAddress, String firstName, String lastName, double pledgeAmount) {
-        this( emailAddress, firstName, lastName, "", pledgeAmount );
+        this( emailAddress, firstName, lastName, "", pledgeAmount, false );
     }
 
-    public User(String emailAddress, String firstName, String lastName, String city, double pledgeAmount) {
+    public User(String emailAddress, String firstName, String lastName, String city, double pledgeAmount, boolean showName) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
         this.city = city;
         this.pledgeAmount = pledgeAmount;
-        this.showNamePublic = false;
+        this.showNamePublic = showName;
     }
 
     public String getFirstName() {

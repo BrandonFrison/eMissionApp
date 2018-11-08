@@ -136,12 +136,6 @@
             android:text="@string/button_publish_pledge" />
 
         <Button
-            android:id="@+id/button_update_pledge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_update_pledge" />
-
-        <Button
             android:id="@+id/button_remove_pledge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
