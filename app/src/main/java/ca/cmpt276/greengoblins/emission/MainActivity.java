@@ -92,10 +92,7 @@ public class MainActivity extends AppCompatActivity
         mLoginDropdown = (Spinner) header.findViewById(R.id.dropdown_login);
 
         mAuthenticator = FirebaseAuth.getInstance();
-/*        mCurrentUser = getCurrentUser();
-        if(mCurrentUser != null){
-            mLoginTextView.setText( mCurrentUser.getEmail() );
-        }*/
+
         updateLoginUI();
 
         mSurveyFragment = new SurveyFragment();

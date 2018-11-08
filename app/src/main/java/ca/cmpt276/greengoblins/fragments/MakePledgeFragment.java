@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,9 @@ public class MakePledgeFragment extends Fragment {
     private Button mUpdatePledgeButton;
     private Button mRemovePledgeButton;
 
-    CallbackManager mCallbackManager;
-    ShareDialog mShareDialog;
+    private CallbackManager mCallbackManager;
+    private ShareDialog mShareDialog;
+    private User mUserData;
 
     private EditText mFirstNameInputField;
     private EditText mLastNameInputField;
@@ -80,6 +82,12 @@ public class MakePledgeFragment extends Fragment {
         mMunicipalityInputField = (EditText) view.findViewById(R.id.input_municipality);
         mPledgeAmountInputField = (EditText) view.findViewById(R.id.input_pledge_amount);
         mShowNameCheckbox = (CheckBox) view.findViewById(R.id.checkbox_show_name);
+
+        mUserData = new User( mMainActivity.getCurrentUser().getEmail() );
+        if( pledgeExists( mMainActivity.getCurrentUser().getUid() )) {
+            Log.d("PLEDGE_EXISTS", "populating user data");
+            populateForm( mUserData );
+        }
 
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +192,14 @@ public class MakePledgeFragment extends Fragment {
         return userData;
     }
 
+    private void populateForm(User user){
+        mFirstNameInputField.setText( user.getFirstName() );
+        mLastNameInputField.setText( user.getLastName() );
+        mMunicipalityInputField.setText( user.getCity() );
+        mPledgeAmountInputField.setText( String.valueOf( user.getPledgeAmount() ) );
+        mShowNameCheckbox.setActivated( user.isShowNamePublic() );
+    }
+
     private boolean isInputValid(String firstName, String lastName, String pledgeAmount) {
         boolean isValid = true;
 
@@ -218,6 +234,9 @@ public class MakePledgeFragment extends Fragment {
     }
 
     private boolean pledgeExists(final String userID) {
+        Log.d("PLEDGE_EXISTS", "checking pledge");
+        mUserHasPledged = false;
+
         final DatabaseReference usersDatabase;
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -225,24 +244,43 @@ public class MakePledgeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
-                    User userInfo = (User) dataSnapshot.child(userID).getValue(User.class);
+                    mUserData = (User) dataSnapshot.child(userID).getValue(User.class);
+                    Log.d("PLEDGE_EXISTS", mUserData.getFirstName());
+                    if(mUserData.getPledgeAmount() > 0){
+                        Log.d("PLEDGE_EXISTS", "pledge amount is > 0");
+                        mUserHasPledged = true;
+                    }
+                    if(dataSnapshot.hasChild(userID)){
+                        Log.d("PLEDGE_EXISTS", "datasnapshot has child userID");
+                        mUserHasPledged = true;
+                    }
+                    /*User userInfo = (User) dataSnapshot.child(userID).getValue(User.class);
                     if(userInfo.getPledgeAmount() > 0 ) {
                         mUserHasPledged = true;
                     } else {
                         mUserHasPledged = false;
-                    }
+                    }*/
                 }
                 catch (Exception e){
-                    mUserHasPledged = false;
+                    Log.d("PLEDGE_EXISTS", "exception happened");
+                    //mUserHasPledged = false;
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                mUserHasPledged = false;
+                Log.d("PLEDGE_EXISTS", "cancelled");
+                //mUserHasPledged = false;
             }
-        });
 
+        });
+        String isTrue;
+        if(mUserHasPledged){
+            isTrue = "True";
+        }else{
+            isTrue = "False";
+        }
+        Log.d("PLEDGE_EXISTS", isTrue);
         return mUserHasPledged;
     }
 
