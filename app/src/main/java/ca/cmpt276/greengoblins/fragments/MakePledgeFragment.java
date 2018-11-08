@@ -46,18 +46,16 @@ public class MakePledgeFragment extends Fragment {
     MainActivity mMainActivity;
     private Button mSharePledgeButton;
     private Button mPublishPledgeButton;
-    private ShareActionProvider mShareActionProvider;
+    private Button mUpdatePledgeButton;
+    private Button mRemovePledgeButton;
 
     CallbackManager mCallbackManager;
     ShareDialog mShareDialog;
 
-    CallbackManager mCallbackManager;
-    ShareDialog mShareDialog;
-
-    EditText mFirstNameInputField;
-    EditText mLastNameInputField;
-    EditText mMunicipalityInputField;
-    EditText mPledgeAmountInputField;
+    private EditText mFirstNameInputField;
+    private EditText mLastNameInputField;
+    private EditText mMunicipalityInputField;
+    private EditText mPledgeAmountInputField;
     private CheckBox mShowNameCheckbox;
 
     private boolean mUserHasPledged;
@@ -74,6 +72,8 @@ public class MakePledgeFragment extends Fragment {
         mMainActivity = (MainActivity) getActivity();
         mSharePledgeButton = (Button) view.findViewById(R.id.button_share_pledge);
         mPublishPledgeButton = (Button) view.findViewById(R.id.button_publish_pledge);
+        mUpdatePledgeButton = (Button) view.findViewById(R.id.button_update_pledge);
+        mRemovePledgeButton = (Button) view.findViewById(R.id.button_remove_pledge);
 
         mFirstNameInputField = (EditText) view.findViewById(R.id.input_first_name);
         mLastNameInputField = (EditText) view.findViewById(R.id.input_last_name);
@@ -88,9 +88,6 @@ public class MakePledgeFragment extends Fragment {
                     Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
                     mMainActivity.popupLogin();
                 } else { //  TO DO: Add another else if condition to check if the account has a valid pledge to share
-                    //Toast.makeText(mMainActivity, "TO DO: Implement a share pop up", Toast.LENGTH_SHORT).show();
-
-
                     mCallbackManager = CallbackManager.Factory.create();
                     mShareDialog = new ShareDialog(getActivity());
 
@@ -117,7 +114,8 @@ public class MakePledgeFragment extends Fragment {
                     mMainActivity.popupLogin();
                 }
                 else if (!pledgeExists(mMainActivity.getCurrentUser().getUid())) {
-                    publishPledge();
+                    if( publishPledge() )
+                        Toast.makeText(mMainActivity, R.string.pledge_published, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(mMainActivity, R.string.pledge_already_exists, Toast.LENGTH_LONG).show();
@@ -125,7 +123,39 @@ public class MakePledgeFragment extends Fragment {
             }
         });
 
-        // CHANGE PLEDGE BUTTON GOES HERE
+        mUpdatePledgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( !mMainActivity.checkUserLogin() ) {
+                    Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
+                    mMainActivity.popupLogin();
+                }
+                else if (!pledgeExists(mMainActivity.getCurrentUser().getUid())) {
+                    Toast.makeText(mMainActivity, R.string.pledge_does_not_exist, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    if( publishPledge() )
+                        Toast.makeText(mMainActivity, R.string.pledge_updated, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        mRemovePledgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( !mMainActivity.checkUserLogin() ) {
+                    Toast.makeText(mMainActivity, R.string.error_user_not_logged_in, Toast.LENGTH_LONG).show();
+                    mMainActivity.popupLogin();
+                }
+                else if (!pledgeExists(mMainActivity.getCurrentUser().getUid())) {
+                    Toast.makeText(mMainActivity, R.string.pledge_does_not_exist, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    removePledge();
+                    Toast.makeText(mMainActivity, R.string.pledge_removed, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private User createUserFromForm(String userEmail){
@@ -198,9 +228,7 @@ public class MakePledgeFragment extends Fragment {
                     User userInfo = (User) dataSnapshot.child(userID).getValue(User.class);
                     if(userInfo.getPledgeAmount() > 0 ) {
                         mUserHasPledged = true;
-                    }
-                    else
-                    {
+                    } else {
                         mUserHasPledged = false;
                     }
                 }
@@ -212,15 +240,24 @@ public class MakePledgeFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 mUserHasPledged = false;
-                Toast.makeText(mMainActivity, R.string.pledge_does_not_exist, Toast.LENGTH_SHORT).show();
             }
         });
 
         return mUserHasPledged;
     }
 
+    private void removePledge(){
+        DatabaseReference usersDatabase;
+        usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
-    private void publishPledge() {
+        String userID = mMainActivity.getCurrentUser().getUid();
+
+        usersDatabase.child(userID).removeValue();
+    }
+
+    private boolean publishPledge() {
+        boolean success = false;
+
         String firstName = "";
         String lastName = "";
         String city = "";
@@ -233,19 +270,20 @@ public class MakePledgeFragment extends Fragment {
         email = mMainActivity.getCurrentUser().getEmail();
         String pledgeAmountString = mPledgeAmountInputField.getText().toString().trim();
 
-        if(isInputValid(firstName, lastName, pledgeAmountString)) {
+        if(isInputValid( firstName, lastName, pledgeAmountString )) {
             pledgeAmount = Double.parseDouble(pledgeAmountString);
 
             final DatabaseReference usersDatabase;
             usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
             final String userID = mMainActivity.getCurrentUser().getUid();
-            //pledgeExists(userID);
+
             User user = new User(email, firstName, lastName, city, pledgeAmount);
             usersDatabase.child(userID).setValue(user);
 
-            Toast.makeText(mMainActivity, R.string.pledge_published, Toast.LENGTH_SHORT).show();
+            success = true;
         }
+        return success;
     }
 
     @Override

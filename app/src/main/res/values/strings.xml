@@ -32,6 +32,8 @@
     <string name="button_view_pledge_list">See who\'s pledged</string>
     <string name="button_publish_pledge">Publish your pledge</string>
     <string name="button_share_pledge">Share your pledge</string>
+    <string name="button_update_pledge">Update your pledge</string>
+    <string name="button_remove_pledge">Remove your pledge</string>
     <string name="hint_search_box">Search...</string>
 
     <!--Survey Activity Strings-->
@@ -84,6 +86,9 @@
     <string name="checkbox_showname_descriptor">Show my name next to my pledge</string>
     <string name="pledge_published">Your pledge has successfully been published.</string>
     <string name="pledge_already_exists">You have already made a pledge. Try clicking the "Change my pledge" button.</string>
+    <string name="pledge_does_not_exist">There is no pledge associated with this account. Please make a pledge first.</string>
+    <string name="pledge_removed">Pledge removed</string>
+    <string name="pledge_updated">Pledge updated</string>
 
 
     <!--Debug/Error message strings-->
@@ -95,7 +100,7 @@
     <string name="empty_pledge_message">Please enter a pledge amount</string>
     <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
     <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
-    <string name="pledge_does_not_exist">There is no pledge associated with this account. Please make a pledge first.</string>
+
 
 
     <!--Navigation Drawer Strings-->
@@ -159,8 +164,6 @@
     <string name="btn_logout">Log Out</string>
     <string name="image_for_the_splash_screen">image for the splash screen</string>
     <string name="profile_picture">profile picture</string>
-
-    <string name="facebook_app_id">250420315633894</string>
 
     <string name="meal_plan">Chicken Only</string>
     <string name="meal_plan_2">Reduce your meat consumption by half</string>
