@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">eMission</string>
+
+    <string name="facebook_app_id">250420315633894</string>
+
     <!--Food Type Strings-->
     <string name="table_category1">Beef</string>
     <string name="table_category2">Pork</string>
