@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.io.File;
 
@@ -16,6 +17,8 @@ import ca.cmpt276.greengoblins.emission.R;
 
 
 public class SettingsFragment extends Fragment {
+
+    private Button clear_hist;
 
     @Nullable
     @Override
@@ -28,21 +31,19 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Settings");
 
-    }
-    public static boolean delete(File file) {
-        boolean result = true;
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                for (File child : file.listFiles()) {
-                    result &= delete(child);
-                }
-                result &= file.delete(); // Delete empty directory.
-            } else if (file.isFile()) {
-                result &= file.delete();
+        clear_hist = (Button)view.findViewById(R.id.buttonClearLocalData);
+        clear_hist.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                clearLocalData();
             }
-            return result;
-        } else {
-            return false;
-        }
+        });
+
+    }
+
+    public boolean clearLocalData(){
+        boolean deleted = false;
+        File file = new File("table_01.csv");
+        return deleted = file.delete();
     }
 }
