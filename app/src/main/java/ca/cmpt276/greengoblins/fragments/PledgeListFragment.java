@@ -9,16 +9,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ public class PledgeListFragment extends Fragment {
     private TextView mPledgeListView;
     private Button mMakePledgeButton;
     private Spinner mFilterDropdown;
+    private EditText mSearchBox;
 
     private RecyclerView mRecyclerView;
     private UserAdapter mAdapter;
@@ -55,6 +60,7 @@ public class PledgeListFragment extends Fragment {
         mPledgeListView.setText(R.string.pledge_list_text);
         mMakePledgeButton = (Button) view.findViewById(R.id.button_make_pledge);
         mFilterDropdown = (Spinner) view.findViewById(R.id.dropdown_filter);
+        mSearchBox = (EditText) view.findViewById(R.id.textview_search_box);
 
         mUserList = new ArrayList<User>();
 
@@ -63,14 +69,18 @@ public class PledgeListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mMainActivity.getBaseContext()));
         mAdapter = new UserAdapter(mMainActivity.getBaseContext(), mUserList);
         mRecyclerView.setAdapter(mAdapter);
-        displayData();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mMainActivity,
-                R.array.pledge_list_filters, android.R.layout.simple_spinner_item);
+        // Only using City option so no need for others
+        // String filterOptions[] = getResources().getStringArray(R.array.pledge_list_filters);
+        String filterOptions[] = {"No Filter", "City"};
 
-        //adapter.setDropDownViewResource(R.layout.);
+        ArrayAdapter<String> dropdownFilterAdapter = new ArrayAdapter<String>(mMainActivity.getBaseContext(),
+                R.layout.support_simple_spinner_dropdown_item, filterOptions);
+        dropdownFilterAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        mFilterDropdown.setAdapter(dropdownFilterAdapter);
+        mFilterDropdown.setPrompt(getResources().getString(R.string.filter_prompt));
 
-        mFilterDropdown.setAdapter(adapter);
+        displayPledges();
 
         mMakePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,14 +91,53 @@ public class PledgeListFragment extends Fragment {
         });
     }
 
-    public void displayData() {
+    public void displayPledges() {
         final DatabaseReference usersDatabase;
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
-        usersDatabase.addValueEventListener(new ValueEventListener() {
+        mSearchBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String searchText = mSearchBox.getText().toString().trim();
+                String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
+
+                if(searchFilter.equals("City") && !searchText.isEmpty()){
+                    String filterField = getResources().getString(R.string.city_option);
+                    queryData(usersDatabase.orderByChild(filterField).equalTo(searchText));
+                }
+                else {
+                    queryData(usersDatabase);
+                }
+            }
+        });
+
+        mFilterDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String searchText = mSearchBox.getText().toString().trim();
+                String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
+
+                if(searchFilter.equals("City") && !searchText.isEmpty()) {
+                    String filterField = getResources().getString(R.string.city_option);
+                    queryData(usersDatabase.orderByChild(filterField).equalTo(searchText));
+                }
+                else {
+                    queryData(usersDatabase);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void queryData(Query query) {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                mUserList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User userInfo = (User) snapshot.getValue(User.class);
                     mUserList.add(userInfo);

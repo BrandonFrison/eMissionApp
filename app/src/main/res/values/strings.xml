@@ -59,6 +59,7 @@
     <!--Pledge List-->
     <string name="pledge_list_text">View the pledges made so far!</string>
     <string name="pledge_filter_label">Sort by...</string>
+    <string name="filter_prompt">Filter by...</string>
     <string-array name="pledge_list_filters">
         <item>First Name</item>
         <item>Last Name</item>
@@ -66,6 +67,10 @@
         <item>Pledge Size</item>
     </string-array>
     <string name="anonymous">Anonymous</string>
+    <string name="first_name_option">firstName</string>
+    <string name="last_name_option">lastName</string>
+    <string name="city_option">city</string>
+    <string name="pledge_amount_option">pledgeAmount</string>
 
     <!--Make Pledge Strings-->
     <string name="input_first_name">First Name</string>
