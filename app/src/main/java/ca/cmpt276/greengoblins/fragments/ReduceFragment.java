@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 import ca.cmpt276.greengoblins.foodsurveydata.MealPlan;
@@ -39,10 +40,12 @@ public class ReduceFragment extends Fragment {
     final static int MIN_VALUE_FOR_CHART = 0;
     final static double METRO_VANCOUVER_POPULATION = 2.463E6;
 
+    MainActivity mMainActivity;
     private Button mMealPlan1;
     private Button mMealPlan2;
     private Button mMealPlan3;
     private Button mMealPlan4;
+    private Button mJoinGreenFoodChallenge;
     private TextView mSavingsAfterNewPlan;
     private TextView mCollectiveSavings;
     ConsumptionTable mOldMealPlan;
@@ -64,6 +67,7 @@ public class ReduceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Reduce CO2e");
 
+        mMainActivity = (MainActivity) getActivity();
         Bundle historyBundle = getArguments();
         mOldMealPlan = (ConsumptionTable) historyBundle.getSerializable("resultTable");
         mSavingsAfterNewPlan = (TextView) view.findViewById(R.id.meal_plan_savings);
@@ -112,6 +116,15 @@ public class ReduceFragment extends Fragment {
                 MealPlan vegetarianMealPlan = new MealPlan();
                 double co2eForNewPlan = vegetarianMealPlan.removeMeatFromPlan(mOldMealPlan);
                 calculateSavingsAndUpdateGraph(co2eForNewPlan);
+            }
+        });
+
+        mJoinGreenFoodChallenge = (Button) view.findViewById(R.id.join_the_green_food_challenge);
+        mJoinGreenFoodChallenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment newFragment = new PledgeFragment();
+                mMainActivity.startFragment( newFragment, true, false);
             }
         });
 
