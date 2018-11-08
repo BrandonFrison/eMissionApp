@@ -36,7 +36,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         // userViewHolder.profilePic.set TO DO **********
         userViewHolder.name.setText(user.getFirstName() + " " + user.getLastName());
         userViewHolder.municipality.setText(user.getCity());
-        userViewHolder.pledgeAmount.setText(Double.toString(user.getPledgeAmount()));
+        userViewHolder.pledgeAmount.setText(Double.toString(user.getPledgeAmount()) + " tonnes of CO2e");
 
     }
 

@@ -194,6 +194,7 @@ public class MakePledgeFragment extends Fragment {
         city = mMunicipalityInputField.getText().toString().trim();
         email = mMainActivity.getCurrentUser().getEmail();
         String pledgeAmountString = mPledgeAmountInputField.getText().toString().trim();
+        boolean showName = mShowNameCheckbox.isChecked();
 
         if(isInputValid(firstName, lastName, pledgeAmountString)) {
             pledgeAmount = Double.parseDouble(pledgeAmountString);
@@ -202,8 +203,9 @@ public class MakePledgeFragment extends Fragment {
             usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
             final String userID = mMainActivity.getCurrentUser().getUid();
-            //pledgeExists(userID);
             User user = new User(email, firstName, lastName, city, pledgeAmount);
+            user.setShowNamePublic(showName);
+
             usersDatabase.child(userID).setValue(user);
 
             Toast.makeText(mMainActivity, R.string.pledge_published, Toast.LENGTH_SHORT).show();

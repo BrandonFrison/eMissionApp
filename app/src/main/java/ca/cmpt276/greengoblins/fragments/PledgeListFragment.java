@@ -138,12 +138,22 @@ public class PledgeListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUserList.clear();
+
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User userInfo = (User) snapshot.getValue(User.class);
-                    mUserList.add(userInfo);
+                    if(userInfo.isShowNamePublic()) {
+                        userInfo.setLastName(String.valueOf(userInfo.getLastName().charAt(0)));
+                        mUserList.add(userInfo);
+                    }
+                    else {
+                        userInfo.setFirstName("Anonymous");
+                        userInfo.setLastName("");
+                        mUserList.add(userInfo);
+                    }
                 }
                 mAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
