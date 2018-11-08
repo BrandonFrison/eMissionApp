@@ -39,7 +39,7 @@
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="150dp"/>
+            android:minHeight="50dp"/>
 
         <Button
             android:id="@+id/button_make_pledge"
@@ -54,7 +54,6 @@
             android:id="@+id/button_view_pledge_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             style="@style/SpinnerTheme"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
