@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     Fragment mCurrentFragment;
 
     TextView mLoginTextView;
+
+    //private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,7 @@ public class MainActivity extends AppCompatActivity
 
         mFragmentTransaction.replace(R.id.frame_activity_content, mSurveyFragment);
         mFragmentTransaction.commit();
+
     }
 
     public void incrementButton(View view){
@@ -239,8 +245,16 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+//        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+//        mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
         return true;
     }
+
+//    private void setShareIntent(Intent shareIntent){
+//        if (mShareActionProvider != null){
+//            mShareActionProvider.setShareIntent(shareIntent);
+//        }
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -253,6 +267,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+//        else if(id == R.id.menu_item_share){
+//            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//            shareIntent.setType("Text/plain");
+//            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "the title"); //'the title' and
+//            shareIntent.putExtra(Intent.EXTRA_TEXT, "my body text"); //'the body text' are currently placeholders for actual messages
+//            startActivity(Intent.createChooser(shareIntent, "Share using"));
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

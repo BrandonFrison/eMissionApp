@@ -32,4 +32,5 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'// For pie chart and bar graph, found on the internet
     implementation 'com.google.firebase:firebase-core:16.0.5'//for Firebase Google cloud service
     implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 }
