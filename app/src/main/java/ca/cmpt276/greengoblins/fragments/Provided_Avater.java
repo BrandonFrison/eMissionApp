@@ -137,6 +137,7 @@ public class Provided_Avater extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace( R.id.frame_activity_content, fragment );
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 }
