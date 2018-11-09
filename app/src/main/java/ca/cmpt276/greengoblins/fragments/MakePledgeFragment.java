@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -88,14 +89,15 @@ public class MakePledgeFragment extends Fragment {
         mShowNameCheckbox = (CheckBox) view.findViewById(R.id.checkbox_show_name);
         iv_personal_icon = (ImageView) view.findViewById(R.id.iv_personal_icon);
 
+        // These must be here and nowhere else otherwise the profile pic breaks
+        id_avatar = mMainActivity.getUserAvatar();
+        switchAvater();
+
         iv_personal_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment newFragment = new Provided_Avater();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace( R.id.frame_activity_content, newFragment );
-                fragmentTransaction.commit();
+                mMainActivity.startFragment( newFragment, true, false);
             }
         });
 
@@ -177,23 +179,22 @@ public class MakePledgeFragment extends Fragment {
     }
 
     private void clearForm(){
-        mFirstNameInputField.setText( "" );
+       /* mFirstNameInputField.setText( "" );
         mLastNameInputField.setText( "" );
         mMunicipalityInputField.setText( "" );
         mPledgeAmountInputField.setText( "" );
         mShowNameCheckbox.setChecked( false );
         // CHANGE PLEDGE BUTTON GOES HERE
-        Bundle surveyBundle = getArguments();
-        if(surveyBundle == null) {
+        id_avatar = mMainActivity.getUserAvatar();
+        Toast.makeText( mMainActivity, id_avatar, Toast.LENGTH_SHORT ).show();
+        switchAvater();*/
 
-        }
-        else {
-            id_avatar = surveyBundle.getInt("id_avatar");
-            switchAvater();
-        }
     }
 
     private void switchAvater() {
+        if(id_avatar == 0){
+
+        }
         if(id_avatar == 1){
             iv_personal_icon.setImageResource(R.drawable.avatar1);
         }
@@ -317,6 +318,7 @@ public class MakePledgeFragment extends Fragment {
             final String userID = mMainActivity.getCurrentUser().getUid();
 
             User user = new User(email, firstName, lastName, city, pledgeAmount, showName);
+            user.setAvatarID(id_avatar);
             usersDatabase.child(userID).setValue(user);
 
             success = true;

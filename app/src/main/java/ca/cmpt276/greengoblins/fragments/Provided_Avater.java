@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 
 
@@ -28,6 +30,7 @@ public class Provided_Avater extends Fragment {
     View view = null;
     private int id_avatar = 0;
 
+    MainActivity mMainActivity;
 
 
 
@@ -41,6 +44,8 @@ public class Provided_Avater extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mMainActivity = (MainActivity) getActivity();
+
         avater1 = view.findViewById(R.id.imageView1);
         avater1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,22 +127,10 @@ public class Provided_Avater extends Fragment {
 
             }
         });
-
-
-
     }
 
     private void finish() {
-        Bundle bundle = new Bundle();
-        bundle.putInt("id_avatar", id_avatar );
-
-        Fragment fragment = new MakePledgeFragment();
-        fragment.setArguments( bundle );
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace( R.id.frame_activity_content, fragment );
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        mMainActivity.setUserAvatar(id_avatar);
+        getActivity().onBackPressed();
     }
 }

@@ -8,6 +8,7 @@ public class User {
     private String emailAddress;
     private String city;
     private boolean showNamePublic;
+    private int avatarID;
 
     // Need this default constructor in order for datasnapshot to work
     public User() {
@@ -32,6 +33,7 @@ public class User {
         this.city = city;
         this.pledgeAmount = pledgeAmount;
         this.showNamePublic = showName;
+        this.avatarID = 0; // USED FOR TESTING
     }
 
     public String getFirstName() {
@@ -80,5 +82,13 @@ public class User {
 
     public void setShowNamePublic(boolean showNamePublic) {
         this.showNamePublic = showNamePublic;
+    }
+
+    public int getAvatarID() {
+        return avatarID;
+    }
+
+    public void setAvatarID(int avatarID) {
+        this.avatarID = avatarID;
     }
 }

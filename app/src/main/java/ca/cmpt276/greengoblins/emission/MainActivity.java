@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        mUserData = new User();
+
         mActionButton = (FloatingActionButton) findViewById(R.id.fab);
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +154,12 @@ public class MainActivity extends AppCompatActivity
     }
     public void updateUserData(User newUserData){
         mUserData = newUserData;
+    }
+    public void setUserAvatar(int avatarID) {
+        mUserData.setAvatarID(avatarID);
+    }
+    public int getUserAvatar() {
+        return mUserData.getAvatarID();
     }
 
     public void popupLogin(){
