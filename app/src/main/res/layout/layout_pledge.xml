@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/fragment_pledge_list_profile_pic"
                     android:layout_marginStart="0dp"
-                    android:text="@string/anonymous" />
+                    android:text="@string/anonymous_name" />
 
                 <TextView
                     android:id="@+id/fragment_pledge_list_municipality"

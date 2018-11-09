@@ -1,10 +1,5 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.net.Uri;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,8 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +16,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -37,13 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import android.widget.ShareActionProvider;
 
-
-import com.facebook.CallbackManager;
-import com.facebook.share.model.ShareHashtag;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
@@ -76,7 +60,7 @@ public class MakePledgeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle("Make a Pledge");
+        getActivity().setTitle(R.string.toolbar_pledge_create);
         mMainActivity = (MainActivity) getActivity();
         mSharePledgeButton = (Button) view.findViewById(R.id.button_share_pledge);
         mPublishPledgeButton = (Button) view.findViewById(R.id.button_publish_pledge);
@@ -116,11 +100,14 @@ public class MakePledgeFragment extends Fragment {
                     mShareDialog = new ShareDialog(getActivity());
 
                     if(ShareDialog.canShow(ShareLinkContent.class)){
+                        String facebookQuote = getString(R.string.facebook_share_quote);
+                        facebookQuote = String.format(facebookQuote,
+                                mMunicipalityInputField.getText(),
+                                mPledgeAmountInputField.getText());
                         ShareLinkContent mLinkContent = new ShareLinkContent.Builder()
                                 .setContentUrl(Uri.parse("https://drive.google.com/file/d/1y7wCDZhyYm7fMyg1CVy1vYZ-LLhADWEk/view?usp=sharing"))
                                 //this is where we would need to put our app information but im not sure how to get it working
-                                .setQuote("I challenge everyone from " + mMunicipalityInputField.getText() + " to the Green Food Challenge! " +
-                                        "Try to beat my pledge of " + mPledgeAmountInputField.getText() + " tonnes of CO2e reduced!\n")
+                                .setQuote(facebookQuote)
                                 .setShareHashtag(new ShareHashtag.Builder()
                                         .setHashtag("#ReduceEmission") //lol we can change this to whatever we want
                                         .build())
@@ -179,16 +166,11 @@ public class MakePledgeFragment extends Fragment {
     }
 
     private void clearForm(){
-       /* mFirstNameInputField.setText( "" );
+        mFirstNameInputField.setText( "" );
         mLastNameInputField.setText( "" );
         mMunicipalityInputField.setText( "" );
         mPledgeAmountInputField.setText( "" );
         mShowNameCheckbox.setChecked( false );
-        // CHANGE PLEDGE BUTTON GOES HERE
-        id_avatar = mMainActivity.getUserAvatar();
-        Toast.makeText( mMainActivity, id_avatar, Toast.LENGTH_SHORT ).show();
-        switchAvater();*/
-
     }
 
     private void switchAvater() {

@@ -29,7 +29,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Settings");
+        getActivity().setTitle(R.string.toolbar_settings);
 
         clear_hist = (Button)view.findViewById(R.id.buttonClearLocalData);
         clear_hist.setOnClickListener(new View.OnClickListener(){

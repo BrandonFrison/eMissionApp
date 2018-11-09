@@ -17,7 +17,7 @@ import ca.cmpt276.greengoblins.emission.R;
 
 
 
-public class Provided_Avater extends Fragment {
+public class ProvidedAvatar extends Fragment {
     private ImageView avater1;
     private ImageView avater2;
     private ImageView avater3;
