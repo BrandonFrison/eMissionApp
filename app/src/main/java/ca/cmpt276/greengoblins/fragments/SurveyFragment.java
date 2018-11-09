@@ -65,7 +65,7 @@ public class SurveyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("CO2e Calculator");
+        getActivity().setTitle(R.string.toolbar_calculator);
         mServingValueFields = new ArrayList<TextView>();
         mServingSizeAmounts = new ArrayList<Integer>();
 

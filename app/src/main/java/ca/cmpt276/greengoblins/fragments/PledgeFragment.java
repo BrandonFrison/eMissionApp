@@ -41,7 +41,7 @@ public class PledgeFragment extends Fragment{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle("Pledges");
+        getActivity().setTitle(R.string.toolbar_pledges);
         mMainActivity = (MainActivity) getActivity();
 
         mMakePledgeButton = (Button) view.findViewById(R.id.button_make_pledge);

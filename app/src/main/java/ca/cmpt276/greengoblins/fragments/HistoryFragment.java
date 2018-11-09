@@ -64,7 +64,7 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("CO2e Result");
+        getActivity().setTitle(R.string.toolbar_history);
         //pie chart part
         pieChart = (PieChart) view.findViewById(R.id.PieChart);
         pieChart.setRotationEnabled(true);

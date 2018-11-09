@@ -39,11 +39,14 @@ import static java.lang.Integer.parseInt;
 
 public class PledgeListFragment extends Fragment {
 
-    MainActivity mMainActivity;
+    private DatabaseReference mUsersDatabase;
+
+    private MainActivity mMainActivity;
     private TextView mPledgeListView;
     private Button mMakePledgeButton;
     private Spinner mFilterDropdown;
     private EditText mSearchBox;
+    private String mFilterOptions[];
 
     private RecyclerView mRecyclerView;
     private UserAdapter mAdapter;
@@ -57,7 +60,7 @@ public class PledgeListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle("Viewing All Pledges");
+        getActivity().setTitle(R.string.toolbar_pledge_list);
         mMainActivity = (MainActivity) getActivity();
 
         mPledgeListView = (TextView) view.findViewById(R.id.pledge_list_text);
@@ -75,11 +78,10 @@ public class PledgeListFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         // Only using City option so no need for others
-        // String filterOptions[] = getResources().getStringArray(R.array.pledge_list_filters);
-        String filterOptions[] = {"No Filter", "City"};
+        mFilterOptions = getResources().getStringArray(R.array.pledge_list_filters);
 
         ArrayAdapter<String> dropdownFilterAdapter = new ArrayAdapter<String>(mMainActivity.getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, filterOptions);
+                R.layout.support_simple_spinner_dropdown_item, mFilterOptions);
         dropdownFilterAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         mFilterDropdown.setAdapter(dropdownFilterAdapter);
         mFilterDropdown.setPrompt(getResources().getString(R.string.filter_prompt));
@@ -96,36 +98,19 @@ public class PledgeListFragment extends Fragment {
     }
 
     public void displayPledges() {
-        final DatabaseReference usersDatabase;
-        usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        queryData(mUsersDatabase);
 
         mSearchBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String searchText = mSearchBox.getText().toString().trim().toLowerCase();
-                String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
-
-                if(searchFilter.equals("City") && !searchText.isEmpty()){
-                    String filterField = getResources().getString(R.string.city_option);
-                    queryData(usersDatabase.orderByChild(filterField).equalTo(searchText));
-                }
-                else {
-                    queryData(usersDatabase);
-                }
+                filterList();
             }
         });
         mSearchBox.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String searchText = mSearchBox.getText().toString();
-                String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
-                if(searchFilter.equals("City")) {
-                    String filterField = getResources().getString(R.string.city_option);
-                    queryData(usersDatabase.orderByChild(filterField).equalTo(searchText));
-                }
-                if(!searchText.isEmpty()) {
-
-                }
+                filterList();
                 return false;
             }
         });
@@ -133,16 +118,7 @@ public class PledgeListFragment extends Fragment {
         mFilterDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String searchText = mSearchBox.getText().toString().trim().toLowerCase();
-                String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
-
-                if(searchFilter.equals("City") && !searchText.isEmpty()) {
-                    String filterField = getResources().getString(R.string.city_option);
-                    queryData(usersDatabase.orderByChild(filterField).equalTo(searchText));
-                }
-                else {
-                    queryData(usersDatabase);
-                }
+                filterList();
             }
 
             @Override
@@ -172,9 +148,11 @@ public class PledgeListFragment extends Fragment {
                         mUserList.add(userInfo);
                     }
                     else {
-                        userInfo.setFirstName("Anonymous");
+                        userInfo.setFirstName( getString(R.string.anonymous_name) );
                         userInfo.setLastName("");
-                        userInfo.setCity(userInfo.getCity().substring(0, 1).toUpperCase() + userInfo.getCity().substring(1));
+                        if(!userInfo.getCity().isEmpty()) {
+                            userInfo.setCity(userInfo.getCity().substring(0, 1).toUpperCase() + userInfo.getCity().substring(1));
+                        }
                         mUserList.add(userInfo);
                     }
                 }
@@ -186,5 +164,26 @@ public class PledgeListFragment extends Fragment {
 
             }
         });
+    }
+
+    private void filterList(){
+        String searchText = mSearchBox.getText().toString().trim().toLowerCase();
+        String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
+
+        if( searchText.isEmpty() ) return;
+
+        if( searchFilter.equals(mFilterOptions[0]) ){
+            queryData(mUsersDatabase);
+        } else if ( searchFilter.equals(mFilterOptions[1]) ){
+            String filterField = getResources().getString(R.string.first_name_option);
+            queryData(mUsersDatabase.orderByChild(filterField).equalTo(searchText));
+        } else if ( searchFilter.equals(mFilterOptions[2]) ){
+            String filterField = getResources().getString(R.string.city_option);
+            queryData(mUsersDatabase.orderByChild(filterField).equalTo(searchText));
+        } else if ( searchFilter.equals(mFilterOptions[3]) ){
+            Double pledgeValue = Double.parseDouble(searchText);
+            String filterField = getResources().getString(R.string.pledge_amount_option);
+            queryData(mUsersDatabase.orderByChild(filterField).equalTo(pledgeValue));
+        }
     }
 }
