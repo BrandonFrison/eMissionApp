@@ -119,7 +119,7 @@
     <string name="menu_nav_history">History</string>
     <string name="menu_nav_about">Learn More</string>
     <string name="menu_title_network">Community</string>
-    <string name="menu_nav_community">Local Pledges</string>
+    <string name="menu_nav_community">View All Pledges</string>
     <!--About Page Content Strings-->
     <string name="about_text_1">
     As Canadians, we often think of ourselves as surrounded by nature and thoughtful about the environment.

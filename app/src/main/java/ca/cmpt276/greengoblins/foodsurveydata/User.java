@@ -11,7 +11,6 @@ public class User {
 
     // Need this default constructor in order for datasnapshot to work
     public User() {
-
     }
 
     public User(String emailAddress) {
