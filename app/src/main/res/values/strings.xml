@@ -60,6 +60,13 @@
         %,d Gallons of gasoline\n
         %,d Km of driving eMission™
     </string>
+    <string name="facebook_share_quote">
+        I challenge everyone from %,s 
+        to the Green Food Challenge! 
+        Try to beat my pledge of %,s 
+        tonnes of CO2e reduced!\n
+    </string>
+    
 
     <!--Pledge List-->
     <string name="pledge_list_text">View the pledges made so far!</string>
