@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,8 @@ import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.Convertor;
 import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.foodsurveydata.UserAdapter;
+
+import static java.lang.Integer.parseInt;
 
 public class PledgeListFragment extends Fragment {
 
@@ -99,7 +102,7 @@ public class PledgeListFragment extends Fragment {
         mSearchBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String searchText = mSearchBox.getText().toString().trim();
+                String searchText = mSearchBox.getText().toString().trim().toLowerCase();
                 String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
 
                 if(searchFilter.equals("City") && !searchText.isEmpty()){
@@ -111,11 +114,26 @@ public class PledgeListFragment extends Fragment {
                 }
             }
         });
+        mSearchBox.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String searchText = mSearchBox.getText().toString();
+                String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
+                if(searchFilter.equals("City")) {
+                    String filterField = getResources().getString(R.string.city_option);
+                    queryData(usersDatabase.orderByChild(filterField).equalTo(searchText));
+                }
+                if(!searchText.isEmpty()) {
+
+                }
+                return false;
+            }
+        });
 
         mFilterDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String searchText = mSearchBox.getText().toString().trim();
+                String searchText = mSearchBox.getText().toString().trim().toLowerCase();
                 String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
 
                 if(searchFilter.equals("City") && !searchText.isEmpty()) {
@@ -132,6 +150,8 @@ public class PledgeListFragment extends Fragment {
 
             }
         });
+
+
     }
 
     private void queryData(Query query) {
@@ -143,12 +163,18 @@ public class PledgeListFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User userInfo = (User) snapshot.getValue(User.class);
                     if(userInfo.isShowNamePublic()) {
+                        userInfo.setFirstName(userInfo.getFirstName().substring(0, 1).toUpperCase() + userInfo.getFirstName().substring(1));
+                        userInfo.setLastName(userInfo.getFirstName().substring(0, 1).toUpperCase() + userInfo.getLastName().substring(1));
+                        if(!userInfo.getCity().isEmpty()) {
+                            userInfo.setCity(userInfo.getCity().substring(0, 1).toUpperCase() + userInfo.getCity().substring(1));
+                        }
                         userInfo.setLastName(String.valueOf(userInfo.getLastName().charAt(0)));
                         mUserList.add(userInfo);
                     }
                     else {
                         userInfo.setFirstName("Anonymous");
                         userInfo.setLastName("");
+                        userInfo.setCity(userInfo.getCity().substring(0, 1).toUpperCase() + userInfo.getCity().substring(1));
                         mUserList.add(userInfo);
                     }
                 }
