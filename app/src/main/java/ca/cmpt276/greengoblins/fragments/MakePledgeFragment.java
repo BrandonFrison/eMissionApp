@@ -115,7 +115,9 @@ public class MakePledgeFragment extends Fragment {
 
                     if(ShareDialog.canShow(ShareLinkContent.class)){
                         String facebookQuote = getString(R.string.facebook_share_quote);
-                        facebookQuote = String.format(facebookQuote, mMunicipalityInputField.getText(), mPledgeAmountInputField.getText());
+                        facebookQuote = String.format(facebookQuote,
+                                mMunicipalityInputField.getText(),
+                                mPledgeAmountInputField.getText());
                         ShareLinkContent mLinkContent = new ShareLinkContent.Builder()
                                 .setContentUrl(Uri.parse("https://drive.google.com/file/d/1y7wCDZhyYm7fMyg1CVy1vYZ-LLhADWEk/view?usp=sharing"))
                                 //this is where we would need to put our app information but im not sure how to get it working
