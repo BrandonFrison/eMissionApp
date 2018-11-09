@@ -95,7 +95,7 @@ public class MakePledgeFragment extends Fragment {
 
                     if(ShareDialog.canShow(ShareLinkContent.class)){
                         ShareLinkContent mLinkContent = new ShareLinkContent.Builder()
-                                .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                                .setContentUrl(Uri.parse("https://drive.google.com/file/d/1y7wCDZhyYm7fMyg1CVy1vYZ-LLhADWEk/view?usp=sharing"))
                                 //this is where we would need to put our app information but im not sure how to get it working
                                 .setQuote("I challenge everyone from " + mMunicipalityInputField.getText() + " to the Green Food Challenge! " +
                                         "Try to beat my pledge of " + mPledgeAmountInputField.getText() + " tonnes of CO2e reduced!\n")
@@ -242,10 +242,10 @@ public class MakePledgeFragment extends Fragment {
         String email = "";
         Double pledgeAmount = 0.0;
 
-        firstName = mFirstNameInputField.getText().toString().trim();
-        lastName = mLastNameInputField.getText().toString().trim();
-        city = mMunicipalityInputField.getText().toString().trim();
-        email = mMainActivity.getCurrentUser().getEmail();
+        firstName = mFirstNameInputField.getText().toString().trim().toLowerCase();
+        lastName = mLastNameInputField.getText().toString().trim().toLowerCase();
+        city = mMunicipalityInputField.getText().toString().trim().toLowerCase();
+        email = mMainActivity.getCurrentUser().getEmail().toLowerCase();
         String pledgeAmountString = mPledgeAmountInputField.getText().toString().trim();
         boolean showName = mShowNameCheckbox.isChecked();
 
