@@ -32,8 +32,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int i) {
         User user = userList.get(i);
+        int avatarID = user.getAvatarID();
 
-        // userViewHolder.profilePic.set TO DO **********
+        switchAvatar(avatarID, userViewHolder);
         userViewHolder.name.setText(user.getFirstName() + " " + user.getLastName());
         userViewHolder.municipality.setText(user.getCity());
         userViewHolder.pledgeAmount.setText(Double.toString(user.getPledgeAmount()) + " tonnes of CO2e");
@@ -61,6 +62,40 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             municipality = itemView.findViewById(R.id.fragment_pledge_list_municipality);
             pledgeAmount = itemView.findViewById(R.id.fragment_pledge_list_pledge_amount);
         }
+    }
+
+    private void switchAvatar(int id_avatar, UserViewHolder userViewHolder) {
+        if(id_avatar == 0){
+
+        }
+        if(id_avatar == 1){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar1);
+        }
+        if(id_avatar == 2){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar2);
+        }
+        if(id_avatar == 3){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar3);
+        }
+        if(id_avatar == 4){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar4);
+        }
+        if(id_avatar == 5){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar5);
+        }
+        if(id_avatar == 6){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar6);
+        }
+        if(id_avatar == 7){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar7);
+        }
+        if(id_avatar == 8){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar8);
+        }
+        if(id_avatar == 9){
+            userViewHolder.profilePic.setImageResource(R.drawable.avatar9);
+        }
+
     }
 
 }

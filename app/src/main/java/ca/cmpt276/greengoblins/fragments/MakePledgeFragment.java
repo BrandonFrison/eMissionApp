@@ -80,7 +80,7 @@ public class MakePledgeFragment extends Fragment {
         iv_personal_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new Provided_Avater();
+                Fragment newFragment = new ProvidedAvatar();
                 mMainActivity.startFragment( newFragment, true, false);
             }
         });
@@ -206,6 +206,7 @@ public class MakePledgeFragment extends Fragment {
         }
 
     }
+
     private void populateForm(final String userID){
         final DatabaseReference usersDatabase;
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users");
@@ -216,11 +217,13 @@ public class MakePledgeFragment extends Fragment {
                 if(dataSnapshot.hasChild(userID)){
                     mUserHasPledged = true;
                     User user = (User) dataSnapshot.child(userID).getValue(User.class);
+
                     mFirstNameInputField.setText( user.getFirstName() );
                     mLastNameInputField.setText( user.getLastName() );
                     mMunicipalityInputField.setText( user.getCity() );
                     mPledgeAmountInputField.setText( String.valueOf( user.getPledgeAmount() ) );
                     mShowNameCheckbox.setChecked( user.isShowNamePublic() );
+
                 }else{
                     mUserHasPledged = false;
                 }

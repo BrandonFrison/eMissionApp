@@ -148,7 +148,8 @@ public class PledgeListFragment extends Fragment {
                         mUserList.add(userInfo);
                     }
                     else {
-                        userInfo.setFirstName( getString(R.string.anonymous_name) );
+                        // userInfo.setFirstName( getString(R.string.anonymous_name) ); RESULTS IN BUG. NEEDS TO BE FIGURED OUT
+                        userInfo.setFirstName( "Anonymous");
                         userInfo.setLastName("");
                         if(!userInfo.getCity().isEmpty()) {
                             userInfo.setCity(userInfo.getCity().substring(0, 1).toUpperCase() + userInfo.getCity().substring(1));
