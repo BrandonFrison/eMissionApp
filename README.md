@@ -1,5 +1,5 @@
 # Readme file
-#SCREENSHOTS OF THE APP SPRINT 2
+## SCREENSHOTS OF THE APP SPRINT 2
 
 ![screenshot1](/uploads/373140e79f3ed141b4e5eba87f3d43eb/screenshot1.png)
 ![screenshot2](/uploads/e58f95c80b146c8b563297f22af15bae/screenshot2.png)
