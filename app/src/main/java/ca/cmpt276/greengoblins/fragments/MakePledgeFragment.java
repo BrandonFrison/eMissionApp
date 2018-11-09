@@ -1,6 +1,9 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.graphics.drawable.ColorDrawable;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.Uri;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,14 +11,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,7 +63,9 @@ public class MakePledgeFragment extends Fragment {
     private EditText mPledgeAmountInputField;
     private CheckBox mShowNameCheckbox;
 
+    private ImageView iv_personal_icon;
     private boolean mUserHasPledged;
+    private int id_avatar = 0;
 
     @Nullable
     @Override
@@ -78,6 +86,18 @@ public class MakePledgeFragment extends Fragment {
         mMunicipalityInputField = (EditText) view.findViewById(R.id.input_municipality);
         mPledgeAmountInputField = (EditText) view.findViewById(R.id.input_pledge_amount);
         mShowNameCheckbox = (CheckBox) view.findViewById(R.id.checkbox_show_name);
+        iv_personal_icon = (ImageView) view.findViewById(R.id.iv_personal_icon);
+
+        iv_personal_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment newFragment = new Provided_Avater();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace( R.id.frame_activity_content, newFragment );
+                fragmentTransaction.commit();
+            }
+        });
 
         mUserHasPledged = false;
 
@@ -162,8 +182,47 @@ public class MakePledgeFragment extends Fragment {
         mMunicipalityInputField.setText( "" );
         mPledgeAmountInputField.setText( "" );
         mShowNameCheckbox.setChecked( false );
+        // CHANGE PLEDGE BUTTON GOES HERE
+        Bundle surveyBundle = getArguments();
+        if(surveyBundle == null) {
+
+        }
+        else {
+            id_avatar = surveyBundle.getInt("id_avatar");
+            switchAvater();
+        }
     }
 
+    private void switchAvater() {
+        if(id_avatar == 1){
+            iv_personal_icon.setImageResource(R.drawable.avatar1);
+        }
+        if(id_avatar == 2){
+            iv_personal_icon.setImageResource(R.drawable.avatar2);
+        }
+        if(id_avatar == 3){
+            iv_personal_icon.setImageResource(R.drawable.avatar3);
+        }
+        if(id_avatar == 4){
+            iv_personal_icon.setImageResource(R.drawable.avatar4);
+        }
+        if(id_avatar == 5){
+            iv_personal_icon.setImageResource(R.drawable.avatar5);
+        }
+        if(id_avatar == 6){
+            iv_personal_icon.setImageResource(R.drawable.avatar6);
+        }
+        if(id_avatar == 7){
+            iv_personal_icon.setImageResource(R.drawable.avatar7);
+        }
+        if(id_avatar == 8){
+            iv_personal_icon.setImageResource(R.drawable.avatar8);
+        }
+        if(id_avatar == 9){
+            iv_personal_icon.setImageResource(R.drawable.avatar9);
+        }
+
+    }
     private void populateForm(final String userID){
         final DatabaseReference usersDatabase;
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users");

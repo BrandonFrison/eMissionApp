@@ -9,6 +9,7 @@
     tools:ignore="MissingDefaultResource">
 
     <ImageView
+        android:id="@+id/iv_personal_icon"
         android:layout_width="140dp"
         android:layout_height="110dp"
         android:src="@drawable/treepledge"
