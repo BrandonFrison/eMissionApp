@@ -106,40 +106,6 @@ public class MainActivity extends AppCompatActivity
         mFragmentTransaction.commit();
     }
 
-    public void incrementButton(View view){
-        changeFieldValue(view, 10);
-    }
-    public void decrementButton(View view){
-        changeFieldValue(view, -10);
-    }
-    private void changeFieldValue (View view, int valueToAdd){
-        String buttonTag = String.valueOf(view.getTag());
-        switch(buttonTag){
-            case "beef_button":
-                mSurveyFragment.setServing(0, valueToAdd);
-                break;
-            case "pork_button":
-                mSurveyFragment.setServing(1, valueToAdd);
-                break;
-            case "chicken_button":
-                mSurveyFragment.setServing(2, valueToAdd);
-                break;
-            case "fish_button":
-                mSurveyFragment.setServing(3, valueToAdd);
-                break;
-            case "eggs_button":
-                mSurveyFragment.setServing(4, valueToAdd);
-                break;
-            case "beans_button":
-                mSurveyFragment.setServing(5, valueToAdd);
-                break;
-            case "vegetables_button":
-                mSurveyFragment.setServing(6, valueToAdd);
-                break;
-            default:
-                Toast.makeText( MainActivity.this, "Button tag not properly set", Toast.LENGTH_SHORT ).show();
-        }
-    }
 
     public String getUserDisplayName(){
         FirebaseUser user = mAuthenticator.getCurrentUser();
