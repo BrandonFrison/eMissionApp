@@ -112,6 +112,10 @@
     <string name="pledge_removed">Pledge removed</string>
     <string name="pledge_updated">Pledge updated</string>
 
+    <!--MealList Strings-->
+    <string name="textview_meal_list_description">View all community submitted meals!</string>
+    <string name="checkbox_show_my_meals">Only show my meals</string>
+    <string name="button_add_meal">Add a meal</string>
 
     <!--Debug/Error message strings-->
     <string name="text_view_placeholder">Could not load results.</string>

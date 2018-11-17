@@ -12,25 +12,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_margin="40dp">
+        android:layout_margin="20dp"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/Meals_list_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="@string/text_view_placeholder" />
+            android:text="@string/textview_meal_list_description" />
+
+        <CheckBox
+            android:id="@+id/ViewMyMeal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkbox_show_my_meals" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <EditText
                 android:id="@+id/meal_search_box"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:ems="10"
                 android:inputType="textFilter"
                 android:hint="@string/hint_search_box"
@@ -40,24 +48,19 @@
 
             <Spinner
                 android:id="@+id/meal_filter"
-                android:layout_width="140dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:layout_weight="1"
+                android:layout_weight="0.4"
                 android:background="?attr/colorButtonNormal" />
 
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/ViewMyMeal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View my meal" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Meals_list_view"
             android:layout_width="match_parent"
-            android:layout_height="266dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="?android:attr/colorBackground"
             android:scrollbars="vertical" />
 
@@ -67,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Add a meal" />
+            android:text="@string/button_add_meal" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

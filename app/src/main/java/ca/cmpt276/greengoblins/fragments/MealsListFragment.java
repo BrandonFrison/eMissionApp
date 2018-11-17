@@ -41,7 +41,7 @@ public class MealsListFragment  extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_mealslist, container, false);
+        return inflater.inflate(R.layout.fragment_meal_list, container, false);
     }
 
 
@@ -52,8 +52,8 @@ public class MealsListFragment  extends Fragment {
         mAddMyMeal = (Button)view.findViewById(R.id.button_add_meals);
         mFilterMeal = (Spinner)view.findViewById(R.id.meal_filter);
         mMealSearchBox = (EditText) view.findViewById(R.id.meal_search_box);
-        mMealListView = (TextView) view.findViewById(R.id.Meals_list_text);
-        mMealListView.setText("         ");
+/*        mMealListView = (TextView) view.findViewById(R.id.Meals_list_text);
+        mMealListView.setText("         ");*/
 
         //mUserMealList = new ArrayList<User>();
 
