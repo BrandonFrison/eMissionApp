@@ -44,6 +44,7 @@
     <string name="button_update_pledge">Update your pledge</string>
     <string name="button_remove_pledge">Remove your pledge</string>
     <string name="hint_search_box">Search...</string>
+    <string name="dash">-</string>
 
     <!--Survey Activity Strings-->
     <string name="survey_explanation">Approximate How many grams of each food type do you eat daily in an average week?</string>

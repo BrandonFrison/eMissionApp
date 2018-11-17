@@ -1,207 +1,277 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Utils;
 
-import java.text.DecimalFormat;
+
 import java.util.ArrayList;
-import java.util.List;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
-import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment
+        implements SeekBar.OnSeekBarChangeListener, OnChartValueSelectedListener{
 
-    final double DrivenConvectionNuder = .200;  // 1 kg per 5 km
-    public ArrayList<Integer> servingSizes;
-    TextView mCO2eDisplay;
-    PieChart pieChart;
-    boolean flag =false;
-    boolean flag2 =false;
-    ConsumptionTable servingTable;
-    ConsumptionTable previousTable;
-    float mCO2eScore = 0;
-    ArrayList<String> categories;
-    List<PieEntry> pieEntries = new ArrayList<PieEntry>();
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            servingSizes = savedInstanceState.getIntegerArrayList("PieChartValue");
-        }
-    }
+    private MainActivity mMainActivity;
+    private LineChart chart;
+    private SeekBar seekBarX, seekBarY;
+    private TextView tvX, tvY;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_result, container, false);
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.toolbar_history);
-        //pie chart part
-        pieChart = (PieChart) view.findViewById(R.id.PieChart);
-        pieChart.setRotationEnabled(true);
-        pieChart.setHoleRadius(25f);
-        pieChart.setTransparentCircleAlpha(0);
-        pieChart.setCenterText("Emission");
-        pieChart.setCenterTextSize(12);
-        pieChart.getDescription().setEnabled(false);
 
-        mCO2eDisplay = (TextView) view.findViewById(R.id.textViewResult);
+        mMainActivity = (MainActivity) getActivity();
 
-        previousTable = new ConsumptionTable();
-        try {
-            previousTable.loadTable(getContext(), "table_01.csv");
-            Log.d("SAVE_TEST", "load successful?");
-        }catch(Exception e){
-            Log.d("SAVE_TEST", e.getMessage());
+        tvX = view.findViewById(R.id.tvXMax);
+        tvY = view.findViewById(R.id.tvYMax);
+
+        seekBarX = view.findViewById(R.id.seekBar1);
+        seekBarX.setOnSeekBarChangeListener(this);
+
+        seekBarY = view.findViewById(R.id.seekBar2);
+        seekBarY.setMax(180);
+        seekBarY.setOnSeekBarChangeListener(this);
+        {   // // Chart Style // //
+            chart = view.findViewById(R.id.chart1);
+
+            // background color
+            chart.setBackgroundColor(Color.WHITE);
+
+            // disable description text
+            chart.getDescription().setEnabled(false);
+
+            // enable touch gestures
+            chart.setTouchEnabled(true);
+
+            // set listeners
+            chart.setOnChartValueSelectedListener(this);
+            chart.setDrawGridBackground(false);
+
+            // enable scaling and dragging
+            chart.setDragEnabled(true);
+            chart.setScaleEnabled(true);
+            // chart.setScaleXEnabled(true);
+            // chart.setScaleYEnabled(true);
+
+            // force pinch zoom along both axis
+            chart.setPinchZoom(true);
         }
 
-        Bundle surveyBundle = getArguments();
-        if(surveyBundle == null) {
-            String resultText = "No data yet, please do the Co2e calculator";
-            mCO2eDisplay.setText(resultText);
-            if (previousTable != null) {
-                //if previous meal plan is saved to csv file
-                flag2 = true;
-            }
-        }else{
-            flag = true;
-            servingSizes = surveyBundle.getIntegerArrayList("survey_data");
+        XAxis xAxis;
+        {   // // X-Axis Style // //
+            xAxis = chart.getXAxis();
+
+            // vertical grid lines
+            xAxis.enableGridDashedLine(10f, 10f, 0f);
         }
 
-            categories = new ArrayList<String>();
-            categories.add(getString(R.string.table_category1));
-            categories.add(getString(R.string.table_category2));
-            categories.add(getString(R.string.table_category3));
-            categories.add(getString(R.string.table_category4));
-            categories.add(getString(R.string.table_category5));
-            categories.add(getString(R.string.table_category6));
-            categories.add(getString(R.string.table_category7));
+        YAxis yAxis;
+        {   // // Y-Axis Style // //
+            yAxis = chart.getAxisLeft();
 
-        if(flag) { // pie chart will work only after receiving data
-            servingTable = new ConsumptionTable( servingSizes );
-            setUpPieChart(servingTable);
-        }else if(flag2){
-            setUpPieChart(previousTable);
+            // disable dual axis (only use LEFT axis)
+            chart.getAxisRight().setEnabled(false);
+
+            // horizontal grid lines
+            yAxis.enableGridDashedLine(10f, 10f, 0f);
+
+            // axis range
+            yAxis.setAxisMaximum(200f);
+            yAxis.setAxisMinimum(-50f);
         }
-        // Reduce Carbon button
-        // Takes user to another activity where they can choose a meal plan
-        Button mReduceFootPrintButton = (Button) view.findViewById(R.id.reduce_footprint_button);
-        mReduceFootPrintButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(flag){
-                    passToReduce(servingTable);
-                }else if(flag2){
-                    passToReduce(previousTable);
-                }
-            }
-        });
+
+
+        {   // // Create Limit Lines // //
+            LimitLine llXAxis = new LimitLine(9f, "Index 10");
+            llXAxis.setLineWidth(4f);
+            llXAxis.enableDashedLine(10f, 10f, 0f);
+            llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+            llXAxis.setTextSize(10f);
+            llXAxis.setTypeface(Typeface.DEFAULT);
+
+            LimitLine ll1 = new LimitLine(150f, "Upper Limit");
+            ll1.setLineWidth(4f);
+            ll1.enableDashedLine(10f, 10f, 0f);
+            ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+            ll1.setTextSize(10f);
+            ll1.setTypeface(Typeface.DEFAULT);
+
+            LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
+            ll2.setLineWidth(4f);
+            ll2.enableDashedLine(10f, 10f, 0f);
+            ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+            ll2.setTextSize(10f);
+            ll2.setTypeface(Typeface.DEFAULT);
+
+            // draw limit lines behind data instead of on top
+            yAxis.setDrawLimitLinesBehindData(true);
+            xAxis.setDrawLimitLinesBehindData(true);
+
+            // add limit lines
+            yAxis.addLimitLine(ll1);
+            yAxis.addLimitLine(ll2);
+            //xAxis.addLimitLine(llXAxis);
+        }
+
+        // add data
+        seekBarX.setProgress(45);
+        seekBarY.setProgress(180);
+        setData(45, 180);
+
+        // draw points over time
+        chart.animateX(1500);
+
+        // get the legend (only possible after setting data)
+        Legend l = chart.getLegend();
+
+        // draw legend entries as lines
+        l.setForm(Legend.LegendForm.LINE);
     }
 
-    private void passToReduce(ConsumptionTable tableUsed){
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("resultTable", tableUsed);
+    private void setData(int count, float range) {
 
-            Fragment reduceFragment = new ReduceFragment();
-            reduceFragment.setArguments(bundle);
+        ArrayList<Entry> values = new ArrayList<>();
 
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_activity_content, reduceFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-    }
+        for (int i = 0; i < count; i++) {
 
-    private void setUpPieChart(ConsumptionTable tableUsed) {
-            pieEntries.clear();         //fixes back press button messing up the pie chart
-            mCO2eScore = tableUsed.calculateTotalCO2e();
+            float val = (float) (Math.random() * range) - 30;
+            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
+        }
 
-            //round number  to 2 decimal
-            final DecimalFormat df = new DecimalFormat(".00");
+        LineDataSet set1;
 
-            String resultText = "Total CO2e Score: " + df.format(mCO2eScore) + " kg per year.\n\n" +
-                    "That's equivalent to driving: " + df.format(mCO2eScore / DrivenConvectionNuder) + " km\n\n" +
-                    "Click events on pie chart to get details.\n\n" +
-                    "If you want to try different diets we provided, you can click the bottom button.";
-            mCO2eDisplay.setText(resultText);
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            set1.notifyDataSetChanged();
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(values, "DataSet 1");
 
-            //We should be able to get most or all of this from the new consumptiontable
+            set1.setDrawIcons(false);
 
-            for (int i = 0; i < tableUsed.getSize(); i++) {
-                if (tableUsed.getServingSize(i) > 0)
-                    pieEntries.add(new PieEntry(tableUsed.calculateServingCO2e(i), categories.get(i)));
-                else
-                    continue;
-            }
+            // draw dashed line
+            set1.enableDashedLine(10f, 5f, 0f);
 
-            //create the data set
-            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Emission");
-            pieDataSet.setSliceSpace(2);
-            pieDataSet.setValueTextSize(12);
-            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            pieDataSet.setValueTextColor(3);
+            // black lines and points
+            set1.setColor(Color.BLACK);
+            set1.setCircleColor(Color.BLACK);
 
+            // line thickness and point size
+            set1.setLineWidth(1f);
+            set1.setCircleRadius(3f);
 
-            //add legend to chart
-            Legend legend = pieChart.getLegend();
-            legend.setForm(Legend.LegendForm.CIRCLE);
-            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-            //legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+            // draw points as solid circles
+            set1.setDrawCircleHole(false);
 
-            //create pie data object
-            PieData pieData = new PieData(pieDataSet);
-                pieChart.setData(pieData);
-                pieChart.invalidate();
+            // customize legend entry
+            set1.setFormLineWidth(1f);
+            set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            set1.setFormSize(15.f);
 
-            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            // text size of values
+            set1.setValueTextSize(9f);
+
+            // draw selection line as dashed
+            set1.enableDashedHighlightLine(10f, 5f, 0f);
+
+            // set the filled area
+            set1.setDrawFilled(true);
+            set1.setFillFormatter(new IFillFormatter() {
                 @Override
-                public void onValueSelected(Entry e, Highlight h) {
-                    int xCategory = (int) h.getX();
-                    String toastText = categories.get(xCategory) + ": " + df.format(h.getY()) + " kg of CO2e";
-                    Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onNothingSelected() {
-
+                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                    return chart.getAxisLeft().getAxisMinimum();
                 }
             });
+
+            // set color of filled area
+            if (Utils.getSDKInt() >= 18) {
+                // drawables only supported on api level 18 and above
+                Drawable drawable = ContextCompat.getDrawable(mMainActivity, R.drawable.fade_red);
+                set1.setFillDrawable(drawable);
+            } else {
+                set1.setFillColor(Color.BLACK);
+            }
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1); // add the data sets
+
+            // create a data object with the data sets
+            LineData data = new LineData(dataSets);
+
+            // set data
+            chart.setData(data);
         }
-
-
+    }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putIntegerArrayList("PieChartValue",servingSizes);
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+        tvX.setText(String.valueOf(seekBarX.getProgress()));
+        tvY.setText(String.valueOf(seekBarY.getProgress()));
+
+        setData(seekBarX.getProgress(), seekBarY.getProgress());
+
+        // redraw
+        chart.invalidate();
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {}
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        Log.i("Entry selected", e.toString());
+        Log.i("LOW HIGH", "low: " + chart.getLowestVisibleX() + ", high: " + chart.getHighestVisibleX());
+        Log.i("MIN MAX", "xMin: " + chart.getXChartMin() + ", xMax: " + chart.getXChartMax() + ", yMin: " + chart.getYChartMin() + ", yMax: " + chart.getYChartMax());
+    }
+
+    @Override
+    public void onNothingSelected() {
+        Log.i("Nothing selected", "Nothing selected.");
     }
 }
