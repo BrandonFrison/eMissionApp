@@ -13,6 +13,10 @@
             android:icon="@drawable/baseline_pan_tool_24"
             android:title="@string/menu_nav_pledge" />
         <item
+            android:id="@+id/nav_meals"
+            android:icon="@drawable/baseline_pan_tool_24"
+            android:title="@string/menu_nav_meals" />
+        <item
             android:id="@+id/nav_history"
             android:icon="@drawable/baseline_timeline_24"
             android:title="@string/menu_nav_history" />

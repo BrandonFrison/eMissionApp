@@ -34,6 +34,7 @@ import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
+import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
 import ca.cmpt276.greengoblins.fragments.SettingsFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeListFragment;
@@ -366,6 +367,8 @@ public class MainActivity extends AppCompatActivity
             showFloatingActionButton = true;
         } else if (id == R.id.nav_pledge) {
             fragment = new PledgeFragment();
+        } else if (id == R.id.nav_meals) {
+            fragment = new MealListFragment();
         } else if (id == R.id.nav_history) {
             fragment = new HistoryFragment();
         } else if (id == R.id.nav_about) {

@@ -131,6 +131,7 @@
     <!--Navigation Drawer Menu Strings-->
     <string name="menu_nav_calculator">CO2e Calculator</string>
     <string name="menu_nav_pledge">Pledges</string>
+    <string name="menu_nav_meals">Meals</string>
     <string name="menu_nav_history">History</string>
     <string name="menu_nav_about">Learn More</string>
     <string name="menu_title_network">Community</string>
