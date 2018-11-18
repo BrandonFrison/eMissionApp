@@ -44,6 +44,10 @@
     <string name="button_update_pledge">Update your pledge</string>
     <string name="button_remove_pledge">Remove your pledge</string>
     <string name="hint_search_box">Search...</string>
+    <string name="history_chart_label">CO2e Calculator Totals</string>
+    <string name="no_data_saved">No data available for this month</string>
+    <string name="snackbar_history_element">Day %d CO2e total: %,.2f</string>
+    <string name="snackbar_delete">Delete</string>
 
     <!--Survey Activity Strings-->
     <string name="survey_explanation">Approximate How many grams of each food type do you eat daily in an average week?</string>
@@ -75,7 +79,7 @@
         Try to beat my pledge of %s
         tonnes of CO2e reduced!\n
     </string>
-
+    
 
     <!--Pledge List-->
     <string name="pledge_list_text">View the pledges made so far!</string>
@@ -117,6 +121,22 @@
     <string name="checkbox_show_my_meals">Only show my meals</string>
     <string name="button_add_meal">Add a meal</string>
 
+    <!--Calendar/Date Strings-->
+    <string-array name="months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
     <!--Debug/Error message strings-->
     <string name="text_view_placeholder">Could not load results.</string>
     <string name="empty_username_message">Please enter an email</string>
@@ -126,6 +146,7 @@
     <string name="empty_pledge_message">Please enter a pledge amount</string>
     <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
     <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
+
 
 
     <!--Navigation Drawer Strings-->

@@ -27,10 +27,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
+import ca.cmpt276.greengoblins.foodsurveydata.FoodSurveyHistoryManager;
 
 public class ResultFragment extends Fragment {
 
@@ -76,13 +78,10 @@ public class ResultFragment extends Fragment {
 
         mCO2eDisplay = (TextView) view.findViewById(R.id.textViewResult);
 
-        previousTable = new ConsumptionTable();
-        try {
-            previousTable.loadTable(getContext(), "table_01.csv");
-            Log.d("SAVE_TEST", "load successful?");
-        }catch(Exception e){
-            Log.d("SAVE_TEST", e.getMessage());
-        }
+        FoodSurveyHistoryManager tableLoader = new FoodSurveyHistoryManager();
+        Calendar calendar = Calendar.getInstance();
+        String formattedCurrentDate = String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        previousTable = tableLoader.loadTableByDate(getActivity(), formattedCurrentDate);
 
         Bundle surveyBundle = getArguments();
         if(surveyBundle == null) {
