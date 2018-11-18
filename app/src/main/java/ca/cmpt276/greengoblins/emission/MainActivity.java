@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
+import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity
 
     private FloatingActionButton mActionButton;
     private SurveyFragment mSurveyFragment;
+    private ArrayList<String> mFoodSurveyCategories;
+    private ArrayList<Float> mCO2eConversionRates;
     private Fragment mCurrentFragment;
 
     private TextView mLoginTextView;
@@ -98,6 +101,22 @@ public class MainActivity extends AppCompatActivity
         updateLoginUI();
 
         mSurveyFragment = new SurveyFragment();
+        mFoodSurveyCategories = new ArrayList<String>();
+        mFoodSurveyCategories.add(getString( R.string.table_category1 ));   //Beef
+        mFoodSurveyCategories.add(getString( R.string.table_category2 ));   //Pork
+        mFoodSurveyCategories.add(getString( R.string.table_category3 ));   //Chicken
+        mFoodSurveyCategories.add(getString( R.string.table_category4 ));   //Fish
+        mFoodSurveyCategories.add(getString( R.string.table_category5 ));   //Eggs
+        mFoodSurveyCategories.add(getString( R.string.table_category6 ));   //Beans
+        mFoodSurveyCategories.add(getString( R.string.table_category7 ));   //Vegetables
+        mCO2eConversionRates = new ArrayList<Float>();
+        mCO2eConversionRates.add(27f);
+        mCO2eConversionRates.add(12.1f);
+        mCO2eConversionRates.add(6.9f);
+        mCO2eConversionRates.add(6.1f);
+        mCO2eConversionRates.add(4.8f);
+        mCO2eConversionRates.add(2f);
+        mCO2eConversionRates.add(2f);
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -258,6 +277,11 @@ public class MainActivity extends AppCompatActivity
 
     public FloatingActionButton getActionButton (){
         return mActionButton;
+    }
+
+    public ConsumptionTable createDefaultFoodTable(){
+        ConsumptionTable defaultCategories = new ConsumptionTable( mFoodSurveyCategories, mCO2eConversionRates );
+        return defaultCategories;
     }
 
     public boolean startFragment(Fragment newFragment, boolean addToBackStack){

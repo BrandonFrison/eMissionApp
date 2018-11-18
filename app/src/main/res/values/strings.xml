@@ -44,7 +44,10 @@
     <string name="button_update_pledge">Update your pledge</string>
     <string name="button_remove_pledge">Remove your pledge</string>
     <string name="hint_search_box">Search...</string>
-    <string name="dash">-</string>
+    <string name="history_chart_label">CO2e Calculator Totals</string>
+    <string name="no_data_saved">No data available for this month</string>
+    <string name="snackbar_history_element">Day %d CO2e total: %,.2f</string>
+    <string name="snackbar_delete">Delete</string>
 
     <!--Survey Activity Strings-->
     <string name="survey_explanation">Approximate How many grams of each food type do you eat daily in an average week?</string>
@@ -106,6 +109,21 @@
     <string name="pledge_removed">Pledge removed</string>
     <string name="pledge_updated">Pledge updated</string>
 
+    <!--Calendar/Date Strings-->
+    <string-array name="months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 
     <!--Debug/Error message strings-->
     <string name="text_view_placeholder">Could not load results.</string>

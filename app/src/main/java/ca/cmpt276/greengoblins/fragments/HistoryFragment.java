@@ -1,5 +1,7 @@
 package ca.cmpt276.greengoblins.fragments;
 
+import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Typeface;
@@ -7,18 +9,24 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -26,26 +34,39 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.foodsurveydata.FoodSurveyHistoryManager;
 
 public class HistoryFragment extends Fragment
-        implements SeekBar.OnSeekBarChangeListener, OnChartValueSelectedListener{
+        implements OnChartValueSelectedListener{
 
     private MainActivity mMainActivity;
+    private FoodSurveyHistoryManager mFoodSurveyHistory;
+   /* private ArrayList<ConsumptionTable> mTableHistory;
+    private ArrayList<String> mTableDates;*/
     private LineChart chart;
+    private Spinner mDropdownChooseMonth;
     private SeekBar seekBarX, seekBarY;
     private TextView tvX, tvY;
+    private View mView;
+    private MPPointF mOffset;
+    private TextView mMarker;
 
     @Nullable
     @Override
@@ -59,16 +80,29 @@ public class HistoryFragment extends Fragment
         getActivity().setTitle(R.string.toolbar_history);
 
         mMainActivity = (MainActivity) getActivity();
+        mView = getView();
+        mFoodSurveyHistory = new FoodSurveyHistoryManager();
+        mMarker = (TextView) view.findViewById(R.id.marker);
 
-        tvX = view.findViewById(R.id.tvXMax);
-        tvY = view.findViewById(R.id.tvYMax);
+        int currentMonth = getCurrentMonth();
 
-        seekBarX = view.findViewById(R.id.seekBar1);
-        seekBarX.setOnSeekBarChangeListener(this);
+        //load history tables from saved files
+        mFoodSurveyHistory.loadTablesByMonth(mMainActivity, currentMonth+1);
 
-        seekBarY = view.findViewById(R.id.seekBar2);
-        seekBarY.setMax(180);
-        seekBarY.setOnSeekBarChangeListener(this);
+        mDropdownChooseMonth = (Spinner) view.findViewById(R.id.spinnerChooseMonth);
+        mDropdownChooseMonth.setSelection(currentMonth);
+        mDropdownChooseMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mFoodSurveyHistory.loadTablesByMonth(mMainActivity, position+1);
+                Log.d("LOAD_EXCEPTION", "loading month: " + String.valueOf(position+1));
+                setData();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         {   // // Chart Style // //
             chart = view.findViewById(R.id.chart1);
 
@@ -77,6 +111,7 @@ public class HistoryFragment extends Fragment
 
             // disable description text
             chart.getDescription().setEnabled(false);
+            chart.setNoDataText(getString(R.string.no_data_saved));
 
             // enable touch gestures
             chart.setTouchEnabled(true);
@@ -101,6 +136,23 @@ public class HistoryFragment extends Fragment
 
             // vertical grid lines
             xAxis.enableGridDashedLine(10f, 10f, 0f);
+
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+            xAxis.setGranularity(1f);
+            xAxis.setGranularityEnabled(true);
+           /* final String xVal[]={"Val1","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3","Val2","Val3"};
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return xVal[(int) value]; // xVal is a string array
+                }
+
+            });*/
+
+            //axis range
+            xAxis.setAxisMinimum(0f);
+            xAxis.setAxisMaximum(31f);
         }
 
         YAxis yAxis;
@@ -114,47 +166,13 @@ public class HistoryFragment extends Fragment
             yAxis.enableGridDashedLine(10f, 10f, 0f);
 
             // axis range
-            yAxis.setAxisMaximum(200f);
-            yAxis.setAxisMinimum(-50f);
+            //yAxis.setAxisMaximum(500f);
+            yAxis.setAxisMinimum(0f);
         }
 
-
-        {   // // Create Limit Lines // //
-            LimitLine llXAxis = new LimitLine(9f, "Index 10");
-            llXAxis.setLineWidth(4f);
-            llXAxis.enableDashedLine(10f, 10f, 0f);
-            llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-            llXAxis.setTextSize(10f);
-            llXAxis.setTypeface(Typeface.DEFAULT);
-
-            LimitLine ll1 = new LimitLine(150f, "Upper Limit");
-            ll1.setLineWidth(4f);
-            ll1.enableDashedLine(10f, 10f, 0f);
-            ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-            ll1.setTextSize(10f);
-            ll1.setTypeface(Typeface.DEFAULT);
-
-            LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
-            ll2.setLineWidth(4f);
-            ll2.enableDashedLine(10f, 10f, 0f);
-            ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-            ll2.setTextSize(10f);
-            ll2.setTypeface(Typeface.DEFAULT);
-
-            // draw limit lines behind data instead of on top
-            yAxis.setDrawLimitLinesBehindData(true);
-            xAxis.setDrawLimitLinesBehindData(true);
-
-            // add limit lines
-            yAxis.addLimitLine(ll1);
-            yAxis.addLimitLine(ll2);
-            //xAxis.addLimitLine(llXAxis);
-        }
 
         // add data
-        seekBarX.setProgress(45);
-        seekBarY.setProgress(180);
-        setData(45, 180);
+        setData();
 
         // draw points over time
         chart.animateX(1500);
@@ -166,17 +184,58 @@ public class HistoryFragment extends Fragment
         l.setForm(Legend.LegendForm.LINE);
     }
 
-    private void setData(int count, float range) {
+    private int getCurrentYear(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR);
+    }
+    private int getCurrentMonth(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH);
+    }
+    private int getCurrentDay(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    private void setData() {
 
         ArrayList<Entry> values = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-
-            float val = (float) (Math.random() * range) - 30;
-            values.add(new Entry(i, val, getResources().getDrawable(R.drawable.star)));
+        int numberOfTables = mFoodSurveyHistory.getNumberOfTables();
+            for (int i = 1; i <= numberOfTables; i++) {
+            String fullFormatedDate = mFoodSurveyHistory.getTableDates().get(i-1);
+            String dayOfMonth = fullFormatedDate.substring(fullFormatedDate.length()-2, fullFormatedDate.length());
+            int dayOfMonthValue;
+            try{
+                dayOfMonthValue = Integer.parseInt( dayOfMonth );
+                Log.d("LOAD_EXCEPTION", dayOfMonth);
+            }catch (NumberFormatException exception){
+                dayOfMonthValue = 0;
+            }
+            values.add( new Entry(
+                    dayOfMonthValue,
+                    mFoodSurveyHistory.getTableHistory().get(i-1).calculateTotalCO2e(),
+                    ResourcesCompat.getDrawable(mMainActivity.getResources(),
+                    R.drawable.star,
+             null) ));
         }
 
         LineDataSet set1;
+        if(values.isEmpty()){
+            Log.d("LOAD_EXCEPTION", "values is empty");
+            String chartLabel = getString(R.string.history_chart_label);
+            values.add(new Entry(0,0));
+            set1 = new LineDataSet(values, chartLabel);
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1); // add the data sets
+
+            // create a data object with the data sets
+            LineData data = new LineData(dataSets);
+
+            // set data
+            chart.setData(data);
+            chart.invalidate();
+            return;
+        }
 
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
@@ -187,9 +246,10 @@ public class HistoryFragment extends Fragment
             chart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(values, "DataSet 1");
+            String chartLabel = getString(R.string.history_chart_label);
+            set1 = new LineDataSet(values, chartLabel);
 
-            set1.setDrawIcons(false);
+            set1.setDrawIcons(true);
 
             // draw dashed line
             set1.enableDashedLine(10f, 5f, 0f);
@@ -243,31 +303,23 @@ public class HistoryFragment extends Fragment
             // set data
             chart.setData(data);
         }
+        chart.animateX(1500);
     }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-        tvX.setText(String.valueOf(seekBarX.getProgress()));
-        tvY.setText(String.valueOf(seekBarY.getProgress()));
-
-        setData(seekBarX.getProgress(), seekBarY.getProgress());
-
-        // redraw
-        chart.invalidate();
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Log.i("Entry selected", e.toString());
-        Log.i("LOW HIGH", "low: " + chart.getLowestVisibleX() + ", high: " + chart.getHighestVisibleX());
-        Log.i("MIN MAX", "xMin: " + chart.getXChartMin() + ", xMax: " + chart.getXChartMax() + ", yMin: " + chart.getYChartMin() + ", yMax: " + chart.getYChartMax());
+        String formattedSnackbarMessage = String.format( getString(R.string.snackbar_history_element), Math.round(e.getX()), e.getY());
+        Snackbar mySnackbar = Snackbar.make(mView, formattedSnackbarMessage, Snackbar.LENGTH_LONG);
+        mySnackbar.setAction(R.string.snackbar_delete, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String formattedDate = String.valueOf(getCurrentYear()%100) + "-" + String.valueOf(getCurrentMonth()+1) + "-" + String.valueOf(getCurrentDay());
+                Log.d("LOAD_EXCEPTION", "trying to delete: " + formattedDate);
+                mFoodSurveyHistory.deleteTableByDate(mMainActivity, formattedDate);
+                setData();
+            }
+        });
+        mySnackbar.show();
     }
 
     @Override

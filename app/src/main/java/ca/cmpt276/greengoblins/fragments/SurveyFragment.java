@@ -31,10 +31,13 @@ import ca.cmpt276.greengoblins.emission.ExplanationActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
+import ca.cmpt276.greengoblins.foodsurveydata.FoodSurveyHistoryManager;
 
 import static java.lang.Integer.parseInt;
 
 public class SurveyFragment extends Fragment implements View.OnClickListener {
+
+    private MainActivity mMainActivity;
 
     private ArrayList<TextView> mServingValueFields;
     private ArrayList<ImageButton> mButtons;
@@ -63,7 +66,7 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
         getActivity().setTitle(R.string.toolbar_calculator);
         mServingValueFields = new ArrayList<TextView>();
         mServingSizeAmounts = new ArrayList<Integer>();
-
+        mMainActivity = (MainActivity) getActivity();
 
         // Numeric TextView instantiation
         mServingValueFields.add( (TextView) view.findViewById(R.id.textViewBeefAmount ));
@@ -152,8 +155,7 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
 
         mTotalServingValueField = view.findViewById(R.id.textViewTotalAmount);
 
-        MainActivity mat = (MainActivity) getActivity();
-        mActionButton = mat.getActionButton();
+        mActionButton = mMainActivity.getActionButton();
         mActionButton.show();
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -351,18 +353,14 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
     }
 
     private void saveSurvey(){
-        ConsumptionTable newTable = new ConsumptionTable();
+        ConsumptionTable newTable = mMainActivity.createDefaultFoodTable();
         int fieldValue;
         for ( int i = 0; i < mServingValueFields.size(); i++) {
             fieldValue = parseInt(mServingValueFields.get(i).getText().toString());
             newTable.addServing(fieldValue);
         }
-        try {
-            newTable.saveTable(getContext(), "table_01.csv");
-            Log.d("SAVE_TEST", "save successful?");
-        }catch(Exception e){
-            Log.d("SAVE_TEST", e.getMessage());
-        }
+        FoodSurveyHistoryManager foodSaver = new FoodSurveyHistoryManager();
+        foodSaver.saveTableByDate(mMainActivity, newTable);
     }
 
     private void submitSurvey(){
