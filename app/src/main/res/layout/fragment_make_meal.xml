@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/input_meal_name"
+                android:id="@+id/fragment_make_meal_input_meal_name"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -40,10 +40,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/fragment_make_meal_input_main_protein_ingredient"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Main protein ingredient"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorAccent"
+                tools:targetApi="o" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <Space />
 
             <EditText
-                android:id="@+id/input_restaurant_name"
+                android:id="@+id/fragment_make_meal_input_restaurant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -62,7 +83,7 @@
             <Space />
 
             <EditText
-                android:id="@+id/input_location"
+                android:id="@+id/fragment_make_meal_input_location"
                 android:layout_width="202dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -81,7 +102,7 @@
             <Space />
 
             <EditText
-                android:id="@+id/input_description"
+                android:id="@+id/fragment_make_meal_input_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -94,5 +115,14 @@
         </TableRow>
 
     </TableLayout>
+
+    <Button
+        android:id="@+id/fragment_make_meal_post_your_meal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="236dp"
+        android:text="Post your meal"
+        app:layout_constraintTop_toBottomOf="@+id/make_meal_table_layout"
+        tools:layout_editor_absoluteX="26dp" />
 
 </android.support.constraint.ConstraintLayout>

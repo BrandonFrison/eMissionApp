@@ -7,22 +7,15 @@ public class Meal {
     private String restaurantName;
     private String location;
     private String description;
+    private String mealCreatorID;
 
-
-    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location) {
-        this.mealName = mealName;
-        this.mainProteinIngredient = mainProteinIngredient;
-        this.restaurantName = restaurantName;
-        this.location = location;
-        this.description = "";
-    }
-
-    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description) {
+    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID) {
         this.mealName = mealName;
         this.mainProteinIngredient = mainProteinIngredient;
         this.restaurantName = restaurantName;
         this.location = location;
         this.description = description;
+        this.mealCreatorID = mealCreatorID;
     }
 
     public String getMealName() {
@@ -63,5 +56,13 @@ public class Meal {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getMealCreatorID() {
+        return mealCreatorID;
+    }
+
+    public void setMealCreatorID(String mealCreatorID) {
+        this.mealCreatorID = mealCreatorID;
     }
 }

@@ -8,13 +8,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 
 public class MakeMealFragment extends Fragment {
 
     private MainActivity mMainActivity;
+
+    private EditText mMealNameInputField;
+    private EditText mMainProteinIngredientInputField;
+    private EditText mRestaurantNameInputField;
+    private EditText mLocationInputField;
+    private EditText mDescriptionInputField;
+
+    private Button mPostMeal;
 
     @Nullable
     @Override
@@ -24,6 +37,38 @@ public class MakeMealFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mMainActivity = (MainActivity) getActivity();
 
+        mMealNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_meal_name);
+        mMainProteinIngredientInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_main_protein_ingredient);
+        mRestaurantNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_restaurant_name);
+        mLocationInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_location);
+        mDescriptionInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_description);
+
+        mPostMeal = (Button) view.findViewById(R.id.fragment_make_meal_post_your_meal);
+
+        mPostMeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                publishMeal();
+            }
+        });
+    }
+
+    private void publishMeal() {
+        String mealName = mMealNameInputField.getText().toString().trim().toLowerCase();
+        String mainProteinIngredient = mMainProteinIngredientInputField.getText().toString().trim().toLowerCase();
+        String restaurantName = mRestaurantNameInputField.getText().toString().trim().toLowerCase();
+        String location = mLocationInputField.getText().toString().trim().toLowerCase();
+        String description = mDescriptionInputField.getText().toString().trim().toLowerCase();
+
+        final DatabaseReference mealDatabase;
+        mealDatabase = FirebaseDatabase.getInstance().getReference("Meals");
+
+        final String mealCreatorID = mMainActivity.getCurrentUser().getUid();
+
+        String mealID = mealDatabase.push().getKey();
+        Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+        mealDatabase.child(mealID).setValue(meal);
     }
 }
