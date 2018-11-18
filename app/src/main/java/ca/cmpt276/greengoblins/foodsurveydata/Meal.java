@@ -9,6 +9,10 @@ public class Meal {
     private String description;
     private String mealCreatorID;
 
+    // Need this default constructor in order for datasnapshot to work
+    public Meal() {
+    }
+
     public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID) {
         this.mealName = mealName;
         this.mainProteinIngredient = mainProteinIngredient;
