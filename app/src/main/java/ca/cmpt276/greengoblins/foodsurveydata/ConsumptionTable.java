@@ -87,25 +87,6 @@ public class ConsumptionTable implements Serializable {
         isMale = male;
     }
 
-
-
-    /*public int saveTable(Context context, String fileName) throws FileNotFoundException, IOException {
-        FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-        ObjectOutputStream os = new ObjectOutputStream(fos);
-        os.writeObject(foodServingSizeGrams);
-        os.close();
-        fos.close();
-        return 1;
-    }*/
-    /*public int loadTable(Context context, String fileName)throws FileNotFoundException, IOException, ClassNotFoundException {
-        FileInputStream fis = context.openFileInput(fileName);
-        ObjectInputStream is = new ObjectInputStream(fis);
-        foodServingSizeGrams = (ArrayList<Integer>) is.readObject();
-        is.close();
-        fis.close();
-        return 1;
-    }*/
-
     public int getSize(){
         return maxSize;
     }

@@ -1,18 +1,13 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -20,34 +15,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
@@ -58,15 +44,9 @@ public class HistoryFragment extends Fragment
 
     private MainActivity mMainActivity;
     private FoodSurveyHistoryManager mFoodSurveyHistory;
-   /* private ArrayList<ConsumptionTable> mTableHistory;
-    private ArrayList<String> mTableDates;*/
     private LineChart chart;
     private Spinner mDropdownChooseMonth;
-    private SeekBar seekBarX, seekBarY;
-    private TextView tvX, tvY;
     private View mView;
-    private MPPointF mOffset;
-    private TextView mMarker;
 
     @Nullable
     @Override
@@ -82,7 +62,6 @@ public class HistoryFragment extends Fragment
         mMainActivity = (MainActivity) getActivity();
         mView = getView();
         mFoodSurveyHistory = new FoodSurveyHistoryManager();
-        mMarker = (TextView) view.findViewById(R.id.marker);
 
         int currentMonth = getCurrentMonth();
 
@@ -310,6 +289,7 @@ public class HistoryFragment extends Fragment
     public void onValueSelected(Entry e, Highlight h) {
         String formattedSnackbarMessage = String.format( getString(R.string.snackbar_history_element), Math.round(e.getX()), e.getY());
         Snackbar mySnackbar = Snackbar.make(mView, formattedSnackbarMessage, Snackbar.LENGTH_LONG);
+        mySnackbar.setActionTextColor(mView.getResources().getColor(R.color.colorLightGreen, null));
         mySnackbar.setAction(R.string.snackbar_delete, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,6 +304,6 @@ public class HistoryFragment extends Fragment
 
     @Override
     public void onNothingSelected() {
-        Log.i("Nothing selected", "Nothing selected.");
+
     }
 }
