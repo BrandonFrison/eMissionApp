@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
-import ca.cmpt276.greengoblins.fragments.HistoryFragment;
+import ca.cmpt276.greengoblins.fragments.ResultFragment;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
 import ca.cmpt276.greengoblins.fragments.MealsListFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_pledge) {
             fragment = new PledgeFragment();
         } else if (id == R.id.nav_history) {
-            fragment = new HistoryFragment();
+            fragment = new ResultFragment();
         } else if (id == R.id.nav_about) {
             fragment = new AboutPageFragment();
         } else if (id == R.id.nav_community) {

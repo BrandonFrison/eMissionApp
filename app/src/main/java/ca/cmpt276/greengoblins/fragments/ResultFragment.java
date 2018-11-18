@@ -32,7 +32,7 @@ import java.util.List;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 
-public class HistoryFragment extends Fragment {
+public class ResultFragment extends Fragment {
 
     final double DrivenConvectionNuder = .200;  // 1 kg per 5 km
     public ArrayList<Integer> servingSizes;
