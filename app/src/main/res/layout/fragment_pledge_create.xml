@@ -16,7 +16,7 @@
         android:id="@+id/iv_personal_icon"
         android:layout_width="140dp"
         android:layout_height="110dp"
-        android:src="@drawable/treepledge"
+        android:src="@drawable/treeavatar"
         app:layout_constraintStart_toStartOf="@id/make_pledge_table_layout"
         app:layout_constraintTop_toTopOf="@id/make_pledge_table_layout"
         android:contentDescription="@string/profile_picture" />

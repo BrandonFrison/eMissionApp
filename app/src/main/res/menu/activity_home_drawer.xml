@@ -28,7 +28,13 @@
                 android:id="@+id/nav_community"
                 android:icon="@drawable/baseline_pan_tool_24"
                 android:title="@string/menu_nav_community" />
+            <item
+                android:id="@+id/nav_map"
+                android:icon="@drawable/baseline_fastfood_24"
+                android:title="@string/menu_nav_map"
+                />
         </menu>
     </item>
+
 
 </menu>
