@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class PupupMealDetail extends AppCompatActivity {
+public class PopupMealDetail extends AppCompatActivity {
     private TextView mMealInfo;
     boolean mViewMyMeal = false;  // true when user click the check box to view his own meals
     private Button mDeleteButton;
@@ -17,7 +17,7 @@ public class PupupMealDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pupup_meal_detail);
+        setContentView(R.layout.activity_popup_meal_detail);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
