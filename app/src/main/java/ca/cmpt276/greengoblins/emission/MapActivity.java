@@ -2,6 +2,8 @@ package ca.cmpt276.greengoblins.emission;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +13,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -23,12 +29,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_REQUEST_PERMISSION = 1234;
     private static final float MAP_ZOOM = 15f;
+
+    private EditText searchBar;
 
     private Boolean permissionFlag = false;
     private GoogleMap map;
@@ -50,6 +62,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(false);
 
+            initialization();
         }
     }
 
@@ -57,7 +70,41 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        searchBar = (EditText)findViewById(R.id.search_bar_map);
         getLocationPermission();
+
+        }
+
+        private void initialization(){
+            searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER){
+                        //execute locating function
+                        getLocationOfSearch();
+                    }
+                    return false;
+                }
+            });
+        }
+
+        private void getLocationOfSearch(){
+            String searchInput = searchBar.getText().toString();
+
+            Geocoder geocoder = new Geocoder(MapActivity.this);
+            List<Address> list = new ArrayList<>();
+            try{
+                list = geocoder.getFromLocationName(searchInput, 1);
+            }catch(IOException e){
+                Log.e("map activity", "getLocationOfSearch: error on input string" + e.getMessage() );
+            }
+
+            if(list.size() > 0){
+                Address address = list.get(0);
+
+
+            }
         }
 
         private void getLocationPermission(){

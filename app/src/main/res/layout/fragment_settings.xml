@@ -14,7 +14,7 @@
         <Button
             android:id="@+id/buttonClearLocalData"
             android:layout_width="match_parent"
-            style="@style/SpinnerTheme"
+            style="@style/ButtonTheme"
             android:textSize="18sp"
             android:layout_height="wrap_content"
             android:text="@string/btn_clear" />
@@ -22,7 +22,7 @@
         <Button
             android:id="@+id/buttonLogOut"
             android:layout_width="match_parent"
-            style="@style/SpinnerTheme"
+            style="@style/ButtonTheme"
             android:layout_marginVertical="1dp"
             android:textSize="18sp"
             android:layout_height="wrap_content"

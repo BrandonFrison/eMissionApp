@@ -131,18 +131,24 @@
         <Button
             android:id="@+id/button_share_pledge"
             android:layout_width="match_parent"
+            style="@style/ButtonTheme"
+            android:textSize="20sp"
             android:layout_height="wrap_content"
             android:text="@string/button_share_pledge" />
 
         <Button
             android:id="@+id/button_publish_pledge"
             android:layout_width="match_parent"
+            style="@style/ButtonTheme"
+            android:textSize="20sp"
             android:layout_height="wrap_content"
             android:text="@string/button_publish_pledge" />
 
         <Button
             android:id="@+id/button_remove_pledge"
             android:layout_width="match_parent"
+            style="@style/ButtonTheme"
+            android:textSize="20sp"
             android:layout_height="wrap_content"
             android:text="@string/button_remove_pledge" />
 

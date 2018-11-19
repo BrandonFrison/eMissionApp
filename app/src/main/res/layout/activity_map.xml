@@ -23,15 +23,28 @@
         android:layout_marginTop="10dp"
         android:layout_marginHorizontal="10dp"
         android:elevation="10dp"
-        style="@style/SpinnerTheme"
+        style="@style/SearchTheme"
         android:id="@+id/mapSearchBar">
 
         <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:id="@+id/icon_search"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon_search"/>
+        
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/icon_search"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:hint="Search for restaurants"
+            android:id="@+id/search_bar_map"
+            android:imeOptions="actionSearch"
+            />
     </RelativeLayout>
     
     </FrameLayout>
