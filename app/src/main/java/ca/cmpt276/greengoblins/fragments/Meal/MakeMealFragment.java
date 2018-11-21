@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -62,13 +63,49 @@ public class MakeMealFragment extends Fragment {
         String location = mLocationInputField.getText().toString().trim().toLowerCase();
         String description = mDescriptionInputField.getText().toString().trim().toLowerCase();
 
-        final DatabaseReference mealDatabase;
-        mealDatabase = FirebaseDatabase.getInstance().getReference("Meals");
+        if(isInputValid(mealName, mainProteinIngredient, restaurantName, location)) {
+            final DatabaseReference mealDatabase;
+            mealDatabase = FirebaseDatabase.getInstance().getReference("Meals");
 
-        final String mealCreatorID = mMainActivity.getCurrentUser().getUid();
+            final String mealCreatorID = mMainActivity.getCurrentUser().getUid();
 
-        String mealID = mealDatabase.push().getKey();
-        Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
-        mealDatabase.child(mealID).setValue(meal);
+            String mealID = mealDatabase.push().getKey();
+            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            mealDatabase.child(mealID).setValue(meal);
+
+            clearInputFields();
+            Toast.makeText(mMainActivity, R.string.meal_successfully_published, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isInputValid(String mealName, String mainProteinIngredient, String restaurantName, String location) {
+        boolean isValid = true;
+
+        if( mealName.isEmpty() ){
+            Toast.makeText( mMainActivity, R.string.empty_meal_name_message, Toast.LENGTH_SHORT ).show();
+            isValid = false;
+        }
+        else if( mainProteinIngredient.isEmpty() ){
+            Toast.makeText( mMainActivity, R.string.empty_main_protein_ingredient_message, Toast.LENGTH_SHORT ).show();
+            isValid = false;
+        }
+        else if( restaurantName.isEmpty() ) {
+            Toast.makeText(mMainActivity, R.string.empty_restaurant_name_message, Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        else if( location.isEmpty() ) {
+            Toast.makeText(mMainActivity, R.string.empty_location_message, Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    void clearInputFields() {
+        mMealNameInputField.getText().clear();
+        mMainProteinIngredientInputField.getText().clear();
+        mRestaurantNameInputField.getText().clear();
+        mLocationInputField.getText().clear();
+        mDescriptionInputField.getText().clear();
     }
 }
