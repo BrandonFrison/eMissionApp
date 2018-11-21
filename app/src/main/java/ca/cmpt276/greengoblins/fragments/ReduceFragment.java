@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static java.lang.Integer.parseInt;
+
 public class ReduceFragment extends Fragment {
     final static int MIN_VALUE_FOR_CHART = 0;
     final static double METRO_VANCOUVER_POPULATION = 2.463E6;
@@ -50,6 +55,7 @@ public class ReduceFragment extends Fragment {
     private TextView mCollectiveSavings;
     ConsumptionTable mOldMealPlan;
     HorizontalBarChart mCO2eComparisonChart;
+    private double savings = 0.0d;
     public  float DrivenConvectionNumber = .200f;  // 200 g per 1 km
     //round number  to 2 decimal
     public DecimalFormat df = new DecimalFormat(".00");
@@ -123,15 +129,33 @@ public class ReduceFragment extends Fragment {
         mJoinGreenFoodChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment newFragment = new PledgeFragment();
-                mMainActivity.startFragment( newFragment, true, false);
+                saveSavings();
             }
         });
+    }
 
+    private void saveSavings(){
+       if(savings > 0){
+           if( !mMainActivity.checkUserLogin() ) {
+               mMainActivity.popupLogin();
+           } else {
+               Bundle bundle = new Bundle();
+               bundle.putDouble("savings_data", savings);
+
+               Fragment pledgeFragment = new MakePledgeFragment();
+               pledgeFragment.setArguments( bundle );
+
+               FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+               FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+               fragmentTransaction.replace( R.id.frame_activity_content, pledgeFragment );
+               fragmentTransaction.addToBackStack(null);
+               fragmentTransaction.commit();
+           }
+       }
     }
 
         private void calculateSavingsAndUpdateGraph(double co2eForNewPlan) {
-            double savings = mOldMealPlan.calculateTotalCO2e() - co2eForNewPlan;
+            savings = mOldMealPlan.calculateTotalCO2e() - co2eForNewPlan;
 
             // If negative savings
             if(savings < 0) {

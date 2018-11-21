@@ -132,6 +132,7 @@
             android:id="@+id/button_share_pledge"
             android:layout_width="match_parent"
             style="@style/ButtonTheme"
+            android:layout_margin="5dp"
             android:textSize="20sp"
             android:layout_height="wrap_content"
             android:text="@string/button_share_pledge" />
@@ -140,6 +141,7 @@
             android:id="@+id/button_publish_pledge"
             android:layout_width="match_parent"
             style="@style/ButtonTheme"
+            android:layout_margin="5dp"
             android:textSize="20sp"
             android:layout_height="wrap_content"
             android:text="@string/button_publish_pledge" />
@@ -148,12 +150,12 @@
             android:id="@+id/button_remove_pledge"
             android:layout_width="match_parent"
             style="@style/ButtonTheme"
+            android:layout_margin="5dp"
             android:textSize="20sp"
             android:layout_height="wrap_content"
             android:text="@string/button_remove_pledge" />
 
     </LinearLayout>
-
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>
