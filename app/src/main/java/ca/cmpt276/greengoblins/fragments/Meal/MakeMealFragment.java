@@ -40,7 +40,7 @@ public class MakeMealFragment extends Fragment {
         mMainActivity = (MainActivity) getActivity();
 
         mActionButton = mMainActivity.getActionButton();
-        mActionButton.setImageResource(R.drawable.baseline_add_24);
+        mActionButton.setImageResource(R.drawable.ic_menu_send);
         mActionButton.show();
 
         mMealNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_meal_name);

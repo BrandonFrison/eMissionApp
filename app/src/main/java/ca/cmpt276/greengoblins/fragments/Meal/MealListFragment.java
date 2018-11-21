@@ -62,6 +62,7 @@ public class MealListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMainActivity = (MainActivity) getActivity();
+        mMainActivity.setTitle(R.string.toolbar_pledge_list);
 
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.baseline_add_24);
@@ -169,7 +170,6 @@ public class MealListFragment extends Fragment {
     }
 
     //category int relates to order of spinner, aka meal_list_filters in values.xml
-    //null searchterm shows full list
     private void searchCategory( int category, String searchTerm ) {
         mFilteredMealList.clear();
         for ( Meal listedDatabaseMeal : mDatabaseMealList) {
@@ -201,7 +201,8 @@ public class MealListFragment extends Fragment {
         if( searchText.isEmpty() ){
             clearFilters();
             if( searchFilter.equals(mFilterOptions[0]) ){ //No Filter
-                queryData(mMealsDatabase);
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME );
+                mMealAdapter.notifyDataSetChanged();
             } else if ( searchFilter.equals(mFilterOptions[1]) ){ //Name
                 Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME );
                 mMealAdapter.notifyDataSetChanged();

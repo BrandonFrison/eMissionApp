@@ -19,6 +19,8 @@
     <string name="toolbar_pledges">Pledges</string>
     <string name="toolbar_pledge_list">Worldwide Pledges</string>
     <string name="toolbar_pledge_create">Make your own pledge!</string>
+    <string name="toolbar_meal_list">Community Green Challenge Meals</string>
+    <string name="toolbar_meal_create">Share your own meal!</string>
     <string name="toolbar_settings">Settings</string>
 
     <!--Preset Diet Strings-->
