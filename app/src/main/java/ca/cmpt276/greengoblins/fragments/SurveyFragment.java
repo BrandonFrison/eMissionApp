@@ -61,10 +61,15 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.toolbar_calculator);
+
         mServingValueFields = new ArrayList<TextView>();
         mServingSizeAmounts = new ArrayList<Integer>();
         mMainActivity = (MainActivity) getActivity();
+        mMainActivity.setTitle(R.string.toolbar_calculator);
+
+        mActionButton = mMainActivity.getActionButton();
+        mActionButton.setImageResource(R.drawable.ic_menu_send);
+        mActionButton.show();
 
         // Numeric TextView instantiation
         mServingValueFields.add( (TextView) view.findViewById(R.id.textViewBeefAmount ));
@@ -134,8 +139,6 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-
-
         mPresetMealSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -153,8 +156,6 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
 
         mTotalServingValueField = view.findViewById(R.id.textViewTotalAmount);
 
-        mActionButton = mMainActivity.getActionButton();
-        mActionButton.show();
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
