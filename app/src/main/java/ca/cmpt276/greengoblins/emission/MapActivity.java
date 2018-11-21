@@ -1,6 +1,7 @@
 package ca.cmpt276.greengoblins.emission;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -32,6 +35,7 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -59,9 +63,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static final float MAP_ZOOM = 14f;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
             new LatLng(-40, -168), new LatLng(71, 136));
+    private static final int PLACE_PICKER_REQUEST = 1;
 
     private AutoCompleteTextView searchBar;
-    private ImageView locationButton, infoButton;
+    private ImageView locationButton, infoButton, nearbyButton;
 
     private Boolean permissionFlag = false;
     private GoogleMap map;
@@ -104,6 +109,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar_map);
         locationButton = (ImageView)findViewById(R.id.icon_gps);
         infoButton = (ImageView)findViewById(R.id.icon_info);
+        nearbyButton = (ImageView)findViewById(R.id.icon_nearby);
         getLocationPermission();
 
         }
@@ -140,6 +146,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             });
 
+            nearbyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int PLACE_PICKER_REQUEST = 1;
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                    try{
+                        startActivityForResult(builder.build(MapActivity.this), PLACE_PICKER_REQUEST);
+                    }catch (GooglePlayServicesNotAvailableException e){
+                        Log.e("map activity", "onClick: not available exception " + e.getMessage());
+                    }catch (GooglePlayServicesRepairableException e){
+                        Log.e("map activity", "onClick: repairable exception " + e.getMessage());
+                    }
+                }
+            });
+
             infoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -158,6 +180,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             hideKeyboard();
         }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                String toastMsg = String.format("%s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+                PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, place.getId());
+                placeResult.setResultCallback(updatePlaceDetailsCallback);
+            }
+        }
+    }
 
         private void getLocationOfSearch(){
             String searchInput = searchBar.getText().toString();
