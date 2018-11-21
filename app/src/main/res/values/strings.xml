@@ -19,6 +19,8 @@
     <string name="toolbar_pledges">Pledges</string>
     <string name="toolbar_pledge_list">Worldwide Pledges</string>
     <string name="toolbar_pledge_create">Make your own pledge!</string>
+    <string name="toolbar_meal_list">Community Green Challenge Meals</string>
+    <string name="toolbar_meal_create">Share your own meal!</string>
     <string name="toolbar_settings">Settings</string>
 
     <!--Preset Diet Strings-->
@@ -79,29 +81,26 @@
         Try to beat my pledge of %s
         tonnes of CO2e reduced!\n
     </string>
-    
 
     <!--Pledge List-->
     <string name="pledge_list_text">View the pledges made so far!</string>
     <string name="pledge_filter_label">Sort by...</string>
     <string name="filter_prompt">Filter by...</string>
     <string-array name="pledge_list_filters">
-        <item>Filter</item>
+        <item>Filter by</item>
         <item>First Name</item>
         <item>City</item>
         <item>Pledge Amount</item>
     </string-array>
-    <string-array name="meal_list_filters">
-        <item>High chicken diet</item>
-        <item>High beef diet</item>
-        <item>High pork diet</item>
-        <item>low meat diet</item>
-        <item>Vegan</item>
-    </string-array>
     <string name="anonymous_name">Anonymous</string>
-    <string name="first_name_option">firstName</string>
-    <string name="city_option">city</string>
-    <string name="pledge_amount_option">pledgeAmount</string>
+
+    <!--Meal List-->
+    <string-array name="meal_list_filters">
+        <item>Filter by</item>
+        <item>Name</item>
+        <item>Protein Type</item>
+        <item>Location</item>
+    </string-array>
 
     <!--Make Pledge Strings-->
     <string name="input_first_name">First Name</string>
@@ -146,8 +145,7 @@
     <string name="empty_pledge_message">Please enter a pledge amount</string>
     <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
     <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
-
-
+    <string name="error_bad_number_format">Please enter a numerical value</string>
 
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -207,7 +205,6 @@
         How do you use this calculator?\n\n
         \nEnter your age and select your gender first.\n\nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\nYou can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
     <string name="label_help">How to use calculator</string>
-    <string name="label_add_meal">Add your own meal</string>
     <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
     <string name="btn_clear">Clear Local History</string>
     <string name="btn_logout">Log Out</string>
