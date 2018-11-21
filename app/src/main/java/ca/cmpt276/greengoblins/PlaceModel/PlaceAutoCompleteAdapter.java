@@ -128,7 +128,7 @@ public class PlaceAutoCompleteAdapter extends ArrayAdapter<AutocompletePredictio
 
             final Status status = autocompletePredictions.getStatus();
             if (!status.isSuccess()) {
-                Toast.makeText(getContext(), "Error getting API: " + status.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Turn on location and Internet Connection to use this feature", Toast.LENGTH_SHORT).show();
                 Log.e("PlaceAutoCompleteAd", "Error getting autocomplete: " + status.toString());
                 autocompletePredictions.release();
                 return null;

@@ -1,6 +1,7 @@
 package ca.cmpt276.greengoblins.emission;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -17,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
@@ -40,6 +43,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -60,13 +64,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_REQUEST_PERMISSION = 1234;
-    private static final float MAP_ZOOM = 14f;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-            new LatLng(-40, -168), new LatLng(71, 136));
     private static final int PLACE_PICKER_REQUEST = 1;
+    private static final float MAP_ZOOM = 15f;
 
+    private LatLngBounds currentBounds;
     private AutoCompleteTextView searchBar;
-    private ImageView locationButton, infoButton, nearbyButton;
+    private ImageView locationButton, infoButton, nearbyButton, passLocationButton;
 
     private Boolean permissionFlag = false;
     private GoogleMap map;
@@ -75,6 +78,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private GoogleApiClient mGoogleApiClient;
     private PlaceInfo mPlace;
     private Marker mMarker;
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -97,6 +101,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             map.setMyLocationEnabled(true);
             map.getUiSettings().setMyLocationButtonEnabled(false);
 
+
             initialization();
         }
     }
@@ -110,6 +115,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         locationButton = (ImageView)findViewById(R.id.icon_gps);
         infoButton = (ImageView)findViewById(R.id.icon_info);
         nearbyButton = (ImageView)findViewById(R.id.icon_nearby);
+        passLocationButton = (ImageView)findViewById(R.id.icon_passlocation);
         getLocationPermission();
 
         }
@@ -124,16 +130,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     .build();
             searchBar.setOnItemClickListener(mAutoCompleteClickListener);
 
-            mPlaceAutoCompleteAdapter = new PlaceAutoCompleteAdapter(this, mGoogleApiClient, LAT_LNG_BOUNDS, null);
+            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                    .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
+                    .build();
+
+            mPlaceAutoCompleteAdapter = new PlaceAutoCompleteAdapter(this, mGoogleApiClient, currentBounds, typeFilter);
 
             searchBar.setAdapter(mPlaceAutoCompleteAdapter);
 
             searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER){
+                    if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER || event.getAction() == KeyEvent.KEYCODE_SEARCH ){
                         //execute locating function
                         getLocationOfSearch();
+                        searchBar.setText("");
                     }
                     return false;
                 }
@@ -143,22 +154,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 @Override
                 public void onClick(View v) {
                     getCurrentLocation();
+                    mPlace = null;
+                }
+            });
+
+            passLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    passMealLocation();
+                    try{
+                    if(mMarker.isInfoWindowShown()) {
+                        mMarker.hideInfoWindow();
+                    }
+                     }catch (NullPointerException e){
+                    Log.e("map act", "onClick: info button " + e.getMessage());
+                 }
                 }
             });
 
             nearbyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int PLACE_PICKER_REQUEST = 1;
-                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-                    try{
-                        startActivityForResult(builder.build(MapActivity.this), PLACE_PICKER_REQUEST);
-                    }catch (GooglePlayServicesNotAvailableException e){
-                        Log.e("map activity", "onClick: not available exception " + e.getMessage());
-                    }catch (GooglePlayServicesRepairableException e){
-                        Log.e("map activity", "onClick: repairable exception " + e.getMessage());
-                    }
+                    findNearbyPlaces();
                 }
             });
 
@@ -178,8 +195,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             });
 
+            ArrayList<LatLng> latLngs = fillArrayFromDatabase();
+            fillMapFromArray(latLngs);
             hideKeyboard();
         }
+
+    private void findNearbyPlaces(){
+        int PLACE_PICKER_REQUEST = 1;
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try{
+            startActivityForResult(builder.build(MapActivity.this), PLACE_PICKER_REQUEST);
+        }catch (GooglePlayServicesNotAvailableException e){
+            Log.e("map activity", "onClick: not available exception " + e.getMessage());
+        }catch (GooglePlayServicesRepairableException e){
+            Log.e("map activity", "onClick: repairable exception " + e.getMessage());
+        }
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
@@ -194,7 +225,31 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+    private void fillMapFromArray(ArrayList<LatLng> mealLocations){
+        for(int i = 0; i < mealLocations.size(); i++){
+            MarkerOptions mOptions = new MarkerOptions().position(mealLocations.get(i)).title("Green Meal").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            map.addMarker(mOptions);
+        }
+    }
+
+    private ArrayList<LatLng> fillArrayFromDatabase(){
+        ArrayList<LatLng> mealLocationsDatabase = new ArrayList<>();
+        return mealLocationsDatabase;
+    }
+
+    private void passMealLocation(){
+        //either to grab location of device or place longitude and latitude that you have chosen
+        Double longitude, latitude = 0d;
+        if(mPlace != null) {
+            LatLng mealLocation = mPlace.getLatLng();
+            longitude = mealLocation.longitude;
+            latitude = mealLocation.latitude;
+        }
+        //here is where we can either pass meal location to the meal plan screen or pass the latitude and longitude so we can display the entire database of green meals on the map.
+    }
+
         private void getLocationOfSearch(){
+            hideKeyboard();
             String searchInput = searchBar.getText().toString();
 
             Geocoder geocoder = new Geocoder(MapActivity.this);
@@ -207,7 +262,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             if(list.size() > 0){
                 Address address = list.get(0);
-
                 moveCameraToLatLng(new LatLng(address.getLatitude(), address.getLongitude()), MAP_ZOOM, address.getAddressLine(0));
 
             }
@@ -231,6 +285,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         }
 
+    private LatLngBounds findBoundsForAutoComplete(LatLng latLng){
+            LatLngBounds bounds = new LatLngBounds(new LatLng((latLng.latitude - 2), latLng.longitude - 2),new LatLng((latLng.latitude + 2),latLng.longitude + 2));
+            return bounds;
+    }
+
         private void getCurrentLocation(){
             Log.d("map activity", "getCurrentLocation: gets the devices location if enabled");
 
@@ -244,7 +303,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             if(task.isSuccessful() && task.getResult() != null){
                                 Log.d("map activity", "getCurrentLocation: found location");
                                 Location currentLocation = (Location) task.getResult();
-                                moveCameraToLatLng(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), MAP_ZOOM, "Your Location");
+                                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                                currentBounds = findBoundsForAutoComplete(latLng);
+                                moveCameraToLatLng(latLng, MAP_ZOOM, "Your Location");
                             }else{
                                 Log.d("map activity", "getCurrentLocation: location null");
                                 Toast.makeText(MapActivity.this, "unable to find current location",Toast.LENGTH_SHORT).show();
@@ -260,8 +321,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         private void moveCameraToLatLng(LatLng latLng, float zoomAmt, String placeName){
             Log.d("map activity", "moveCameraToLatLng: moving camera to lat / lng" + latLng.latitude + " " + latLng.longitude );
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomAmt));
+
             if(!placeName.equals("Your Location")){
-                MarkerOptions options = new MarkerOptions().position(latLng).title(placeName);
+                MarkerOptions options = new MarkerOptions().position(latLng).title(placeName).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
                 map.addMarker(options);
             }
             hideKeyboard();
@@ -272,8 +334,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             Log.d("map activity", "moveCameraToLatLng: moving camera to lat / lng" + latLng.latitude + " " + latLng.longitude );
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomAmt));
 
-            map.clear();
-
             map.setInfoWindowAdapter(new CustomInfoWindowAdapter(MapActivity.this));
 
             if(placeInfo != null){
@@ -283,7 +343,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             "Rating: " + placeInfo.getRating() + "\n" +
                             "Website: " + placeInfo.getWebsiteUri() + "\n";
 
-                    MarkerOptions options = new MarkerOptions().position(latLng).title(placeInfo.getName()).snippet(description);
+                    MarkerOptions options = new MarkerOptions().position(latLng).title(placeInfo.getName()).snippet(description).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
                     mMarker = map.addMarker(options);
 
                 }catch (NullPointerException e){
@@ -325,7 +385,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
     private void hideKeyboard(){
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        InputMethodManager inputManager = (InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private AdapterView.OnItemClickListener mAutoCompleteClickListener = new AdapterView.OnItemClickListener() {
@@ -333,6 +394,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             hideKeyboard();
             final AutocompletePrediction item = mPlaceAutoCompleteAdapter.getItem(position);
+
             final String placeID = item.getPlaceId();
 
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeID);

@@ -40,6 +40,7 @@
             android:layout_height="match_parent"
             android:layout_toEndOf="@id/icon_search"
             android:layout_centerVertical="true"
+            android:inputType="text"
             android:textSize="20sp"
             android:textColor="#000"
             android:hint="Search for restaurants"
@@ -51,8 +52,8 @@
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapSearchBar"
         android:scaleType="centerCrop"
@@ -62,8 +63,8 @@
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapSearchBar"
         android:scaleType="centerCrop"
@@ -74,13 +75,24 @@
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/icon_info"
         android:scaleType="centerCrop"
         android:id="@+id/icon_nearby"
         android:src="@drawable/icon_nearby"
         />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon_gps"
+            android:scaleType="centerCrop"
+            android:id="@+id/icon_passlocation"
+            android:src="@drawable/icon_passlocation"/>
 
     </android.support.constraint.ConstraintLayout>
