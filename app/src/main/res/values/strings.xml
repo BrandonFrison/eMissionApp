@@ -46,6 +46,10 @@
     <string name="button_update_pledge">Update your pledge</string>
     <string name="button_remove_pledge">Remove your pledge</string>
     <string name="hint_search_box">Search...</string>
+    <string name="history_chart_label">CO2e Calculator Totals</string>
+    <string name="no_data_saved">No data available for this month</string>
+    <string name="snackbar_history_element">Day %d CO2e total: %,.2f</string>
+    <string name="snackbar_delete">Delete</string>
 
     <!--Survey Activity Strings-->
     <string name="survey_explanation">Approximate How many grams of each food type do you eat daily in an average week?</string>
@@ -111,6 +115,27 @@
     <string name="pledge_removed">Pledge removed</string>
     <string name="pledge_updated">Pledge updated</string>
 
+    <!--MealList Strings-->
+    <string name="textview_meal_list_description">View all community submitted meals!</string>
+    <string name="checkbox_show_my_meals">Only show my meals</string>
+    <string name="button_add_meal">Add a meal</string>
+
+    <!--Calendar/Date Strings-->
+    <string-array name="months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
     <!--Debug/Error message strings-->
     <string name="text_view_placeholder">Could not load results.</string>
     <string name="empty_username_message">Please enter an email</string>
@@ -135,11 +160,11 @@
     <!--Navigation Drawer Menu Strings-->
     <string name="menu_nav_calculator">CO2e Calculator</string>
     <string name="menu_nav_pledge">Pledges</string>
-    <string name="menu_nav_meals">Meals</string>
     <string name="menu_nav_history">History</string>
     <string name="menu_nav_about">Learn More</string>
     <string name="menu_title_network">Community</string>
     <string name="menu_nav_community">View All Pledges</string>
+    <string name="menu_nav_meals">View Meals</string>
 
     <!--About Page Content Strings-->
     <string name="about_text_1">

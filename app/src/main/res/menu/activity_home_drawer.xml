@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_calculator"
-            android:icon="@drawable/baseline_fastfood_24"
+            android:icon="@drawable/baseline_format_list_numbered_rtl_24"
             android:title="@string/menu_nav_calculator" />
         <item
             android:id="@+id/nav_pledge"
@@ -32,6 +32,10 @@
                 android:id="@+id/nav_community"
                 android:icon="@drawable/baseline_pan_tool_24"
                 android:title="@string/menu_nav_community" />
+            <item
+                android:id="@+id/nav_meals"
+                android:icon="@drawable/baseline_fastfood_24"
+                android:title="@string/menu_nav_meals" />
         </menu>
     </item>
 

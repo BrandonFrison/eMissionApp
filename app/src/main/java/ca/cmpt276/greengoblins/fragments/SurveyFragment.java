@@ -1,6 +1,5 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,12 +29,17 @@ import ca.cmpt276.greengoblins.emission.ExplanationActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
+import ca.cmpt276.greengoblins.foodsurveydata.FoodSurveyHistoryManager;
 
 import static java.lang.Integer.parseInt;
 
-public class SurveyFragment extends Fragment {
+public class SurveyFragment extends Fragment implements View.OnClickListener {
+
+    private MainActivity mMainActivity;
 
     private ArrayList<TextView> mServingValueFields;
+    private ArrayList<ImageButton> mButtons;
+
     private TextView mTotalServingValueField;
     private RadioGroup mGenderSelection;
     private TextView mTotalServingNeededField;
@@ -45,15 +48,8 @@ public class SurveyFragment extends Fragment {
     private Spinner mPresetMealSelection;
     private RadioButton mGenderMale;
     private RadioButton mGenderFemale;
-    private TextView mTextMessage;
-    private TextView mBeefTextView;
-    private TextView mPorkTextView;
-    private TextView mChickenTextView;
-    private TextView mFishTextView;
-    private TextView mEggsTextView;
-    private TextView mBeanTextView;
-    private TextView mVegetablesTextView;
-    FloatingActionButton mActionButton;
+
+    private FloatingActionButton mActionButton;
     double multiplier = 1.0;
 
     @Nullable
@@ -68,16 +64,17 @@ public class SurveyFragment extends Fragment {
         getActivity().setTitle(R.string.toolbar_calculator);
         mServingValueFields = new ArrayList<TextView>();
         mServingSizeAmounts = new ArrayList<Integer>();
-
+        mMainActivity = (MainActivity) getActivity();
 
         // Numeric TextView instantiation
-        mServingValueFields.add((TextView) view.findViewById(R.id.textViewBeefAmount));
-        mServingValueFields.add((TextView) view.findViewById(R.id.textViewPorkAmount));
-        mServingValueFields.add((TextView) view.findViewById(R.id.textViewChickenAmount));
-        mServingValueFields.add((TextView) view.findViewById(R.id.textViewFishAmount));
-        mServingValueFields.add((TextView) view.findViewById(R.id.textViewEggsAmount));
-        mServingValueFields.add((TextView) view.findViewById(R.id.textViewBeansAmount));
-        mServingValueFields.add((TextView) view.findViewById(R.id.textViewVegetablesAmount));
+        mServingValueFields.add( (TextView) view.findViewById(R.id.textViewBeefAmount ));
+        mServingValueFields.add( (TextView) view.findViewById(R.id.textViewPorkAmount ));
+        mServingValueFields.add( (TextView) view.findViewById(R.id.textViewChickenAmount ));
+        mServingValueFields.add( (TextView) view.findViewById(R.id.textViewFishAmount ));
+        mServingValueFields.add( (TextView) view.findViewById(R.id.textViewEggsAmount ));
+        mServingValueFields.add( (TextView) view.findViewById(R.id.textViewBeansAmount ));
+        mServingValueFields.add( (TextView) view.findViewById(R.id.textViewVegetablesAmount ));
+
         mTotalServingNeededField = (TextView)view.findViewById(R.id.textViewTotalNeededAmount);
         mGenderSelection = (RadioGroup)view.findViewById(R.id.radioGroupGender);
         mPresetMealSelection = (Spinner)view.findViewById(R.id.spinnerChooseMealPreset);
@@ -85,6 +82,26 @@ public class SurveyFragment extends Fragment {
         mGenderFemale = (RadioButton)view.findViewById(R.id.radioButtonFemale);
         mGenderMale = (RadioButton)view.findViewById(R.id.radioButtonMale);
         ImageView ExplanationButton =(ImageView)view.findViewById(R.id.explanationButton);
+
+        mButtons = new ArrayList<ImageButton>();
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonBeefleftarrow ) );
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonBeefrightarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonPorkleftarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonPorkrightarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonChickenleftarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonChickenrightarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonFishleftarrow ) );
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonFishrightarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonEggsleftarrow ) );
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonEggsrightarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonBeansleftarrow ) );
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonBeansrightarrow ));
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonVegetablesleftarrow ) );
+        mButtons.add( (ImageButton) view.findViewById( R.id.imageButtonVegetablesrightarrow ));
+
+        for ( ImageButton setValueButton : mButtons ){
+            setValueButton.setOnClickListener(this);
+        }
 
         mGenderSelection.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()            {
             @Override
@@ -136,9 +153,7 @@ public class SurveyFragment extends Fragment {
 
         mTotalServingValueField = view.findViewById(R.id.textViewTotalAmount);
 
-        MainActivity mat = (MainActivity) getActivity();
-        mActionButton = mat.getActionButton();
-        mActionButton.setImageResource(R.drawable.ic_menu_send);
+        mActionButton = mMainActivity.getActionButton();
         mActionButton.show();
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +172,55 @@ public class SurveyFragment extends Fragment {
         });
 
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.imageButtonBeefleftarrow:
+                setServing(0, -10);
+                break;
+            case R.id.imageButtonBeefrightarrow:
+                setServing(0, 10);
+                break;
+            case R.id.imageButtonPorkleftarrow:
+                setServing(1, -10);
+                break;
+            case R.id.imageButtonPorkrightarrow:
+                setServing(1, 10);
+                break;
+            case R.id.imageButtonChickenleftarrow:
+                setServing(2, -10);
+                break;
+            case R.id.imageButtonChickenrightarrow:
+                setServing(2, 10);
+                break;
+            case R.id.imageButtonFishleftarrow:
+                setServing(3, -10);
+                break;
+            case R.id.imageButtonFishrightarrow:
+                setServing(3, 10);
+                break;
+            case R.id.imageButtonEggsleftarrow:
+                setServing(4, -10);
+                break;
+            case R.id.imageButtonEggsrightarrow:
+                setServing(4, 10);
+                break;
+            case R.id.imageButtonBeansleftarrow:
+                setServing(5, -10);
+                break;
+            case R.id.imageButtonBeansrightarrow:
+                setServing(5, 10);
+                break;
+            case R.id.imageButtonVegetablesleftarrow:
+                setServing(6, -10);
+                break;
+            case R.id.imageButtonVegetablesrightarrow:
+                setServing(6, 10);
+                break;
+        }
+    }
+
     public void setServingFromPreset(int servingIndex, int value){
         mServingSizeAmounts.set(servingIndex,(int)(value*multiplier));
         updateFields();
@@ -287,25 +351,21 @@ public class SurveyFragment extends Fragment {
     }
 
     private void saveSurvey(){
-        ConsumptionTable newTable = new ConsumptionTable();
+        ConsumptionTable newTable = mMainActivity.createDefaultFoodTable();
         int fieldValue;
         for ( int i = 0; i < mServingValueFields.size(); i++) {
             fieldValue = parseInt(mServingValueFields.get(i).getText().toString());
             newTable.addServing(fieldValue);
         }
-        try {
-            newTable.saveTable(getContext(), "table_01.csv");
-            Log.d("SAVE_TEST", "save successful?");
-        }catch(Exception e){
-            Log.d("SAVE_TEST", e.getMessage());
-        }
+        FoodSurveyHistoryManager foodSaver = new FoodSurveyHistoryManager();
+        foodSaver.saveTableByDate(mMainActivity, newTable);
     }
 
     private void submitSurvey(){
         Bundle bundle = new Bundle();
         bundle.putIntegerArrayList("survey_data", mServingSizeAmounts );
 
-        Fragment resultFragment = new HistoryFragment();
+        Fragment resultFragment = new ResultFragment();
         resultFragment.setArguments( bundle );
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
