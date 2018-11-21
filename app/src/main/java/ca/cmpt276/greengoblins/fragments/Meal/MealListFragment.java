@@ -71,8 +71,8 @@ public class MealListFragment extends Fragment {
         mDatabaseMealList = new ArrayList<Meal>();
         mFilteredMealList = new ArrayList<Meal>();
 
-        mSearchBox = (EditText) view.findViewById(R.id.textview_search_box);
-        mFilterDropdown = (Spinner) view.findViewById(R.id.dropdown_filter);
+        mSearchBox = (EditText) view.findViewById(R.id.meal_search_box);
+        mFilterDropdown = (Spinner) view.findViewById(R.id.meal_filter);
         mFilterOptions = getResources().getStringArray(R.array.meal_list_filters);
 
         ArrayAdapter<String> dropdownFilterAdapter = new ArrayAdapter<String>(mMainActivity.getBaseContext(),

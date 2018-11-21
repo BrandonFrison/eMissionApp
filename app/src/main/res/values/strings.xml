@@ -210,6 +210,7 @@
     <string name="btn_logout">Log Out</string>
     <string name="image_for_the_splash_screen">image for the splash screen</string>
     <string name="profile_picture">profile picture</string>
+    <string name="label_add_meal">add your own meal</string>
 
     <string name="meal_plan">Chicken Only</string>
     <string name="meal_plan_2">Reduce your meat consumption by half</string>

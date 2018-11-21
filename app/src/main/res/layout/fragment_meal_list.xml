@@ -57,20 +57,12 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/Meals_list_view"
+            android:id="@+id/meal_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?android:attr/colorBackground"
             android:scrollbars="vertical" />
-
-        <Button
-            android:id="@+id/button_add_meals"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/button_add_meal" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
