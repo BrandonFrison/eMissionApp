@@ -57,7 +57,7 @@ public class HistoryFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.toolbar_history);
+        getActivity().setTitle(R.string.history_chart_label);
 
         mMainActivity = (MainActivity) getActivity();
         mView = getView();

@@ -107,9 +107,7 @@ public class FoodSurveyHistoryManager {
             loaded = (ConsumptionTable) is.readObject();
             is.close();
             fis.close();
-            Log.d(TAGS[1], "loaded: " + formattedDate );
         } catch (FileNotFoundException exception) {
-            Log.d(TAGS[1], "junkle time");
             Log.d(TAGS[1], exception.getMessage());
         } catch (IOException exception) {
             Log.d(TAGS[1], exception.getMessage());
@@ -137,7 +135,6 @@ public class FoodSurveyHistoryManager {
         }
 
         for (String fileName : fileList) {
-            Log.d(TAGS[1], "listing: " + fileName);
             String month = fileName.substring(fileName.length()-5, fileName.length()-3);
             int monthValue = 0;
             try{
