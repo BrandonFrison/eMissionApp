@@ -80,7 +80,9 @@ public class ResultFragment extends Fragment {
 
         FoodSurveyHistoryManager tableLoader = new FoodSurveyHistoryManager();
         Calendar calendar = Calendar.getInstance();
-        String formattedCurrentDate = String.valueOf(calendar.get(Calendar.YEAR)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        String yearTwoDigit = String.valueOf(calendar.get(Calendar.YEAR));
+        yearTwoDigit = yearTwoDigit.substring( yearTwoDigit.length() - 2, yearTwoDigit.length() );
+        String formattedCurrentDate = yearTwoDigit + "-" + String.valueOf(calendar.get(Calendar.MONTH)+1) + "-" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
         previousTable = tableLoader.loadTableByDate(getActivity(), formattedCurrentDate);
 
         Bundle surveyBundle = getArguments();
