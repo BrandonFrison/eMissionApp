@@ -48,6 +48,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         return mealList.size();
     }
 
+    public void setMealList( List<Meal> newList ){
+        mealList = newList;
+    }
+
     // Contains UI elements
     class MealViewHolder extends RecyclerView.ViewHolder {
 

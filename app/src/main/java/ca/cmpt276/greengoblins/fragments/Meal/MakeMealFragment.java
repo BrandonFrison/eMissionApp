@@ -3,11 +3,11 @@ package ca.cmpt276.greengoblins.fragments.Meal;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,7 +28,7 @@ public class MakeMealFragment extends Fragment {
     private EditText mLocationInputField;
     private EditText mDescriptionInputField;
 
-    private Button mPostMeal;
+    private FloatingActionButton mActionButton;
 
     @Nullable
     @Override
@@ -40,15 +40,17 @@ public class MakeMealFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMainActivity = (MainActivity) getActivity();
 
+        mActionButton = mMainActivity.getActionButton();
+        mActionButton.setImageResource(R.drawable.ic_menu_send);
+        mActionButton.show();
+
         mMealNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_meal_name);
         mMainProteinIngredientInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_main_protein_ingredient);
         mRestaurantNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_restaurant_name);
         mLocationInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_location);
         mDescriptionInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_description);
 
-        mPostMeal = (Button) view.findViewById(R.id.fragment_make_meal_post_your_meal);
-
-        mPostMeal.setOnClickListener(new View.OnClickListener() {
+        mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 publishMeal();

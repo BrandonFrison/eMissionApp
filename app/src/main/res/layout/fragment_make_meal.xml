@@ -116,13 +116,4 @@
 
     </TableLayout>
 
-    <Button
-        android:id="@+id/fragment_make_meal_post_your_meal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
-        android:text="Post your meal"
-        app:layout_constraintTop_toBottomOf="@+id/make_meal_table_layout"
-        tools:layout_editor_absoluteX="26dp" />
-
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,7 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
+import java.util.Comparator;
+
 public class Meal {
 
     private String mealName;
@@ -69,4 +71,25 @@ public class Meal {
     public void setMealCreatorID(String mealCreatorID) {
         this.mealCreatorID = mealCreatorID;
     }
+
+    public static Comparator<Meal> COMPARE_BY_MEAL_NAME = new Comparator<Meal>() {
+        @Override
+        public int compare(Meal a, Meal b) {
+            return a.getMealName().compareToIgnoreCase( b.getMealName() );
+        }
+    };
+
+    public static Comparator<Meal> COMPARE_BY_PROTEIN_TYPE = new Comparator<Meal>() {
+        @Override
+        public int compare(Meal a, Meal b) {
+            return a.getMainProteinIngredient().compareToIgnoreCase( b.getMainProteinIngredient() );
+        }
+    };
+
+    public static Comparator<Meal> COMPARE_BY_LOCATION = new Comparator<Meal>() {
+        @Override
+        public int compare(Meal a, Meal b) {
+            return a.getLocation().compareToIgnoreCase( b.getLocation() );
+        }
+    };
 }
