@@ -77,7 +77,6 @@ public class PledgeListFragment extends Fragment {
         mAdapter = new UserAdapter(mMainActivity.getBaseContext(), mUserList);
         mRecyclerView.setAdapter(mAdapter);
 
-        // Only using City option so no need for others
         mFilterOptions = getResources().getStringArray(R.array.pledge_list_filters);
 
         ArrayAdapter<String> dropdownFilterAdapter = new ArrayAdapter<String>(mMainActivity.getBaseContext(),
@@ -86,22 +85,6 @@ public class PledgeListFragment extends Fragment {
         mFilterDropdown.setAdapter(dropdownFilterAdapter);
         mFilterDropdown.setPrompt(getResources().getString(R.string.filter_prompt));
 
-        displayPledges();
-
-        mMakePledgeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if( !mMainActivity.checkUserLogin() ) {
-                    mMainActivity.popupLogin();
-                } else {
-                    Fragment newFragment = new MakePledgeFragment();
-                    mMainActivity.startFragment(newFragment, true, false);
-                }
-            }
-        });
-    }
-
-    public void displayPledges() {
         mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
         queryData(mUsersDatabase);
 
@@ -131,7 +114,17 @@ public class PledgeListFragment extends Fragment {
             }
         });
 
-
+        mMakePledgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( !mMainActivity.checkUserLogin() ) {
+                    mMainActivity.popupLogin();
+                } else {
+                    Fragment newFragment = new MakePledgeFragment();
+                    mMainActivity.startFragment(newFragment, true, false);
+                }
+            }
+        });
     }
 
     private void queryData(Query query) {
@@ -175,20 +168,29 @@ public class PledgeListFragment extends Fragment {
         String searchText = mSearchBox.getText().toString().trim().toLowerCase();
         String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
 
-        if( searchText.isEmpty() ) return;
+        if( searchText.isEmpty() ){
+            queryData(mUsersDatabase);
+            return;
+        }
 
         if( searchFilter.equals(mFilterOptions[0]) ){
             queryData(mUsersDatabase);
         } else if ( searchFilter.equals(mFilterOptions[1]) ){
-            String filterField = getResources().getString(R.string.first_name_option);
-            queryData(mUsersDatabase.orderByChild(filterField).equalTo(searchText));
+            queryData(mUsersDatabase.orderByChild("firstName").equalTo(searchText)); //literal string refers to database field and should not be translated
         } else if ( searchFilter.equals(mFilterOptions[2]) ){
-            String filterField = getResources().getString(R.string.city_option);
-            queryData(mUsersDatabase.orderByChild(filterField).equalTo(searchText));
+            queryData(mUsersDatabase.orderByChild("city").equalTo(searchText));
         } else if ( searchFilter.equals(mFilterOptions[3]) ){
-            Double pledgeValue = Double.parseDouble(searchText);
-            String filterField = getResources().getString(R.string.pledge_amount_option);
-            queryData(mUsersDatabase.orderByChild(filterField).equalTo(pledgeValue));
+            Double pledgeValue = 0.0;
+            try {
+                pledgeValue = Double.parseDouble(searchText);
+                if(pledgeValue < 0.0) {
+                    Toast.makeText(mMainActivity, R.string.error_bad_pledge_format, Toast.LENGTH_SHORT).show();
+                    pledgeValue = 0.0;
+                }
+            }catch (Exception exception){
+                Toast.makeText(mMainActivity, R.string.error_bad_number_format, Toast.LENGTH_SHORT).show();
+            }
+            queryData(mUsersDatabase.orderByChild("pledgeAmount").equalTo(pledgeValue));
         }
     }
 }

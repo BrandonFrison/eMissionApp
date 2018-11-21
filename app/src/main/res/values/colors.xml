@@ -5,5 +5,6 @@
     <color name="colorAccent">#410063</color>
     <color name="colorButton">#2e8b57</color>
     <color name="colorLightGreen">#40d400</color>
+    <color name="icons">#40d400</color>
     <color name="white">#FFFFFF</color>
 </resources>

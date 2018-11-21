@@ -138,6 +138,7 @@ public class SurveyFragment extends Fragment {
 
         MainActivity mat = (MainActivity) getActivity();
         mActionButton = mat.getActionButton();
+        mActionButton.setImageResource(R.drawable.ic_menu_send);
         mActionButton.show();
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -75,22 +75,26 @@
         Try to beat my pledge of %s
         tonnes of CO2e reduced!\n
     </string>
-    
 
     <!--Pledge List-->
     <string name="pledge_list_text">View the pledges made so far!</string>
     <string name="pledge_filter_label">Sort by...</string>
     <string name="filter_prompt">Filter by...</string>
     <string-array name="pledge_list_filters">
-        <item>Filter</item>
+        <item>Filter by</item>
         <item>First Name</item>
         <item>City</item>
         <item>Pledge Amount</item>
     </string-array>
     <string name="anonymous_name">Anonymous</string>
-    <string name="first_name_option">firstName</string>
-    <string name="city_option">city</string>
-    <string name="pledge_amount_option">pledgeAmount</string>
+
+    <!--Meal List-->
+    <string-array name="meal_list_filters">
+        <item>Filter by</item>
+        <item>Name</item>
+        <item>Protein Type</item>
+        <item>Location</item>
+    </string-array>
 
     <!--Make Pledge Strings-->
     <string name="input_first_name">First Name</string>
@@ -105,7 +109,6 @@
     <string name="pledge_removed">Pledge removed</string>
     <string name="pledge_updated">Pledge updated</string>
 
-
     <!--Debug/Error message strings-->
     <string name="text_view_placeholder">Could not load results.</string>
     <string name="empty_username_message">Please enter an email</string>
@@ -115,8 +118,7 @@
     <string name="empty_pledge_message">Please enter a pledge amount</string>
     <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
     <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
-
-
+    <string name="error_bad_number_format">Please enter a numerical value</string>
 
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -136,6 +138,7 @@
     <string name="menu_nav_about">Learn More</string>
     <string name="menu_title_network">Community</string>
     <string name="menu_nav_community">View All Pledges</string>
+
     <!--About Page Content Strings-->
     <string name="about_text_1">
     As Canadians, we often think of ourselves as surrounded by nature and thoughtful about the environment.
