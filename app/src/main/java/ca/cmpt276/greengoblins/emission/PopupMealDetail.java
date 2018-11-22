@@ -70,16 +70,26 @@ public class PopupMealDetail extends AppCompatActivity {
     }
 
     private void getMealInfo() {
-
         Bundle bundle = getIntent().getExtras();
         mSelectedMeal = (Meal) bundle.getSerializable("meal");
         String userID = bundle.getString("userID");
 
-        mMealName.setText( mSelectedMeal.getMealName() );
-        mRestaurantName.setText( mSelectedMeal.getRestaurantName() );
-        mMealLocation.setText( mSelectedMeal.getLocation() );
-        mMealProtein.setText( mSelectedMeal.getMainProteinIngredient() );
-        mMealDescription.setText( mSelectedMeal.getDescription() );
+        String mealName = getString(R.string.meal_detail_meal_name);
+        mealName = String.format( mealName, mSelectedMeal.getMealName() );
+        String restaurantName = getString(R.string.meal_detail_restaurant_name);
+        restaurantName = String.format( restaurantName, mSelectedMeal.getRestaurantName() );
+        String mealLocation = getString(R.string.meal_detail_meal_location);
+        mealLocation = String.format( mealLocation,  mSelectedMeal.getLocation() );
+        String mealProtein = getString(R.string.meal_detail_meal_protein);
+        mealProtein = String.format( mealProtein, mSelectedMeal.getMainProteinIngredient() );
+        String mealDescription = getString(R.string.meal_detail_meal_description);
+        mealDescription = String.format( mealDescription, mSelectedMeal.getDescription() );
+
+        mMealName.setText( mealName );
+        mRestaurantName.setText( restaurantName );
+        mMealLocation.setText( mealLocation );
+        mMealProtein.setText( mealProtein );
+        mMealDescription.setText( mealDescription );
 
         if( mSelectedMeal.getMealCreatorID().equals(userID) ){
             mDeleteButton.setVisibility(View.VISIBLE);

@@ -241,4 +241,11 @@
     <string name="empty_restaurant_name_message">Please enter the restaurant name</string>
     <string name="empty_location_message">Please enter a location</string>
     <string name="meal_successfully_published">Your meal has been published</string>
+
+    <!--Popup Meal Detail-->
+    <string name="meal_detail_meal_name"><b>Name:</b> %s</string>
+    <string name="meal_detail_restaurant_name"><b>Restaurant:</b> %s</string>
+    <string name="meal_detail_meal_location"><b>Location:</b> %s</string>
+    <string name="meal_detail_meal_protein"><b>Main protein:</b> %s</string>
+    <string name="meal_detail_meal_description"><b>Description:</b>\n%s</string>
 </resources>
