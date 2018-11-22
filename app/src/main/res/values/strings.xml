@@ -121,6 +121,7 @@
         <item>Name</item>
         <item>Protein Type</item>
         <item>Location</item>
+        <item>Image</item>
     </string-array>
 
     <!--Make Pledge Strings-->

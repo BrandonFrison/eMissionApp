@@ -19,7 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +39,7 @@ import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 import ca.cmpt276.greengoblins.foodsurveydata.MealAdapter;
+import ca.cmpt276.greengoblins.foodsurveydata.MealImageAdapter;
 
 
 public class MealListFragment extends Fragment {
@@ -57,7 +60,9 @@ public class MealListFragment extends Fragment {
     private String[] mFilterOptions;
 
     private MealAdapter mMealAdapter;
+    private MealImageAdapter mMealImageAdapter;
     private RecyclerView mRecyclerView;
+    private GridView mGridView;
 
 
     @Nullable
@@ -96,6 +101,11 @@ public class MealListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mMainActivity.getBaseContext()));
         mMealAdapter = new MealAdapter(mMainActivity.getBaseContext(), mFilteredMealList, mRecyclerView, mMainActivity);
         mRecyclerView.setAdapter(mMealAdapter);
+
+        mGridView = (GridView) view.findViewById(R.id.meal_gridview);
+        mMealImageAdapter = new MealImageAdapter(mMainActivity.getBaseContext(), mFilteredMealList);
+        mGridView.setAdapter(mMealImageAdapter);
+        mGridView.setVisibility(View.GONE);
 
         mMealsDatabase = FirebaseDatabase.getInstance().getReference("Meals");
         queryData(mMealsDatabase);
@@ -152,12 +162,25 @@ public class MealListFragment extends Fragment {
         mFilterDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                filterList();
+                if(i == 4){
+                    mRecyclerView.setVisibility(View.GONE);
+                    mGridView.setVisibility(View.VISIBLE);
+                } else {
+                    mGridView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    filterList();
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Toast.makeText(mMainActivity, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
 
