@@ -1,26 +1,45 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import ca.cmpt276.greengoblins.emission.AddMealActivity;
+import ca.cmpt276.greengoblins.emission.MainActivity;
+import ca.cmpt276.greengoblins.emission.PopupMealDetail;
 
 import java.util.List;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.fragments.MakePledgeFragment;
+import ca.cmpt276.greengoblins.fragments.Meal.PopupMealDetailFragment;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
 
+    private final View.OnClickListener mOnClickListener = new mealOnClickListener();
+
     private Context mContext;
     private List<Meal> mealList;
+    private RecyclerView mRecyclerView;
+    private MainActivity mMainActivity;
 
-    public MealAdapter(Context mContext, List<Meal> mealList) {
+    public MealAdapter(Context mContext, List<Meal> mealList, RecyclerView recyclerView, MainActivity mainActivity) {
         this.mContext = mContext;
         this.mealList = mealList;
+        this.mRecyclerView = recyclerView;
+        this.mMainActivity = mainActivity;
     }
 
     @NonNull
@@ -28,6 +47,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public MealAdapter.MealViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.layout_meal, null);
+        view.setOnClickListener(mOnClickListener);
         return new MealAdapter.MealViewHolder(view);
     }
 
@@ -70,4 +90,14 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         }
     }
 
+    private class mealOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(final View view) {
+            int itemPosition = mRecyclerView.getChildAdapterPosition(view);
+            Meal meal = mealList.get(itemPosition);
+
+            Intent popupMealDetail = new Intent(mMainActivity, PopupMealDetail.class);
+            mMainActivity.startActivity(popupMealDetail);
+        }
+    }
 }

@@ -96,7 +96,7 @@ public class MealListFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.meal_list_view) ;
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mMainActivity.getBaseContext()));
-        mMealAdapter = new MealAdapter(mMainActivity.getBaseContext(), mFilteredMealList);
+        mMealAdapter = new MealAdapter(mMainActivity.getBaseContext(), mFilteredMealList, mRecyclerView, mMainActivity);
         mRecyclerView.setAdapter(mMealAdapter);
 
         mMealsDatabase = FirebaseDatabase.getInstance().getReference("Meals");
@@ -162,6 +162,8 @@ public class MealListFragment extends Fragment {
 
             }
         });
+
+
     }
 
     private void queryData(Query query) {
@@ -258,4 +260,6 @@ public class MealListFragment extends Fragment {
             }
         }
     }
+
+
 }
