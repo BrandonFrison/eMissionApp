@@ -9,6 +9,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 public class PopupMealDetail extends AppCompatActivity {
     private TextView mMealInfo;
     boolean mViewMyMeal = false;  // true when user click the check box to view his own meals
@@ -42,7 +46,7 @@ public class PopupMealDetail extends AppCompatActivity {
                 "Location:  ";
         mMealInfo.setText(MealInfoText);
 
-        if(mViewMyMeal ==true ){//when user click the check box to view his own meals
+        if(mViewMyMeal == true ){//when user click the check box to view his own meals
             mDeleteButton.setVisibility(View.VISIBLE);
             mDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -55,5 +59,14 @@ public class PopupMealDetail extends AppCompatActivity {
     }
 
     private void DeleteMeal() {
+//        DatabaseReference usersDatabase;
+//        Query toBeDeleted;
+//        usersDatabase = FirebaseDatabase.getInstance().getReference("Meals");
+//
+//        String userID = mMainActivity.getCurrentUser().getUid();
+//
+//        toBeDeleted = usersDatabase.orderByChild("mealCreatorID").equalTo(userID);
+//        usersDatabase = toBeDeleted.getRef();
+//        usersDatabase.getParent().removeValue();
     }
 }

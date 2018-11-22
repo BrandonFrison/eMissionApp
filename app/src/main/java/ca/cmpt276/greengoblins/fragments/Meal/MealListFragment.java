@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -27,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
@@ -42,6 +45,8 @@ public class MealListFragment extends Fragment {
     private MainActivity mMainActivity;
     private FloatingActionButton mActionButton;
 
+    private CheckBox mViewMyMeals;
+
     private ArrayList<Meal> mDatabaseMealList;
     private ArrayList<Meal> mFilteredMealList;
 
@@ -51,6 +56,8 @@ public class MealListFragment extends Fragment {
 
     private MealAdapter mMealAdapter;
     private RecyclerView mRecyclerView;
+
+    private String userID;
 
 
     @Nullable
@@ -67,6 +74,9 @@ public class MealListFragment extends Fragment {
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.baseline_add_24);
         mActionButton.show();
+
+        mViewMyMeals = (CheckBox) view.findViewById(R.id.ViewMyMeal);
+        userID = mMainActivity.getCurrentUser().getUid();
 
         mDatabaseMealList = new ArrayList<Meal>();
         mFilteredMealList = new ArrayList<Meal>();
@@ -90,6 +100,12 @@ public class MealListFragment extends Fragment {
         mMealsDatabase = FirebaseDatabase.getInstance().getReference("Meals");
         queryData(mMealsDatabase);
 
+        mViewMyMeals.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                queryData(mMealsDatabase);
+            }
+        });
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +147,7 @@ public class MealListFragment extends Fragment {
         mFilterDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 filterList();
             }
 
@@ -142,14 +159,26 @@ public class MealListFragment extends Fragment {
     }
 
     private void queryData(Query query) {
+//        if(mViewMyMeals.isChecked()){
+//            query.orderByChild("mealCreatorID").equalTo(userID);
+//        }
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mDatabaseMealList.clear();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Meal mealData = (Meal) snapshot.getValue(Meal.class);
-                    mDatabaseMealList.add(mealData);
+                if(mViewMyMeals.isChecked()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Meal mealData = (Meal) snapshot.getValue(Meal.class);
+                        if(mealData.getMealCreatorID().equalsIgnoreCase(userID)) {
+                            mDatabaseMealList.add(mealData);
+                        }
+                    }
+                }
+                else{
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Meal mealData = (Meal) snapshot.getValue(Meal.class);
+                        mDatabaseMealList.add(mealData);
+                    }
                 }
                 clearFilters();
             }
