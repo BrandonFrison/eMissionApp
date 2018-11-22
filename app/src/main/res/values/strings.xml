@@ -16,6 +16,7 @@
     <string name="toolbar_about">The Green Food Challenge</string>
     <string name="toolbar_calculator">CO2e Calculator</string>
     <string name="toolbar_history">CO2e Result</string>
+    <string name="toolbar_reduce">Reduce your CO2e with an alternate plan</string>
     <string name="toolbar_pledges">Pledges</string>
     <string name="toolbar_pledge_list">Worldwide Pledges</string>
     <string name="toolbar_pledge_create">Make your own pledge!</string>
@@ -37,7 +38,9 @@
     </string-array>
 
     <!--UI and Button Strings-->
-    <string name="button_submit">Submit</string>
+    <string name="fablabel_submit">Submit</string>
+    <string name="fablabel_add_meal">Add meal</string>
+    <string name="fablabel_add_pledge">Make a pledge</string>
     <string name="button_reduce_footprint">Reduce my carbon footprint</string>
     <string name="button_make_pledge">Make a pledge</string>
     <string name="button_view_pledge_list">See who\'s pledged</string>
@@ -81,6 +84,23 @@
         Try to beat my pledge of %s
         tonnes of CO2e reduced!\n
     </string>
+
+    <!--Reduce Meal Plan-->
+    <string name="old_plan">Old Plan</string>
+    <string name="new_plan">New Plan</string>
+    <string name="meal_plan_introduction">Choose a replacement meal plan!</string>
+    <string name="meal_plan_savings">You will save %,.1f kg CO2e per year</string>
+    <string name="meal_plan_collective_savings">If everyone in Metro Vancouver implemented these
+        changes, together we could save %,.1f kg CO2e per year!
+        \n\nThat\'s the same carbon footprint as driving %,d km!</string>
+    <string name="meal_plan_negative_savings_toast">You\'d be saving more by sticking with your current plan!</string>
+    <string-array name="reduce_meal_plan_list">
+        <item>Chicken Only</item>
+        <item>Reduce your meat consumption by half</item>
+        <item>Fish Only</item>
+        <item>Vegan</item>
+    </string-array>
+    <string name="select_meal_plan_prompt">Choose a meal plan!</string>
 
     <!--Pledge List-->
     <string name="pledge_list_text">View the pledges made so far!</string>
@@ -146,6 +166,7 @@
     <string name="error_user_not_logged_in">No logged in user detected. Please make sure you are logged in before submitting.</string>
     <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
     <string name="error_bad_number_format">Please enter a numerical value</string>
+    <string name="error_empty_survey">Can\'t submit empty survey</string>
 
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -212,17 +233,6 @@
     <string name="profile_picture">profile picture</string>
     <string name="label_add_meal">add your own meal</string>
 
-    <string name="meal_plan">Chicken Only</string>
-    <string name="meal_plan_2">Reduce your meat consumption by half</string>
-    <string name="meal_plan_3">Fish Only</string>
-    <string name="meal_plan_4">Vegan</string>
-    <string name="meal_plan_introduction">Choose one of the meal plans below!</string>
-    <string name="meal_plan_savings">You have saved: </string>
-    <string name="old_plan">Old Meal Plan:</string>
-    <string name="new_plan">New Meal Plan:</string>
-    <string name="meal_plan_collective_savings">If everyone in Metro Vancouver implemented these
-        changes, together we could save: </string>
-    <string name="meal_plan_negative_savings_toast">You\'d be saving more by sticking with your current plan!</string>
     <string name="join_the_green_food_challenge">Join the Green Food Challenge</string>
 
     <!--Make Meal-->
