@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_calculator"
-            android:icon="@drawable/baseline_fastfood_24"
+            android:icon="@drawable/baseline_format_list_numbered_rtl_24"
             android:title="@string/menu_nav_calculator" />
         <item
             android:id="@+id/nav_pledge"
@@ -33,8 +34,11 @@
                 android:icon="@drawable/baseline_fastfood_24"
                 android:title="@string/menu_nav_map"
                 />
+            <item
+                android:id="@+id/nav_meals"
+                android:icon="@drawable/baseline_fastfood_24"
+                android:title="@string/menu_nav_meals" />
         </menu>
     </item>
-
 
 </menu>

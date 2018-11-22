@@ -6,6 +6,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -51,6 +57,27 @@
         <activity
             android:name=".MapActivity"
             android:label="@string/toolbar_map"></activity>
+            android:label="@string/label_help"
+            android:theme="@style/AppTheme.PopMe" />
+        <activity
+            android:name=".AddMealActivity"
+            android:label="@string/label_add_meal"
+            android:theme="@style/AppTheme.PopMe" />
+        <activity
+           android:name=".PopupMealDetail"
+          android:label="@string/label_add_meal"
+            android:theme="@style/AppTheme.PopMe" />
+
+        <provider
+            android:authorities="com.llk.study.activity.PhotoActivity"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths">
+            </meta-data>
+        </provider>
     </application>
 
 </manifest>

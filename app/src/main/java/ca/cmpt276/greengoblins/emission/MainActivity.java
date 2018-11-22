@@ -35,10 +35,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
+import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
+import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
 import ca.cmpt276.greengoblins.fragments.SettingsFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeListFragment;
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity
 
     private FloatingActionButton mActionButton;
     private SurveyFragment mSurveyFragment;
+    private ArrayList<String> mFoodSurveyCategories;
+    private ArrayList<Float> mCO2eConversionRates;
     private Fragment mCurrentFragment;
 
     private TextView mLoginTextView;
@@ -105,6 +109,22 @@ public class MainActivity extends AppCompatActivity
         updateLoginUI();
 
         mSurveyFragment = new SurveyFragment();
+        mFoodSurveyCategories = new ArrayList<String>();
+        mFoodSurveyCategories.add(getString( R.string.table_category1 ));   //Beef
+        mFoodSurveyCategories.add(getString( R.string.table_category2 ));   //Pork
+        mFoodSurveyCategories.add(getString( R.string.table_category3 ));   //Chicken
+        mFoodSurveyCategories.add(getString( R.string.table_category4 ));   //Fish
+        mFoodSurveyCategories.add(getString( R.string.table_category5 ));   //Eggs
+        mFoodSurveyCategories.add(getString( R.string.table_category6 ));   //Beans
+        mFoodSurveyCategories.add(getString( R.string.table_category7 ));   //Vegetables
+        mCO2eConversionRates = new ArrayList<Float>();
+        mCO2eConversionRates.add(27f);
+        mCO2eConversionRates.add(12.1f);
+        mCO2eConversionRates.add(6.9f);
+        mCO2eConversionRates.add(6.1f);
+        mCO2eConversionRates.add(4.8f);
+        mCO2eConversionRates.add(2f);
+        mCO2eConversionRates.add(2f);
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -113,40 +133,6 @@ public class MainActivity extends AppCompatActivity
         mFragmentTransaction.commit();
     }
 
-    public void incrementButton(View view){
-        changeFieldValue(view, 10);
-    }
-    public void decrementButton(View view){
-        changeFieldValue(view, -10);
-    }
-    private void changeFieldValue (View view, int valueToAdd){
-        String buttonTag = String.valueOf(view.getTag());
-        switch(buttonTag){
-            case "beef_button":
-                mSurveyFragment.setServing(0, valueToAdd);
-                break;
-            case "pork_button":
-                mSurveyFragment.setServing(1, valueToAdd);
-                break;
-            case "chicken_button":
-                mSurveyFragment.setServing(2, valueToAdd);
-                break;
-            case "fish_button":
-                mSurveyFragment.setServing(3, valueToAdd);
-                break;
-            case "eggs_button":
-                mSurveyFragment.setServing(4, valueToAdd);
-                break;
-            case "beans_button":
-                mSurveyFragment.setServing(5, valueToAdd);
-                break;
-            case "vegetables_button":
-                mSurveyFragment.setServing(6, valueToAdd);
-                break;
-            default:
-                Toast.makeText( MainActivity.this, "Button tag not properly set", Toast.LENGTH_SHORT ).show();
-        }
-    }
 
     public String getUserDisplayName(){
         FirebaseUser user = mAuthenticator.getCurrentUser();
@@ -301,6 +287,11 @@ public class MainActivity extends AppCompatActivity
         return mActionButton;
     }
 
+    public ConsumptionTable createDefaultFoodTable(){
+        ConsumptionTable defaultCategories = new ConsumptionTable( mFoodSurveyCategories, mCO2eConversionRates );
+        return defaultCategories;
+    }
+
     public boolean startFragment(Fragment newFragment, boolean addToBackStack){
         if ( newFragment == null) return false;
         mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -383,6 +374,8 @@ public class MainActivity extends AppCompatActivity
             if (servicesVersionCorrect()) {
                 mapInitiation();
             }
+        }else if (id == R.id.nav_meals) {
+            fragment = new MealListFragment();
         }
 
         if(fragment != null) {

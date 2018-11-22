@@ -26,9 +26,9 @@ public class ConsumptionTable implements Serializable {
     private int userAge;
     private boolean isMale;
 
+    //default constructor with hard strings and values for safety.
+    //should not be used
     public ConsumptionTable(){
-        // temporary data instantiation from magic numbers in constructor.
-        // prototype only.
         foodType = new ArrayList<String>();
         foodType.add("Beef");
         foodType.add("Pork");
@@ -85,25 +85,6 @@ public class ConsumptionTable implements Serializable {
     }
     public void setMale(boolean male) {
         isMale = male;
-    }
-
-
-
-    public int saveTable(Context context, String fileName) throws FileNotFoundException, IOException {
-        FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-        ObjectOutputStream os = new ObjectOutputStream(fos);
-        os.writeObject(foodServingSizeGrams);
-        os.close();
-        fos.close();
-        return 1;
-    }
-    public int loadTable(Context context, String fileName)throws FileNotFoundException, IOException, ClassNotFoundException {
-        FileInputStream fis = context.openFileInput(fileName);
-        ObjectInputStream is = new ObjectInputStream(fis);
-        foodServingSizeGrams = (ArrayList<Integer>) is.readObject();
-        is.close();
-        fis.close();
-        return 1;
     }
 
     public int getSize(){

@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
+import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 import ca.cmpt276.greengoblins.foodsurveydata.User;
 
 public class MakePledgeFragment extends Fragment {

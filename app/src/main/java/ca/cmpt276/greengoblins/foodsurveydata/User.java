@@ -1,5 +1,9 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
+import java.util.Comparator;
+
+import static android.util.Half.EPSILON;
+
 public class User {
 
     private String firstName;
@@ -91,4 +95,33 @@ public class User {
     public void setAvatarID(int avatarID) {
         this.avatarID = avatarID;
     }
+
+    public static Comparator<User> COMPARE_BY_FIRST_NAME = new Comparator<User>() {
+        @Override
+        public int compare(User a, User b) {
+            if(!a.isShowNamePublic()) return 1;
+            if(!b.isShowNamePublic()) return -1;
+            return a.getFirstName().compareToIgnoreCase( b.getFirstName() );
+        }
+    };
+
+    public static Comparator<User> COMPARE_BY_LOCATION = new Comparator<User>() {
+        @Override
+        public int compare(User a, User b) {
+            if(a.getCity().isEmpty()) return 1;
+            if(b.getCity().isEmpty()) return -1;
+            return a.getCity().compareToIgnoreCase( b.getCity() );
+        }
+    };
+
+    public static Comparator<User> COMPARE_BY_PLEDGE_VALUE = new Comparator<User>() {
+        @Override
+        public int compare(User a, User b) {
+            final double PLEDGE_VALUE_EPSILON = 0.001;
+            double result = a.getPledgeAmount() - b.getPledgeAmount();
+            if( Math.abs(result) < PLEDGE_VALUE_EPSILON ) return 0;
+            if( result > 0.0 ) return -1;
+            return 1;
+        }
+    };
 }
