@@ -1,8 +1,9 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class Meal {
+public class Meal implements Serializable {
 
     private String mealName;
     private String mainProteinIngredient;
@@ -10,18 +11,20 @@ public class Meal {
     private String location;
     private String description;
     private String mealCreatorID;
+    private String mealID;
 
     // Need this default constructor in order for datasnapshot to work
     public Meal() {
     }
 
-    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID) {
+    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID, String mealID) {
         this.mealName = mealName;
         this.mainProteinIngredient = mainProteinIngredient;
         this.restaurantName = restaurantName;
         this.location = location;
         this.description = description;
         this.mealCreatorID = mealCreatorID;
+        this.mealID = mealID;
     }
 
     public String getMealName() {
@@ -92,4 +95,12 @@ public class Meal {
             return a.getLocation().compareToIgnoreCase( b.getLocation() );
         }
     };
+
+    public String getMealID() {
+        return mealID;
+    }
+
+    public void setMealID(String mealID) {
+        this.mealID = mealID;
+    }
 }

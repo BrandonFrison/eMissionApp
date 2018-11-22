@@ -22,6 +22,7 @@
     <string name="toolbar_pledge_create">Make your own pledge!</string>
     <string name="toolbar_meal_list">Community Green Challenge Meals</string>
     <string name="toolbar_meal_create">Share your own meal!</string>
+    <string name="popup_header_meal_detail">Meal Details</string>
     <string name="toolbar_settings">Settings</string>
 
     <!--Preset Diet Strings-->
@@ -241,4 +242,11 @@
     <string name="empty_restaurant_name_message">Please enter the restaurant name</string>
     <string name="empty_location_message">Please enter a location</string>
     <string name="meal_successfully_published">Your meal has been published</string>
+
+    <!--Popup Meal Detail-->
+    <string name="meal_detail_meal_name"><b>Name:</b> %s</string>
+    <string name="meal_detail_restaurant_name"><b>Restaurant:</b> %s</string>
+    <string name="meal_detail_meal_location"><b>Location:</b> %s</string>
+    <string name="meal_detail_meal_protein"><b>Main protein:</b> %s</string>
+    <string name="meal_detail_meal_description"><b>Description:</b>\n%s</string>
 </resources>

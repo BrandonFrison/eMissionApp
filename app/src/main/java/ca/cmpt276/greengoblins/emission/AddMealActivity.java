@@ -37,6 +37,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +54,7 @@ public class AddMealActivity extends AppCompatActivity {
     public static final int SELECT_PHOTO = 2;
     private ImageView imageview;
     private Uri imageUri;
+    private Uri filePath;
 
     private FirebaseAuth mAuthenticator;
 
@@ -109,7 +112,6 @@ public class AddMealActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     showChoosePicDialog();
-
                 }
             });
 
@@ -134,8 +136,10 @@ public class AddMealActivity extends AppCompatActivity {
             String mealCreatorID = bundle.getString("userID");
 
             String mealID = mealDatabase.push().getKey();
-            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
             mealDatabase.child(mealID).setValue(meal);
+
+            pushMealPicToDatabase(mealID);
 
             clearInputFields();
             Toast.makeText(getApplicationContext(), R.string.meal_successfully_published, Toast.LENGTH_SHORT).show();
@@ -219,6 +223,7 @@ public class AddMealActivity extends AppCompatActivity {
             } else {
                 imageUri = Uri.fromFile(outputImage);
             }
+
             //启动相机程序
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -258,6 +263,7 @@ public class AddMealActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                filePath = data.getData();
                 break;
             case SELECT_PHOTO :
                 if (resultCode == RESULT_OK) {
@@ -267,6 +273,7 @@ public class AddMealActivity extends AppCompatActivity {
                         handleImageBeforeKitKat(data);
                     }
                 }
+                filePath = data.getData();
                 break;
             default:
                 break;
@@ -336,5 +343,13 @@ public class AddMealActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void pushMealPicToDatabase(String mealID) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+
+        storageReference = storageReference.child("MealPics/"+ mealID);
+        storageReference.putFile(filePath);
     }
 }

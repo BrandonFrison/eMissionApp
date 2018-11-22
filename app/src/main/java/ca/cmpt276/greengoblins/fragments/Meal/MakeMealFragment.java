@@ -73,7 +73,7 @@ public class MakeMealFragment extends Fragment {
             final String mealCreatorID = mMainActivity.getCurrentUser().getUid();
 
             String mealID = mealDatabase.push().getKey();
-            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
             mealDatabase.child(mealID).setValue(meal);
 
             clearInputFields();

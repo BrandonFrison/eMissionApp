@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 import ca.cmpt276.greengoblins.foodsurveydata.FoodSurveyHistoryManager;
@@ -135,11 +136,14 @@ public class ResultFragment extends Fragment {
             Fragment reduceFragment = new ReduceFragment();
             reduceFragment.setArguments(bundle);
 
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.startFragment(reduceFragment, true);
+
+            /*FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_activity_content, reduceFragment);
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            fragmentTransaction.commit();*/
     }
 
     private void setUpPieChart(ConsumptionTable tableUsed) {
