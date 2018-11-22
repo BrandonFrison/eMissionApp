@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -58,6 +61,7 @@ import java.util.List;
 import ca.cmpt276.greengoblins.PlaceModel.CustomInfoWindowAdapter;
 import ca.cmpt276.greengoblins.PlaceModel.PlaceInfo;
 import ca.cmpt276.greengoblins.PlaceModel.PlaceAutoCompleteAdapter;
+import ca.cmpt276.greengoblins.fragments.Meal.MakeMealFragment;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
@@ -88,7 +92,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d("map activity", "onMapReady: called");
-        Toast.makeText(this, "Loading Current Location", Toast.LENGTH_SHORT).show();
         map = googleMap;
 
         if (permissionFlag) {
@@ -161,7 +164,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             passLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    passMealLocation();
+                   // passMealLocation();
                     try{
                     if(mMarker.isInfoWindowShown()) {
                         mMarker.hideInfoWindow();
@@ -238,14 +241,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void passMealLocation(){
-        
-
         //either to grab location of device or place longitude and latitude that you have chosen
         Double longitude, latitude = 0d;
         if(mPlace != null) {
             LatLng mealLocation = mPlace.getLatLng();
             longitude = mealLocation.longitude;
             latitude = mealLocation.latitude;
+
+            String[] locationData = {mPlace.getName(), latitude.toString(), longitude.toString()};
+
+            Bundle bundle = new Bundle();
+            bundle.putStringArray("location_data", locationData );
+
+            Fragment mealFragment = new MakeMealFragment();
+            mealFragment.setArguments( bundle );
+
+            FragmentManager fragmentManager = MapActivity.this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //    fragmentTransaction.replace( R.id.frame_activity_map, mealFragment );
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
         //here is where we can either pass meal location to the meal plan screen or pass the latitude and longitude so we can display the entire database of green meals on the map.
     }
@@ -294,7 +309,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         private void getCurrentLocation(){
             Log.d("map activity", "getCurrentLocation: gets the devices location if enabled");
-
+            Toast.makeText(this, "Loading Current Location", Toast.LENGTH_SHORT).show();
             mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapActivity.this);
             try{
                 if(permissionFlag){

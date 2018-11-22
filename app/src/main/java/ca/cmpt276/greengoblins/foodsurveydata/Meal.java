@@ -10,6 +10,8 @@ public class Meal {
     private String location;
     private String description;
     private String mealCreatorID;
+    private double latitude;
+    private double longitude;
 
     // Need this default constructor in order for datasnapshot to work
     public Meal() {
@@ -70,6 +72,22 @@ public class Meal {
 
     public void setMealCreatorID(String mealCreatorID) {
         this.mealCreatorID = mealCreatorID;
+    }
+
+    public double getLatitude(){
+        return latitude;
+    }
+
+    public void setLatitude(double latitude){
+        this.latitude = latitude;
+    }
+
+    public double getLongitude(){
+        return longitude;
+    }
+
+    public void setLongitude(double longitude){
+        this.longitude = longitude;
     }
 
     public static Comparator<Meal> COMPARE_BY_MEAL_NAME = new Comparator<Meal>() {

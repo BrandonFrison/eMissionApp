@@ -56,6 +56,8 @@ public class MakeMealFragment extends Fragment {
                 publishMeal();
             }
         });
+
+        fillLocationFromMap();
     }
 
     private void publishMeal() {
@@ -109,5 +111,13 @@ public class MakeMealFragment extends Fragment {
         mRestaurantNameInputField.getText().clear();
         mLocationInputField.getText().clear();
         mDescriptionInputField.getText().clear();
+    }
+
+    private void fillLocationFromMap(){
+        Bundle locationBundle = getArguments();
+        if(locationBundle != null) {
+            String[] locationInfo = locationBundle.getStringArray("location_data");
+            mLocationInputField.setText(locationInfo[0]);
+        }
     }
 }
