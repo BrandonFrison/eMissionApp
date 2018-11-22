@@ -77,8 +77,6 @@ public class MakePledgeFragment extends Fragment {
         id_avatar = mMainActivity.getUserAvatar();
         switchAvater();
 
-        fillReductionFromReduceFragment();
-
         iv_personal_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +88,8 @@ public class MakePledgeFragment extends Fragment {
         mUserHasPledged = false;
 
         populateForm( mMainActivity.getCurrentUser().getUid() );
+
+        fillReductionFromReduceFragment();
 
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,8 +322,8 @@ public class MakePledgeFragment extends Fragment {
     private void fillReductionFromReduceFragment(){
         Bundle reduceBundle = getArguments();
         if(reduceBundle != null) {
-            Double pledgeAmt = reduceBundle.getDouble("reduce_data");
-            mPledgeAmountInputField.setText(String.valueOf(pledgeAmt));
+            Double pledgeAmt = reduceBundle.getDouble("savings_data");
+            mPledgeAmountInputField.setText(String.format("%.2f", pledgeAmt));
         }
     }
 

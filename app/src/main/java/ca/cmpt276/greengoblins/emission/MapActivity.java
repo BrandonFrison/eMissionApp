@@ -238,6 +238,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void passMealLocation(){
+        
+
         //either to grab location of device or place longitude and latitude that you have chosen
         Double longitude, latitude = 0d;
         if(mPlace != null) {

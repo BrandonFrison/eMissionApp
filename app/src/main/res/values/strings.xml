@@ -46,6 +46,9 @@
     <string name="button_share_pledge">Share your pledge</string>
     <string name="button_update_pledge">Update your pledge</string>
     <string name="button_remove_pledge">Remove your pledge</string>
+    <string name="button_location">Give Location</string>
+    <string name="button_login">Log In</string>
+    <string name="button_logout">Log Out</string>
     <string name="hint_search_box">Search...</string>
 
     <!--Survey Activity Strings-->
@@ -178,8 +181,6 @@
         \nEnter your age and select your gender first.\n\nThen, you can choose from one of our presets that most closely matches your current diet, and adjust the amounts as needed.\n\nYou can also create a custom diet from scratch. \n\nTry to estimate your daily intake in grams as best you can!</string>
     <string name="label_help">How to use calculator</string>
     <string name="pledge_statistics_make_your_own_pledge">Make  your own pledge!</string>
-    <string name="btn_clear">Clear Local History</string>
-    <string name="btn_logout">Log Out</string>
     <string name="image_for_the_splash_screen">image for the splash screen</string>
     <string name="profile_picture">profile picture</string>
 

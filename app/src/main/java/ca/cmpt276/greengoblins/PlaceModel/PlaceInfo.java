@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class PlaceInfo {
+import java.io.Serializable;
+
+public class PlaceInfo implements Serializable {
 
     private String name;
     private String address;

@@ -55,7 +55,7 @@ public class ReduceFragment extends Fragment {
     private TextView mCollectiveSavings;
     ConsumptionTable mOldMealPlan;
     HorizontalBarChart mCO2eComparisonChart;
-    private double savings = 0.0d;
+    private double savings = 1.0d;
     public  float DrivenConvectionNumber = .200f;  // 200 g per 1 km
     //round number  to 2 decimal
     public DecimalFormat df = new DecimalFormat(".00");
