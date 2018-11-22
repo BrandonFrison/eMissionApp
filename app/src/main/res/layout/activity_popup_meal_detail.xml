@@ -19,8 +19,10 @@
 
             <ImageView
                 android:id="@+id/meal_detail_image"
-                android:layout_width="140dp"
-                android:layout_height="110dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
                 android:contentDescription="@string/profile_picture"
                 android:src="@drawable/treepledge" />
 
@@ -28,28 +30,32 @@
                 android:id="@+id/meal_detail_meal_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/meal_detail_meal_name" />
 
             <TextView
                 android:id="@+id/meal_detail_restaurant_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/meal_detail_restaurant_name" />
 
             <TextView
                 android:id="@+id/meal_detail_meal_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/meal_detail_meal_location" />
 
             <TextView
                 android:id="@+id/meal_detail_meal_protein"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/meal_detail_meal_protein" />
 
             <TextView
@@ -57,14 +63,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/meal_detail_meal_description" />
 
             <Button
                 android:id="@+id/delete_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_margin="0dp"
                 android:text="Delete" />
 
         </LinearLayout>
