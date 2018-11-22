@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/fragment_pledge_list_profile_pic"
-                    android:layout_marginStart="0dp"
+                    android:layout_marginStart="10dp"
                     android:text="@string/anonymous_name" />
 
                 <TextView
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/fragment_pledge_list_profile_pic"
                     android:layout_below="@+id/fragment_pledge_list_name"
-                    android:layout_marginStart="0dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="0dp"
                     android:text="" />
 
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fragment_pledge_list_municipality"
                     android:layout_toEndOf="@+id/fragment_pledge_list_profile_pic"
-                    android:layout_marginStart="0dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="0dp"
                     android:text="" />
 

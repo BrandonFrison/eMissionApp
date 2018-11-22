@@ -159,8 +159,19 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitSurvey();
-                saveSurvey();
+                String totalValString = mTotalServingValueField.getText().toString();
+                int totalValue = 0;
+                try{
+                    totalValue = Integer.parseInt(totalValString);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                if( totalValue > 0 ) {
+                    submitSurvey();
+                    saveSurvey();
+                } else {
+                    Toast.makeText( mMainActivity, R.string.error_empty_survey, Toast.LENGTH_SHORT ).show();
+                }
             }
         });
 
