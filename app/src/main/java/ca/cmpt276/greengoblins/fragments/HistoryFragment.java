@@ -57,7 +57,7 @@ public class HistoryFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.toolbar_history);
+        getActivity().setTitle(R.string.history_chart_label);
 
         mMainActivity = (MainActivity) getActivity();
         mView = getView();
@@ -66,7 +66,7 @@ public class HistoryFragment extends Fragment
         int currentMonth = getCurrentMonth();
 
         //load history tables from saved files
-        mFoodSurveyHistory.loadTablesByMonth(mMainActivity, currentMonth+1);
+        //mFoodSurveyHistory.loadTablesByMonth(mMainActivity, currentMonth+1);
 
         mDropdownChooseMonth = (Spinner) view.findViewById(R.id.spinnerChooseMonth);
         mDropdownChooseMonth.setSelection(currentMonth);
@@ -74,7 +74,7 @@ public class HistoryFragment extends Fragment
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mFoodSurveyHistory.loadTablesByMonth(mMainActivity, position+1);
-                Log.d("LOAD_EXCEPTION", "loading month: " + String.valueOf(position+1));
+                //Log.d("LOAD_EXCEPTION", "loading month: " + String.valueOf(position+1));
                 setData();
             }
             @Override
@@ -154,7 +154,7 @@ public class HistoryFragment extends Fragment
         setData();
 
         // draw points over time
-        chart.animateX(1500);
+        chart.animateX(500);
 
         // get the legend (only possible after setting data)
         Legend l = chart.getLegend();
@@ -186,7 +186,7 @@ public class HistoryFragment extends Fragment
             int dayOfMonthValue;
             try{
                 dayOfMonthValue = Integer.parseInt( dayOfMonth );
-                Log.d("LOAD_EXCEPTION", dayOfMonth);
+                //Log.d("LOAD_EXCEPTION", dayOfMonth);
             }catch (NumberFormatException exception){
                 dayOfMonthValue = 0;
             }
@@ -200,7 +200,7 @@ public class HistoryFragment extends Fragment
 
         LineDataSet set1;
         if(values.isEmpty()){
-            Log.d("LOAD_EXCEPTION", "values is empty");
+            //Log.d("LOAD_EXCEPTION", "values is empty");
             String chartLabel = getString(R.string.history_chart_label);
             values.add(new Entry(0,0));
             set1 = new LineDataSet(values, chartLabel);
@@ -282,18 +282,21 @@ public class HistoryFragment extends Fragment
             // set data
             chart.setData(data);
         }
-        chart.animateX(1500);
+        chart.animateX(500);
     }
+
+    String selectedX;
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+        selectedX = String.format("%02d", (int) e.getX());
         String formattedSnackbarMessage = String.format( getString(R.string.snackbar_history_element), Math.round(e.getX()), e.getY());
         Snackbar mySnackbar = Snackbar.make(mView, formattedSnackbarMessage, Snackbar.LENGTH_LONG);
         mySnackbar.setActionTextColor(mView.getResources().getColor(R.color.colorLightGreen, null));
         mySnackbar.setAction(R.string.snackbar_delete, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String formattedDate = String.valueOf(getCurrentYear()%100) + "-" + String.valueOf(getCurrentMonth()+1) + "-" + String.valueOf(getCurrentDay());
+                String formattedDate = String.valueOf(getCurrentYear()%100) + "-" + String.valueOf(getCurrentMonth()+1) + "-" + String.valueOf(selectedX);
                 Log.d("LOAD_EXCEPTION", "trying to delete: " + formattedDate);
                 mFoodSurveyHistory.deleteTableByDate(mMainActivity, formattedDate);
                 setData();

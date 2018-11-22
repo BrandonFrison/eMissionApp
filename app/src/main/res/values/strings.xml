@@ -224,4 +224,11 @@
         changes, together we could save: </string>
     <string name="meal_plan_negative_savings_toast">You\'d be saving more by sticking with your current plan!</string>
     <string name="join_the_green_food_challenge">Join the Green Food Challenge</string>
+
+    <!--Make Meal-->
+    <string name="empty_meal_name_message">Please enter a name for the meal</string>
+    <string name="empty_main_protein_ingredient_message">Please enter the main protein ingredient</string>
+    <string name="empty_restaurant_name_message">Please enter the restaurant name</string>
+    <string name="empty_location_message">Please enter a location</string>
+    <string name="meal_successfully_published">Your meal has been published</string>
 </resources>
