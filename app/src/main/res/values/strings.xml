@@ -231,4 +231,6 @@
     <string name="empty_restaurant_name_message">Please enter the restaurant name</string>
     <string name="empty_location_message">Please enter a location</string>
     <string name="meal_successfully_published">Your meal has been published</string>
+    <string name="no_pic_selected_message">Please choose a picture for your meal</string>
+
 </resources>

@@ -169,6 +169,10 @@ public class AddMealActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.empty_location_message, Toast.LENGTH_SHORT).show();
             isValid = false;
         }
+        else if( filePath == null ) {
+            Toast.makeText(getApplicationContext(), R.string.no_pic_selected_message, Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
 
         return isValid;
     }

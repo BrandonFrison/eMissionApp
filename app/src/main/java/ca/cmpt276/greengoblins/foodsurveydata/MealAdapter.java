@@ -1,33 +1,34 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import ca.cmpt276.greengoblins.emission.AddMealActivity;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.PopupMealDetail;
 
 import java.io.Serializable;
 import java.util.List;
 
-import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
-import ca.cmpt276.greengoblins.fragments.MakePledgeFragment;
-import ca.cmpt276.greengoblins.fragments.Meal.PopupMealDetailFragment;
 
-public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> implements Serializable {
+public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
 
     private final View.OnClickListener mOnClickListener = new mealOnClickListener();
 
@@ -35,6 +36,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private List<Meal> mealList;
     private RecyclerView mRecyclerView;
     private MainActivity mMainActivity;
+    private ImageView mMealPic;
 
     public MealAdapter(Context mContext, List<Meal> mealList, RecyclerView recyclerView, MainActivity mainActivity) {
         this.mContext = mContext;
@@ -53,15 +55,29 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MealAdapter.MealViewHolder mealViewHolder, int i) {
-        Meal meal = mealList.get(i);
+    public void onBindViewHolder(@NonNull final MealAdapter.MealViewHolder mealViewHolder, int i) {
+        final Meal meal = mealList.get(i);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
 
-        // CODE TO GET MEAL PIC GOES HERE **************************
+        final StorageReference storageReference = storage.getReference().child("MealPics");
+
+        Task<Uri> downloadUrl = storageReference.child(meal.getMealID()).getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        setMealPic(storageReference.child(meal.getMealID()), mealViewHolder);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        setMealPic(storageReference.child("defaultPic.png"), mealViewHolder);
+                    }
+                });
 
         mealViewHolder.mealName.setText(meal.getMealName());
         mealViewHolder.location.setText(meal.getLocation());
         mealViewHolder.restaurantName.setText(meal.getRestaurantName());
-
     }
 
     @Override
@@ -106,5 +122,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
             mMainActivity.startActivity(popupMealDetailIntent);
         }
+    }
+
+    public void setMealPic(StorageReference storageReference, MealViewHolder mealViewHolder) {
+        Glide
+                .with(mContext)
+                .using(new FirebaseImageLoader())
+                .load(storageReference)
+                .override(150,150)
+                .centerCrop()
+                .into(mealViewHolder.mealPic);
     }
 }
