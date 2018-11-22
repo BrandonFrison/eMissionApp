@@ -18,7 +18,6 @@ public class PopupMealDetailFragment extends DialogFragment {
 
     private MainActivity mMainActivity;
 
-    private TextView mMealInfo;
     boolean mViewMyMeal = false;  // true when user click the check box to view his own meals
     private Button mDeleteButton;
 

@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 public class PopupMealDetail extends AppCompatActivity {
+
     boolean mViewMyMeal = false;  // true when user click the check box to view his own meals
     private Button mDeleteButton;
 
