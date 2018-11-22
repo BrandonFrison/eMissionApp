@@ -134,7 +134,7 @@ public class AddMealActivity extends AppCompatActivity {
             String mealCreatorID = bundle.getString("userID");
 
             String mealID = mealDatabase.push().getKey();
-            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
             mealDatabase.child(mealID).setValue(meal);
 
             clearInputFields();

@@ -57,6 +57,14 @@ public class PopupMealDetail extends AppCompatActivity {
             });
         }
 
+        getMealInfo();
+
+    }
+
+    private void getMealInfo() {
+        Bundle bundle = getIntent().getExtras();
+        String mealID = bundle.getString("mealID");
+
     }
 
     private void DeleteMeal() {

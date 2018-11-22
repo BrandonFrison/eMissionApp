@@ -19,6 +19,7 @@ import ca.cmpt276.greengoblins.emission.AddMealActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.PopupMealDetail;
 
+import java.io.Serializable;
 import java.util.List;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
@@ -26,7 +27,7 @@ import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.fragments.MakePledgeFragment;
 import ca.cmpt276.greengoblins.fragments.Meal.PopupMealDetailFragment;
 
-public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
+public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> implements Serializable {
 
     private final View.OnClickListener mOnClickListener = new mealOnClickListener();
 
@@ -95,9 +96,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         public void onClick(final View view) {
             int itemPosition = mRecyclerView.getChildAdapterPosition(view);
             Meal meal = mealList.get(itemPosition);
+            String mealID = meal.getMealID();
 
-            Intent popupMealDetail = new Intent(mMainActivity, PopupMealDetail.class);
-            mMainActivity.startActivity(popupMealDetail);
+            Intent popupMealDetailIntent = new Intent(mMainActivity, PopupMealDetail.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("mealID", mealID);
+            popupMealDetailIntent.putExtras(bundle);
+
+            mMainActivity.startActivity(popupMealDetailIntent);
         }
     }
 }
