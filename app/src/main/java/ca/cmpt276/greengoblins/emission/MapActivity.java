@@ -164,7 +164,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             passLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // passMealLocation();
+                    passMealLocation();
                     try{
                     if(mMarker.isInfoWindowShown()) {
                         mMarker.hideInfoWindow();
@@ -258,7 +258,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             FragmentManager fragmentManager = MapActivity.this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //    fragmentTransaction.replace( R.id.frame_activity_map, mealFragment );
+            fragmentTransaction.replace( R.id.frame_activity_map, mealFragment );
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
