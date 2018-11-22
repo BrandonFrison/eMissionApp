@@ -71,7 +71,7 @@ public class MealListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMainActivity = (MainActivity) getActivity();
-        mMainActivity.setTitle(R.string.toolbar_pledge_list);
+        mMainActivity.setTitle(R.string.toolbar_meal_list);
 
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.baseline_add_24);

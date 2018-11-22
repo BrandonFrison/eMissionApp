@@ -1,7 +1,6 @@
 package ca.cmpt276.greengoblins.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,36 +14,31 @@ import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
 import ca.cmpt276.greengoblins.foodsurveydata.MealPlan;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class ReduceFragment extends Fragment {
-    final static int MIN_VALUE_FOR_CHART = 0;
     final static double METRO_VANCOUVER_POPULATION = 2.463E6;
 
-    MainActivity mMainActivity;
-    private Button mMealPlan1;
-    private Button mMealPlan2;
-    private Button mMealPlan3;
-    private Button mMealPlan4;
+    private MainActivity mMainActivity;
+    private Spinner mMealPlanDropdown;
     private Button mJoinGreenFoodChallenge;
     private TextView mSavingsAfterNewPlan;
     private TextView mCollectiveSavings;
@@ -65,57 +59,57 @@ public class ReduceFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Reduce CO2e");
 
         mMainActivity = (MainActivity) getActivity();
+        mMainActivity.setTitle(R.string.toolbar_reduce);
+
         Bundle historyBundle = getArguments();
         mOldMealPlan = (ConsumptionTable) historyBundle.getSerializable("resultTable");
         mSavingsAfterNewPlan = (TextView) view.findViewById(R.id.meal_plan_savings);
         mCollectiveSavings = (TextView) view.findViewById(R.id.meal_plan_collective_savings);
 
         mCO2eComparisonChart = (HorizontalBarChart) view.findViewById(R.id.meal_plan_co2e_chart);
+        // Disables interactivity, removes description, and removes label
+        applyChartSettings(mCO2eComparisonChart);
+
         setGraph(0, mOldMealPlan.calculateTotalCO2e()); // Set newPlanCO2e 0 as default
 
-        // Vegetarian meal plan
-        mMealPlan1 = (Button) view.findViewById(R.id.meal_plan_1);
-        mMealPlan1.setOnClickListener(new View.OnClickListener() {
+        mMealPlanDropdown = (Spinner) view.findViewById(R.id.reduce_meal_list);
+        String[] mMealOptions = getResources().getStringArray(R.array.reduce_meal_plan_list);
+
+        ArrayAdapter<String> dropdownFilterAdapter = new ArrayAdapter<String>(mMainActivity.getBaseContext(),
+                R.layout.support_simple_spinner_dropdown_item, mMealOptions);
+        dropdownFilterAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        mMealPlanDropdown.setAdapter(dropdownFilterAdapter);
+        mMealPlanDropdown.setPrompt(getResources().getString(R.string.select_meal_plan_prompt));
+
+        mMealPlanDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                MealPlan chickenOnlyMealPlan = new MealPlan();
-                double co2eForNewPlan = chickenOnlyMealPlan.switchToChickenOnly(mOldMealPlan);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                MealPlan newMealPlan = new MealPlan();
+                double co2eForNewPlan = 0;
+                switch(i){
+                    case 0:
+                        co2eForNewPlan = newMealPlan.switchToChickenOnly(mOldMealPlan);
+                        break;
+                    case 1:
+                        // Reduce all meat consumption by 50% but keep vegetable consumption the same
+                        co2eForNewPlan = newMealPlan.reduceMeatByHalf(mOldMealPlan);
+                        break;
+                    case 2:
+                        // Remove all meats except for fish
+                        co2eForNewPlan = newMealPlan.switchToFishOnly(mOldMealPlan);
+                        break;
+                    case 3:
+                        co2eForNewPlan = newMealPlan.removeMeatFromPlan(mOldMealPlan);
+                        break;
+                }
                 calculateSavingsAndUpdateGraph(co2eForNewPlan);
             }
-        });
 
-        // Reduce all meat consumption by 50% but keep vegetable consumption the same
-        mMealPlan2 = (Button) view.findViewById(R.id.meal_plan_2);
-        mMealPlan2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                MealPlan reducedMeatMealPlan = new MealPlan();
-                double co2eForNewPlan = reducedMeatMealPlan.reduceMeatByHalf(mOldMealPlan);
-                calculateSavingsAndUpdateGraph(co2eForNewPlan);
-            }
-        });
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-        // Remove all meats except for fish
-        mMealPlan3 = (Button) view.findViewById(R.id.meal_plan_3);
-        mMealPlan3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MealPlan fishOnlyMealPlan = new MealPlan();
-                double co2eForNewPlan = fishOnlyMealPlan.switchToFishOnly(mOldMealPlan);
-                calculateSavingsAndUpdateGraph(co2eForNewPlan);
-            }
-        });
-
-        mMealPlan4 = (Button) view.findViewById(R.id.meal_plan_4);
-        mMealPlan4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MealPlan vegetarianMealPlan = new MealPlan();
-                double co2eForNewPlan = vegetarianMealPlan.removeMeatFromPlan(mOldMealPlan);
-                calculateSavingsAndUpdateGraph(co2eForNewPlan);
             }
         });
 
@@ -158,20 +152,17 @@ public class ReduceFragment extends Fragment {
         private void setGraph(float newPlanCO2e, float oldPlanCO2e) {
             mCO2eComparisonChart.invalidate(); // Refreshes chart
             ArrayList<BarEntry> co2eValues = new ArrayList<>();
-            float spaceBetweenBars = 1.5f;
+            //float spaceBetweenBars = 1.5f;
 
-            co2eValues.add(new BarEntry(1 * spaceBetweenBars, newPlanCO2e));
-            co2eValues.add(new BarEntry(2 * spaceBetweenBars, oldPlanCO2e));
+            co2eValues.add(new BarEntry(0, newPlanCO2e));
+            co2eValues.add(new BarEntry(1, oldPlanCO2e));
 
             // Add data
             BarDataSet co2eValuesDataSet;
             co2eValuesDataSet = new BarDataSet(co2eValues, "CO2 Values");
-            co2eValuesDataSet.setColors(getResources().getColor(R.color.colorPrimary));
+            co2eValuesDataSet.setColors(getResources().getColor(R.color.colorPrimary, null));
             co2eValuesDataSet.setValueTextSize(13f);
             BarData co2eData = new BarData(co2eValuesDataSet);
-
-            // Disables interactivity, removes description, and removes label
-            applyChartSettings(mCO2eComparisonChart);
 
             // Set chart to present CO2e data
             mCO2eComparisonChart.setData(co2eData);
@@ -198,12 +189,23 @@ public class ReduceFragment extends Fragment {
             legend.setEnabled(false);
 
             //Start axis from min value which is 0
-            chart.getAxisLeft().setAxisMinimum(MIN_VALUE_FOR_CHART);
+            //chart.getAxisLeft().setAxisMinimum(MIN_VALUE_FOR_CHART);
 
             // Disable all axises
-            chart.getAxisRight().setEnabled(false);
-            chart.getXAxis().setEnabled(false);
-            chart.getXAxis().setDrawGridLines(false);
-            chart.getAxisLeft().setEnabled(false);
+            //chart.getAxisRight().setEnabled(false);
+            //chart.getXAxis().setEnabled(true);
+            //chart.getXAxis().setDrawGridLines(false);
+            //chart.getAxisLeft().setEnabled(true);
+
+            XAxis xAxis = mCO2eComparisonChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTextSize(12f);
+            xAxis.setTextColor(Color.BLACK);
+            xAxis.setDrawAxisLine(false);
+            xAxis.setDrawGridLines(false);
+            xAxis.setCenterAxisLabels(false);
+            xAxis.setGranularityEnabled(true);
+            String[] labels = { getString(R.string.new_plan), getString(R.string.old_plan) };
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         }
     }
