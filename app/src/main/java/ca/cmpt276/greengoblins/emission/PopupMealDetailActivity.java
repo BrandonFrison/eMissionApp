@@ -1,4 +1,4 @@
-package ca.cmpt276.greengoblins.fragments.Meal;
+package ca.cmpt276.greengoblins.emission;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,7 +14,7 @@ import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 
 
-public class PopupMealDetailFragment extends DialogFragment {
+public class PopupMealDetailActivity extends DialogFragment {
 
     private MainActivity mMainActivity;
 

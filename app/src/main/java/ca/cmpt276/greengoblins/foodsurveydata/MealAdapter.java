@@ -1,31 +1,23 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import ca.cmpt276.greengoblins.emission.AddMealActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.PopupMealDetail;
 
 import java.io.Serializable;
 import java.util.List;
 
-import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
-import ca.cmpt276.greengoblins.fragments.MakePledgeFragment;
-import ca.cmpt276.greengoblins.fragments.Meal.PopupMealDetailFragment;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> implements Serializable {
 

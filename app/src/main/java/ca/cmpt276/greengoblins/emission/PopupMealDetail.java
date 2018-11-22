@@ -56,6 +56,7 @@ public class PopupMealDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deleteMeal();
+                finish();
             }
         });
 
@@ -98,14 +99,14 @@ public class PopupMealDetail extends AppCompatActivity {
     }
 
     private void deleteMeal() {
-//        DatabaseReference usersDatabase;
-//        Query toBeDeleted;
-//        usersDatabase = FirebaseDatabase.getInstance().getReference("Meals");
-//
-//        String userID = mMainActivity.getCurrentUser().getUid();
-//
-//        toBeDeleted = usersDatabase.orderByChild("mealCreatorID").equalTo(userID);
-//        usersDatabase = toBeDeleted.getRef();
-//        usersDatabase.getParent().removeValue();
+        DatabaseReference mealReference;
+        mealReference = FirebaseDatabase.getInstance().getReference("Meals").child(mSelectedMeal.getMealID());
+        mealReference.removeValue();
+
+       /* toBeDeleted = usersDatabase.child();
+                //usersDatabase.getRef().child(mSelectedMeal.getMealCreatorID());
+                //usersDatabase.orderByChild("mealCreatorID").equalTo(mSelectedMeal.getMealCreatorID());
+        usersDatabase = toBeDeleted.getRef();
+        usersDatabase.getParent().removeValue();*/
     }
 }
