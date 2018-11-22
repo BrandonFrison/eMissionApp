@@ -7,8 +7,58 @@
     tools:context=".PopupMealDetail"
     tools:layout_editor_absoluteY="81dp">
 
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/meal_detail_image"
+            android:layout_width="140dp"
+            android:layout_height="110dp"
+            android:contentDescription="@string/profile_picture"
+            android:src="@drawable/treepledge" />
+
+        <TextView
+            android:id="@+id/meal_detail_meal_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_placeholder" />
+
+        <TextView
+            android:id="@+id/meal_detail_restaurant_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_placeholder" />
+
+        <TextView
+            android:id="@+id/meal_detail_meal_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_placeholder" />
+
+        <TextView
+            android:id="@+id/meal_detail_meal_protein"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_placeholder" />
+
+        <TextView
+            android:id="@+id/meal_detail_meal_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/text_view_placeholder" />
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+
+    </LinearLayout>
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -74,7 +124,7 @@
         tools:layout_editor_absoluteY="191dp">
 
         <TextView
-            android:id="@+id/popup_meal_description"
+            android:id="@+id/meal_detail_meal_description"
             android:layout_width="300dp"
             android:layout_height="127dp"
             android:layout_marginStart="1dp"
@@ -104,7 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Delete" />
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 </android.support.constraint.ConstraintLayout>

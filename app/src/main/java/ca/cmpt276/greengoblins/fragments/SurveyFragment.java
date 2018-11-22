@@ -380,11 +380,13 @@ public class SurveyFragment extends Fragment implements View.OnClickListener {
         Fragment resultFragment = new ResultFragment();
         resultFragment.setArguments( bundle );
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        mMainActivity.startFragment(resultFragment, true);
+
+        /*FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace( R.id.frame_activity_content, resultFragment );
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
 
         mActionButton.hide();
     }

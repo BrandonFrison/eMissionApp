@@ -96,12 +96,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         public void onClick(final View view) {
             int itemPosition = mRecyclerView.getChildAdapterPosition(view);
             Meal meal = mealList.get(itemPosition);
-            String mealID = meal.getMealID();
+            //String mealID = meal.getMealID();
 
             Intent popupMealDetailIntent = new Intent(mMainActivity, PopupMealDetail.class);
 
             Bundle bundle = new Bundle();
-            bundle.putString("mealID", mealID);
+            bundle.putString("userID", mMainActivity.getCurrentUser().getUid() );
+            bundle.putSerializable("meal", meal);
             popupMealDetailIntent.putExtras(bundle);
 
             mMainActivity.startActivity(popupMealDetailIntent);
