@@ -27,6 +27,7 @@ public class MakeMealFragment extends Fragment {
     private EditText mRestaurantNameInputField;
     private EditText mLocationInputField;
     private EditText mDescriptionInputField;
+    private Meal meal;
 
     private FloatingActionButton mActionButton;
 
@@ -74,7 +75,11 @@ public class MakeMealFragment extends Fragment {
             final String mealCreatorID = mMainActivity.getCurrentUser().getUid();
 
             String mealID = mealDatabase.push().getKey();
-            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            if(meal.getLatitude() != null && meal.getLongitude() != null) {
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            }else{
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            }
             mealDatabase.child(mealID).setValue(meal);
 
             clearInputFields();
@@ -118,6 +123,8 @@ public class MakeMealFragment extends Fragment {
         if(locationBundle != null) {
             String[] locationInfo = locationBundle.getStringArray("location_data");
             mLocationInputField.setText(locationInfo[0]);
+            meal.setLatitude(Double.parseDouble(locationInfo[1]));
+            meal.setLongitude(Double.parseDouble(locationInfo[2]));
         }
     }
 }

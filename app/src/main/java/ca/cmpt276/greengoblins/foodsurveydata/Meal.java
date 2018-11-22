@@ -10,8 +10,8 @@ public class Meal {
     private String location;
     private String description;
     private String mealCreatorID;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 
     // Need this default constructor in order for datasnapshot to work
     public Meal() {
@@ -24,6 +24,17 @@ public class Meal {
         this.location = location;
         this.description = description;
         this.mealCreatorID = mealCreatorID;
+    }
+//constructor for having latitude and longitude
+    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID, Double latitude, Double longitude) {
+        this.mealName = mealName;
+        this.mainProteinIngredient = mainProteinIngredient;
+        this.restaurantName = restaurantName;
+        this.location = location;
+        this.description = description;
+        this.mealCreatorID = mealCreatorID;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getMealName() {
@@ -74,7 +85,7 @@ public class Meal {
         this.mealCreatorID = mealCreatorID;
     }
 
-    public double getLatitude(){
+    public Double getLatitude(){
         return latitude;
     }
 
@@ -82,7 +93,7 @@ public class Meal {
         this.latitude = latitude;
     }
 
-    public double getLongitude(){
+    public Double getLongitude(){
         return longitude;
     }
 
