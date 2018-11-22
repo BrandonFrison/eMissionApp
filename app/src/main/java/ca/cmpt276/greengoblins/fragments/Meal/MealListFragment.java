@@ -1,5 +1,6 @@
 package ca.cmpt276.greengoblins.fragments.Meal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import ca.cmpt276.greengoblins.emission.AddMeals;
+import ca.cmpt276.greengoblins.emission.ExplanationActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
@@ -96,8 +99,10 @@ public class MealListFragment extends Fragment {
                 if( !mMainActivity.checkUserLogin() ) {
                     mMainActivity.popupLogin();
                 } else {
-                    Fragment newFragment = new MakeMealFragment();
-                    mMainActivity.startFragment(newFragment, true, false);
+                    Intent AddMealPage= new Intent(getContext(), AddMeals.class);
+                    startActivity(AddMealPage);
+                    //Fragment newFragment = new MakeMealFragment();
+                    //mMainActivity.startFragment(newFragment, true, false);
                 }
             }
         });

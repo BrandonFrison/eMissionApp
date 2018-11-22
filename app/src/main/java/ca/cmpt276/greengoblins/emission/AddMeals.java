@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -27,13 +28,22 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import ca.cmpt276.greengoblins.foodsurveydata.Meal;
+import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
 
 
 public class AddMeals extends AppCompatActivity {
@@ -42,6 +52,16 @@ public class AddMeals extends AppCompatActivity {
     public static final int SELECT_PHOTO = 2;
     private ImageView imageview;
     private Uri imageUri;
+
+    private FirebaseAuth mAuthenticator;
+
+    private EditText mMealNameInputField;
+    private EditText mMainProteinIngredientInputField;
+    private EditText mRestaurantNameInputField;
+    private EditText mLocationInputField;
+    private EditText mDescriptionInputField;
+
+    private Button mPostMeal;
     
 
     @Override
@@ -65,6 +85,23 @@ public class AddMeals extends AppCompatActivity {
         getWindow().setAttributes(params);
 
         //================================================================
+        mAuthenticator = FirebaseAuth.getInstance();
+
+        mMealNameInputField = (EditText) findViewById(R.id.add_meal_name);
+        mMainProteinIngredientInputField = (EditText) findViewById(R.id.main_protein);
+        mRestaurantNameInputField = (EditText) findViewById(R.id.restaurant_name);
+        mLocationInputField = (EditText) findViewById(R.id.restaurant_location);
+        mDescriptionInputField = (EditText) findViewById(R.id.add_meal_description);
+        mPostMeal = (Button) findViewById(R.id.post_meal);
+
+        mPostMeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                publishMeal();
+            }
+        });
+
+
         mAddMealImageView = findViewById(R.id.add_meal_image);
         mAddMealImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,6 +113,26 @@ public class AddMeals extends AppCompatActivity {
 
 
 
+    }
+
+    private void publishMeal() {
+        String mealName = mMealNameInputField.getText().toString().trim().toLowerCase();
+        String mainProteinIngredient = mMainProteinIngredientInputField.getText().toString().trim().toLowerCase();
+        String restaurantName = mRestaurantNameInputField.getText().toString().trim().toLowerCase();
+        String location = mLocationInputField.getText().toString().trim().toLowerCase();
+        String description = mDescriptionInputField.getText().toString().trim().toLowerCase();
+
+        final DatabaseReference mealDatabase;
+        mealDatabase = FirebaseDatabase.getInstance().getReference("Meals");
+
+
+        final String mealCreatorID = mAuthenticator.getCurrentUser().getUid();
+
+        String mealID = mealDatabase.push().getKey();
+        Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+        mealDatabase.child(mealID).setValue(meal);
+
+        finish();
     }
 
     private void showChoosePicDialog() {
