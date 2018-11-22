@@ -44,7 +44,7 @@
             android:label="@string/label_help"
             android:theme="@style/AppTheme.PopMe" />
         <activity
-            android:name=".AddMeals"
+            android:name=".AddMealActivity"
             android:label="@string/label_add_meal"
             android:theme="@style/AppTheme.PopMe" />
         <activity

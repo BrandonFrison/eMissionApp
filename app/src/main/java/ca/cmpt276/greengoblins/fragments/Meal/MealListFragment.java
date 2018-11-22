@@ -1,5 +1,6 @@
 package ca.cmpt276.greengoblins.fragments.Meal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
+import ca.cmpt276.greengoblins.emission.AddMealActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
@@ -112,8 +114,13 @@ public class MealListFragment extends Fragment {
                 if( !mMainActivity.checkUserLogin() ) {
                     mMainActivity.popupLogin();
                 } else {
-                    Fragment newFragment = new MakeMealFragment();
-                    mMainActivity.startFragment(newFragment, true, false);
+                    Intent AddMealPage= new Intent(getContext(), AddMealActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userID", mMainActivity.getCurrentUser().getUid());
+                    AddMealPage.putExtras(bundle);
+
+                    startActivity(AddMealPage);
                 }
             }
         });
@@ -147,7 +154,6 @@ public class MealListFragment extends Fragment {
         mFilterDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                 filterList();
             }
 
@@ -159,9 +165,6 @@ public class MealListFragment extends Fragment {
     }
 
     private void queryData(Query query) {
-//        if(mViewMyMeals.isChecked()){
-//            query.orderByChild("mealCreatorID").equalTo(userID);
-//        }
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
