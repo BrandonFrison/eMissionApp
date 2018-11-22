@@ -46,7 +46,7 @@ import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
 
 
-public class AddMeals extends AppCompatActivity {
+public class AddMealActivity extends AppCompatActivity {
     private ImageView mAddMealImageView;
     public static final int TAKE_PHOTO = 1;
     public static final int SELECT_PHOTO = 2;
@@ -97,7 +97,9 @@ public class AddMeals extends AppCompatActivity {
         mPostMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                publishMeal();
+                if(publishMeal()) {
+                    finish();
+                }
             }
         });
 
@@ -115,24 +117,64 @@ public class AddMeals extends AppCompatActivity {
 
     }
 
-    private void publishMeal() {
+    private boolean publishMeal() {
+        boolean isPosted = false;
+
         String mealName = mMealNameInputField.getText().toString().trim().toLowerCase();
         String mainProteinIngredient = mMainProteinIngredientInputField.getText().toString().trim().toLowerCase();
         String restaurantName = mRestaurantNameInputField.getText().toString().trim().toLowerCase();
         String location = mLocationInputField.getText().toString().trim().toLowerCase();
         String description = mDescriptionInputField.getText().toString().trim().toLowerCase();
 
-        final DatabaseReference mealDatabase;
-        mealDatabase = FirebaseDatabase.getInstance().getReference("Meals");
+        if(isInputValid(mealName, mainProteinIngredient, restaurantName, location)) {
+            final DatabaseReference mealDatabase;
+            mealDatabase = FirebaseDatabase.getInstance().getReference("Meals");
 
+            Bundle bundle = getIntent().getExtras();
+            String mealCreatorID = bundle.getString("userID");
 
-        final String mealCreatorID = mAuthenticator.getCurrentUser().getUid();
+            String mealID = mealDatabase.push().getKey();
+            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+            mealDatabase.child(mealID).setValue(meal);
 
-        String mealID = mealDatabase.push().getKey();
-        Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
-        mealDatabase.child(mealID).setValue(meal);
+            clearInputFields();
+            Toast.makeText(getApplicationContext(), R.string.meal_successfully_published, Toast.LENGTH_SHORT).show();
 
-        finish();
+            isPosted = true;
+        }
+
+        return isPosted;
+    }
+
+    private boolean isInputValid(String mealName, String mainProteinIngredient, String restaurantName, String location) {
+        boolean isValid = true;
+
+        if( mealName.isEmpty() ){
+            Toast.makeText( getApplicationContext(), R.string.empty_meal_name_message, Toast.LENGTH_SHORT ).show();
+            isValid = false;
+        }
+        else if( mainProteinIngredient.isEmpty() ){
+            Toast.makeText( getApplicationContext(), R.string.empty_main_protein_ingredient_message, Toast.LENGTH_SHORT ).show();
+            isValid = false;
+        }
+        else if( restaurantName.isEmpty() ) {
+            Toast.makeText(getApplicationContext(), R.string.empty_restaurant_name_message, Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        else if( location.isEmpty() ) {
+            Toast.makeText(getApplicationContext(), R.string.empty_location_message, Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    void clearInputFields() {
+        mMealNameInputField.getText().clear();
+        mMainProteinIngredientInputField.getText().clear();
+        mRestaurantNameInputField.getText().clear();
+        mLocationInputField.getText().clear();
+        mDescriptionInputField.getText().clear();
     }
 
     private void showChoosePicDialog() {

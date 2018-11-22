@@ -29,8 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import ca.cmpt276.greengoblins.emission.AddMeals;
-import ca.cmpt276.greengoblins.emission.ExplanationActivity;
+import ca.cmpt276.greengoblins.emission.AddMealActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
@@ -99,10 +98,13 @@ public class MealListFragment extends Fragment {
                 if( !mMainActivity.checkUserLogin() ) {
                     mMainActivity.popupLogin();
                 } else {
-                    Intent AddMealPage= new Intent(getContext(), AddMeals.class);
+                    Intent AddMealPage= new Intent(getContext(), AddMealActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userID", mMainActivity.getCurrentUser().getUid());
+                    AddMealPage.putExtras(bundle);
+
                     startActivity(AddMealPage);
-                    //Fragment newFragment = new MakeMealFragment();
-                    //mMainActivity.startFragment(newFragment, true, false);
                 }
             }
         });
