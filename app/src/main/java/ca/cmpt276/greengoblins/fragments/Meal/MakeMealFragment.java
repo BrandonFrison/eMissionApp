@@ -39,6 +39,7 @@ public class MakeMealFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMainActivity = (MainActivity) getActivity();
+        mMainActivity.setTitle(R.string.toolbar_meal_create);
 
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.ic_menu_send);

@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/fragment_meal_list_pic"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:text="TEST NAME" />
 
                 <TextView
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/fragment_meal_list_pic"
                     android:layout_below="@+id/fragment_meal_list_name"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="0dp"
                     android:text="TEST LOCATION" />
 
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fragment_meal_list_location"
                     android:layout_toEndOf="@+id/fragment_meal_list_pic"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="0dp"
                     android:text="TEST RESTAURANT NAME" />
 

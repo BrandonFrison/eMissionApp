@@ -1,8 +1,9 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class Meal {
+public class Meal implements Serializable {
 
     private String mealName;
     private String mainProteinIngredient;

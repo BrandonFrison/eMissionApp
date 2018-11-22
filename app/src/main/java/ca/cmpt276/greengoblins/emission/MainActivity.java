@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     private FragmentTransaction mFragmentTransaction;
 
     private FloatingActionButton mActionButton;
+    private TextView mActionButtonLabel;
+
     private SurveyFragment mSurveyFragment;
     private ArrayList<String> mFoodSurveyCategories;
     private ArrayList<Float> mCO2eConversionRates;
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity
         mUserData = new User();
 
         mActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        mActionButtonLabel = (TextView) findViewById(R.id.fab_label);
+        hideActionButtonLabel();
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -280,12 +284,28 @@ public class MainActivity extends AppCompatActivity
         return mActionButton;
     }
 
+    public void showActionButtonLabel(int labelTextID){
+        mActionButtonLabel.setText(labelTextID);
+        mActionButtonLabel.setVisibility(View.VISIBLE);
+    }
+
+    public void hideActionButtonLabel(){
+        mActionButtonLabel.setVisibility(View.GONE);
+    }
+
+    public void hideActionButton(){
+        mActionButton.hide();
+        mActionButtonLabel.setVisibility(View.GONE);
+    }
+
     public ConsumptionTable createDefaultFoodTable(){
         ConsumptionTable defaultCategories = new ConsumptionTable( mFoodSurveyCategories, mCO2eConversionRates );
         return defaultCategories;
     }
 
     public boolean startFragment(Fragment newFragment, boolean addToBackStack){
+        hideActionButton();
+
         if ( newFragment == null) return false;
         mFragmentTransaction = mFragmentManager.beginTransaction();
 
@@ -301,7 +321,7 @@ public class MainActivity extends AppCompatActivity
         if ((showActionButton)) {
             mActionButton.show();
         } else {
-            mActionButton.hide();
+            hideActionButton();
         }
         return startFragment( newFragment, addToBackStack );
     }

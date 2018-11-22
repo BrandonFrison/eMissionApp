@@ -59,8 +59,6 @@ public class MealListFragment extends Fragment {
     private MealAdapter mMealAdapter;
     private RecyclerView mRecyclerView;
 
-    private String userID;
-
 
     @Nullable
     @Override
@@ -71,14 +69,14 @@ public class MealListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMainActivity = (MainActivity) getActivity();
-        mMainActivity.setTitle(R.string.toolbar_pledge_list);
+        mMainActivity.setTitle(R.string.toolbar_meal_list);
 
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.baseline_add_24);
         mActionButton.show();
+        mMainActivity.showActionButtonLabel(R.string.fablabel_add_meal);
 
         mViewMyMeals = (CheckBox) view.findViewById(R.id.ViewMyMeal);
-        userID = mMainActivity.getCurrentUser().getUid();
 
         mDatabaseMealList = new ArrayList<Meal>();
         mFilteredMealList = new ArrayList<Meal>();
@@ -171,10 +169,10 @@ public class MealListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mDatabaseMealList.clear();
-                if(mViewMyMeals.isChecked()){
+                if(mViewMyMeals.isChecked() && mMainActivity.checkUserLogin()){
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Meal mealData = (Meal) snapshot.getValue(Meal.class);
-                        if(mealData.getMealCreatorID().equalsIgnoreCase(userID)) {
+                        if(mealData.getMealCreatorID().equalsIgnoreCase(mMainActivity.getCurrentUser().getUid())) {
                             mDatabaseMealList.add(mealData);
                         }
                     }

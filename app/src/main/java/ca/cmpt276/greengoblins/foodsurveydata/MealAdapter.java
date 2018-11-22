@@ -36,7 +36,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private List<Meal> mealList;
     private RecyclerView mRecyclerView;
     private MainActivity mMainActivity;
-    private ImageView mMealPic;
 
     public MealAdapter(Context mContext, List<Meal> mealList, RecyclerView recyclerView, MainActivity mainActivity) {
         this.mContext = mContext;
@@ -112,12 +111,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         public void onClick(final View view) {
             int itemPosition = mRecyclerView.getChildAdapterPosition(view);
             Meal meal = mealList.get(itemPosition);
-            String mealID = meal.getMealID();
+            //String mealID = meal.getMealID();
 
             Intent popupMealDetailIntent = new Intent(mMainActivity, PopupMealDetail.class);
 
             Bundle bundle = new Bundle();
-            bundle.putString("mealID", mealID);
+            bundle.putString("userID", mMainActivity.getCurrentUser().getUid() );
+            bundle.putSerializable("meal", meal);
             popupMealDetailIntent.putExtras(bundle);
 
             mMainActivity.startActivity(popupMealDetailIntent);

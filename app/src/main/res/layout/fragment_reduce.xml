@@ -10,140 +10,62 @@
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:weightSum="1"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/meal_plan_introduction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
             android:textSize="18sp"
-            android:text="@string/meal_plan_introduction"
-            app:layout_constraintBottom_toTopOf="@id/meal_plan_1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/meal_plan_introduction" />
 
-        <Button
-            android:id="@+id/meal_plan_1"
+        <Spinner
+            android:id="@+id/reduce_meal_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/meal_plan"
-            app:layout_constraintBottom_toTopOf="@+id/meal_plan_2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/meal_plan_introduction" />
-
-        <Button
-            android:id="@+id/meal_plan_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/meal_plan_2"
-            app:layout_constraintBottom_toTopOf="@id/meal_plan_3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/meal_plan_1" />
-
-        <Button
-            android:id="@+id/meal_plan_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/meal_plan_3"
-            app:layout_constraintBottom_toTopOf="@id/meal_plan_4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/meal_plan_2" />
-
-        <Button
-            android:id="@+id/meal_plan_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/meal_plan_4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/meal_plan_3" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/bar_1_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="@string/old_plan"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_layout" />
-
-    <TextView
-        android:id="@+id/bar_2_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="57dp"
-        android:textSize="18sp"
-        android:text="@string/new_plan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_layout" />
-
-    <LinearLayout
-        android:id="@+id/meal_plan_chart_layout"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/button_layout">
-
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="?attr/colorButtonNormal" />
 
         <com.github.mikephil.charting.charts.HorizontalBarChart
             android:id="@+id/meal_plan_co2e_chart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0.3"/>
 
-    <TextView
-        android:id="@+id/meal_plan_savings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="@string/meal_plan_savings"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/meal_plan_chart_layout"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/meal_plan_savings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/text_view_placeholder"
+            android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/meal_plan_collective_savings"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:layout_marginStart="5dp"
-        android:textSize="15sp"
-        android:text="@string/meal_plan_collective_savings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/meal_plan_savings" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@id/meal_plan_collective_savings">
+        <TextView
+            android:id="@+id/meal_plan_collective_savings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="0.3"
+            android:textSize="15sp"
+            android:text="@string/text_view_placeholder" />
 
         <Button
             android:id="@+id/join_the_green_food_challenge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/join_the_green_food_challenge" />
+
     </LinearLayout>
+
+
 
 
 
