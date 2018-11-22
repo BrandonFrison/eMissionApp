@@ -46,12 +46,6 @@ public class PopupMealDetailFragment extends DialogFragment {
         //===============================================================
         mDeleteButton = mMainActivity.findViewById(R.id.delete_button);
         mDeleteButton.setVisibility(View.INVISIBLE);
-        mMealInfo = mMainActivity.findViewById(R.id.popup_meal_info);
-        String MealInfoText = "Meal Name:    \n\n" +
-                "Main protein:    \n\n" +
-                "Restaurant:    \n\n" +
-                "Location:  ";
-        mMealInfo.setText(MealInfoText);
 
         if(mViewMyMeal ==true ){//when user click the check box to view his own meals
             mDeleteButton.setVisibility(View.VISIBLE);
