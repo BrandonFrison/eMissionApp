@@ -222,7 +222,12 @@ public class MakePledgeFragment extends Fragment {
                     mFirstNameInputField.setText( user.getFirstName() );
                     mLastNameInputField.setText( user.getLastName() );
                     mMunicipalityInputField.setText( user.getCity() );
-                    mPledgeAmountInputField.setText( String.valueOf( user.getPledgeAmount() ) );
+                    if(mMainActivity.getCO2SavedWithAlternate() > 0){
+                        mPledgeAmountInputField.setText( String.valueOf( mMainActivity.getCO2SavedWithAlternate()));
+                    }
+                    else{
+                        mPledgeAmountInputField.setText( String.valueOf( user.getPledgeAmount() ) );
+                    }
                     mShowNameCheckbox.setChecked( user.isShowNamePublic() );
 
                 }else{

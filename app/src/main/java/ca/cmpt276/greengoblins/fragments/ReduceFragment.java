@@ -138,6 +138,7 @@ public class ReduceFragment extends Fragment {
 
             String savingsText = getString(R.string.meal_plan_savings);
             savingsText = String.format( savingsText, savings );
+            mMainActivity.setCO2SavedWithAlternate((int) savings);
             //String savingsText = "You have saved: " + String.format(Locale.US, "%.1f", savings) + " kg CO2e / year";
             mSavingsAfterNewPlan.setText(savingsText);
 

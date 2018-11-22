@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity
 
     private User mUserData;
 
+    private int mCO2SavedWithAlternate;
+
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
 
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle(R.string.app_name);
 
         mUserData = new User();
+        mCO2SavedWithAlternate = 0;
 
         mActionButton = (FloatingActionButton) findViewById(R.id.fab);
         mActionButtonLabel = (TextView) findViewById(R.id.fab_label);
@@ -151,6 +154,8 @@ public class MainActivity extends AppCompatActivity
     public int getUserAvatar() {
         return mUserData.getAvatarID();
     }
+    public void setCO2SavedWithAlternate(int CO2Saved) { mCO2SavedWithAlternate = CO2Saved; }
+    public double getCO2SavedWithAlternate() { return mCO2SavedWithAlternate; }
 
     public void popupLogin(){
         LoginFragment loginFragment = new LoginFragment();
