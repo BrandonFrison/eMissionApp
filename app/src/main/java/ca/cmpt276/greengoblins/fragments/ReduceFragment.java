@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.ConsumptionTable;
+import ca.cmpt276.greengoblins.foodsurveydata.Convertor;
 import ca.cmpt276.greengoblins.foodsurveydata.MealPlan;
 
 import android.widget.AdapterView;
@@ -135,14 +136,18 @@ public class ReduceFragment extends Fragment {
                 return;
             }
 
-            String savingsText = "You have saved: " + String.format(Locale.US, "%.1f", savings) + " kg CO2e / year";
+            String savingsText = getString(R.string.meal_plan_savings);
+            savingsText = String.format( savingsText, savings );
+            //String savingsText = "You have saved: " + String.format(Locale.US, "%.1f", savings) + " kg CO2e / year";
             mSavingsAfterNewPlan.setText(savingsText);
 
             // TO DO: Implement collective savings using convertor class
             double collectiveSavings = savings * METRO_VANCOUVER_POPULATION;
-            String collectiveSavingsText = "If everyone in Metro Vancouver made these " +
+            String collectiveSavingsText = getString(R.string.meal_plan_collective_savings);
+            collectiveSavingsText = String.format( collectiveSavingsText, collectiveSavings, Convertor.toKmDriven(collectiveSavings));
+            /*String collectiveSavingsText = "If everyone in Metro Vancouver made these " +
                     "changes, together we could save: " +  String.format(Locale.US, "%.1f", collectiveSavings) + " kg CO2e per year!\n"+
-                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNumber))+" km!";
+                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNumber))+" km!";*/
 
             mCollectiveSavings.setText(collectiveSavingsText);
 

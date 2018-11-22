@@ -38,7 +38,9 @@
     </string-array>
 
     <!--UI and Button Strings-->
-    <string name="button_submit">Submit</string>
+    <string name="fablabel_submit">Submit</string>
+    <string name="fablabel_add_meal">Add meal</string>
+    <string name="fablabel_add_pledge">Make a pledge</string>
     <string name="button_reduce_footprint">Reduce my carbon footprint</string>
     <string name="button_make_pledge">Make a pledge</string>
     <string name="button_view_pledge_list">See who\'s pledged</string>
@@ -84,12 +86,13 @@
     </string>
 
     <!--Reduce Meal Plan-->
-    <string name="meal_plan_introduction">Choose a replacement meal plan!</string>
-    <string name="meal_plan_savings">You have saved: </string>
     <string name="old_plan">Old Plan</string>
     <string name="new_plan">New Plan</string>
+    <string name="meal_plan_introduction">Choose a replacement meal plan!</string>
+    <string name="meal_plan_savings">You will save %,.1f kg CO2e per year</string>
     <string name="meal_plan_collective_savings">If everyone in Metro Vancouver implemented these
-        changes, together we could save: </string>
+        changes, together we could save %,.1f kg CO2e per year!
+        \n\nThat\'s the same carbon footprint as driving %,d km!</string>
     <string name="meal_plan_negative_savings_toast">You\'d be saving more by sticking with your current plan!</string>
     <string-array name="reduce_meal_plan_list">
         <item>Chicken Only</item>

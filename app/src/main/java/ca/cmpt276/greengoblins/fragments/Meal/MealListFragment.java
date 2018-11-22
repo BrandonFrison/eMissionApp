@@ -76,6 +76,7 @@ public class MealListFragment extends Fragment {
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.baseline_add_24);
         mActionButton.show();
+        mMainActivity.showActionButtonLabel(R.string.fablabel_add_meal);
 
         mViewMyMeals = (CheckBox) view.findViewById(R.id.ViewMyMeal);
         userID = mMainActivity.getCurrentUser().getUid();

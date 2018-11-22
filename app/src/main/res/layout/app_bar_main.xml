@@ -22,13 +22,42 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_send"
-        app:backgroundTint="@color/icons"/>
+        android:layout_gravity="bottom|right">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fab_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="5dp"
+                android:text=""
+                android:elevation="10dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/pop_bg"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:elevation="16dp"
+                app:srcCompat="@android:drawable/ic_menu_send"
+                app:backgroundTint="@color/icons"/>
+
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
