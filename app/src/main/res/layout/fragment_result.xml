@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -27,23 +28,10 @@
         android:layout_marginTop="2dp"
         android:layout_marginEnd="40dp"
         android:paddingHorizontal="10dp"
-        android:textSize="18sp"
         android:text="@string/text_view_placeholder"
-        app:layout_constraintBottom_toTopOf="@+id/reduce_footprint_button"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PieChart" />
-
-    <Button
-        android:id="@+id/reduce_footprint_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_reduce_footprint"
-        style="@style/ButtonTheme"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewResult" />
 
 </android.support.constraint.ConstraintLayout>

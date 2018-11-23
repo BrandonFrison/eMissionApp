@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +41,7 @@ public class ResultFragment extends Fragment {
     final double DrivenConvectionNuder = .200;  // 1 kg per 5 km
     public ArrayList<Integer> servingSizes;
     TextView mCO2eDisplay;
+    private MainActivity mMainActivity;
     PieChart pieChart;
     boolean flag =false;
     boolean flag2 =false;
@@ -47,6 +49,7 @@ public class ResultFragment extends Fragment {
     ConsumptionTable previousTable;
     float mCO2eScore = 0;
     ArrayList<String> categories;
+    private FloatingActionButton mActionButton;
     List<PieEntry> pieEntries = new ArrayList<PieEntry>();
 
 
@@ -67,6 +70,8 @@ public class ResultFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mMainActivity = (MainActivity) getActivity();
         getActivity().setTitle(R.string.toolbar_history);
         //pie chart part
         pieChart = (PieChart) view.findViewById(R.id.PieChart);
@@ -116,10 +121,14 @@ public class ResultFragment extends Fragment {
         }
         // Reduce Carbon button
         // Takes user to another activity where they can choose a meal plan
-        Button mReduceFootPrintButton = (Button) view.findViewById(R.id.reduce_footprint_button);
-        mReduceFootPrintButton.setOnClickListener(new View.OnClickListener() {
+
+        mActionButton = mMainActivity.getActionButton();
+        mActionButton.setImageResource(R.drawable.com_facebook_tooltip_black_bottomnub);
+        mActionButton.show();
+        mMainActivity.showActionButtonLabel(R.string.button_reduce_footprint);
+        mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 if(flag){
                     passToReduce(servingTable);
                 }else if(flag2){
@@ -127,6 +136,7 @@ public class ResultFragment extends Fragment {
                 }
             }
         });
+
     }
 
     private void passToReduce(ConsumptionTable tableUsed){

@@ -8,16 +8,6 @@
     tools:layout_editor_absoluteY="81dp">
 
 
-    <Button
-        android:id="@+id/post_meal"
-        android:layout_width="87dp"
-        android:layout_height="36dp"
-        android:text="Post"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/add_meal_table_layout"
-        app:layout_constraintVertical_bias="0.55" />
-
     <ImageView
         android:id="@+id/add_meal_image"
         android:layout_width="140dp"
@@ -128,5 +118,46 @@
             android:ems="10"
             android:inputType="textMultiLine" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/add_meal_fab_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/pop_bg"
+                android:elevation="10dp"
+                android:padding="5dp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/add_meal_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:elevation="16dp"
+                app:backgroundTint="@color/icons"
+                app:srcCompat="@android:drawable/ic_menu_send" />
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
