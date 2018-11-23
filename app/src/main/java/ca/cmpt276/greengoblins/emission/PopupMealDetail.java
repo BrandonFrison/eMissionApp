@@ -141,6 +141,9 @@ public class PopupMealDetail extends AppCompatActivity {
         DatabaseReference mealReference;
         mealReference = FirebaseDatabase.getInstance().getReference("Meals").child(mSelectedMeal.getMealID());
         mealReference.removeValue();
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("MealPics");
+        storageReference.child(mSelectedMeal.getMealID()).delete();
     }
 
 
