@@ -155,21 +155,21 @@ public class PledgeListFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User userInfo = (User) snapshot.getValue(User.class);
                     if(userInfo.isShowNamePublic()) {
-                        userInfo.setFirstName(userInfo.getFirstName().substring(0, 1).toUpperCase() + userInfo.getFirstName().substring(1));
+                        /*userInfo.setFirstName(userInfo.getFirstName().substring(0, 1).toUpperCase() + userInfo.getFirstName().substring(1));
                         userInfo.setLastName(userInfo.getFirstName().substring(0, 1).toUpperCase() + userInfo.getLastName().substring(1));
                         if(!userInfo.getCity().isEmpty()) {
                             userInfo.setCity(userInfo.getCity().substring(0, 1).toUpperCase() + userInfo.getCity().substring(1));
                         }
-                        userInfo.setLastName(String.valueOf(userInfo.getLastName().charAt(0)));
+                        userInfo.setLastName(String.valueOf(userInfo.getLastName().charAt(0)));*/
                         mDatabaseUserList.add(userInfo);
                     }
                     else {
                         // userInfo.setFirstName( getString(R.string.anonymous_name) ); RESULTS IN BUG. NEEDS TO BE FIGURED OUT
                         userInfo.setFirstName( "Anonymous");
                         userInfo.setLastName("");
-                        if(!userInfo.getCity().isEmpty()) {
+                        /*if(!userInfo.getCity().isEmpty()) {
                             userInfo.setCity(userInfo.getCity().substring(0, 1).toUpperCase() + userInfo.getCity().substring(1));
-                        }
+                        }*/
                         mDatabaseUserList.add(userInfo);
                     }
                 }
@@ -196,26 +196,27 @@ public class PledgeListFragment extends Fragment {
     private void searchCategory( int category, String searchTerm ) {
         mFilteredUserList.clear();
         double pledgeAmount = 0.0;
-        try{
-            pledgeAmount = Double.parseDouble(searchTerm);
-        } catch (Exception exception){
-            exception.printStackTrace();
-        }
         for ( User listedDatabaseUser : mDatabaseUserList) {
             switch(category){
                 case 2: // City
-                    if ( listedDatabaseUser.getCity().contains( searchTerm ) ){
+                    Log.d("test", "city: "+listedDatabaseUser.getCity()+" searchterm: "+searchTerm);
+                    if ( listedDatabaseUser.getCity().toLowerCase().contains( searchTerm ) ){
                         mFilteredUserList.add( listedDatabaseUser );
                     }
                     break;
                 case 3: // Pledge Amount
                     final double PLEDGE_VALUE_EPSILON = 0.1;
+                    try{
+                        pledgeAmount = Double.parseDouble(searchTerm);
+                    } catch (Exception exception){
+                        exception.printStackTrace();
+                    }
                     if ( Math.abs(listedDatabaseUser.getPledgeAmount() - pledgeAmount) < PLEDGE_VALUE_EPSILON ){
                         mFilteredUserList.add( listedDatabaseUser );
                     }
                     break;
                 default: // No Filter or First Name
-                    if ( listedDatabaseUser.getFirstName().contains( searchTerm ) ){
+                    if ( listedDatabaseUser.getFirstName().toLowerCase().contains( searchTerm ) ){
                         mFilteredUserList.add( listedDatabaseUser );
                     }
             }

@@ -192,15 +192,16 @@ public class MealListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mDatabaseMealList.clear();
-                if(mViewMyMeals.isChecked() && mMainActivity.checkUserLogin()){
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Meal mealData = (Meal) snapshot.getValue(Meal.class);
-                        if(mealData.getMealCreatorID().equalsIgnoreCase(mMainActivity.getCurrentUser().getUid())) {
-                            mDatabaseMealList.add(mealData);
+                if(mViewMyMeals.isChecked()){
+                    if(mMainActivity.checkUserLogin()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Meal mealData = (Meal) snapshot.getValue(Meal.class);
+                            if (mealData.getMealCreatorID().equalsIgnoreCase(mMainActivity.getCurrentUser().getUid())) {
+                                mDatabaseMealList.add(mealData);
+                            }
                         }
                     }
-                }
-                else{
+                }else{
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Meal mealData = (Meal) snapshot.getValue(Meal.class);
                         mDatabaseMealList.add(mealData);
@@ -230,17 +231,17 @@ public class MealListFragment extends Fragment {
         for ( Meal listedDatabaseMeal : mDatabaseMealList) {
             switch(category){
                 case 2: // Protein Type
-                    if ( listedDatabaseMeal.getMainProteinIngredient().contains( searchTerm ) ){
+                    if ( listedDatabaseMeal.getMainProteinIngredient().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
                     break;
                 case 3: // Location
-                    if ( listedDatabaseMeal.getLocation().contains( searchTerm ) ){
+                    if ( listedDatabaseMeal.getLocation().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
                     break;
                 default: //No Category or Meal Name
-                    if ( listedDatabaseMeal.getMealName().contains( searchTerm ) ){
+                    if ( listedDatabaseMeal.getMealName().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
             }

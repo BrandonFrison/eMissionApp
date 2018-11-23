@@ -93,7 +93,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             Intent popupMealDetailIntent = new Intent(mMainActivity, PopupMealDetail.class);
 
             Bundle bundle = new Bundle();
-            bundle.putString("userID", mMainActivity.getCurrentUser().getUid() );
+            if(mMainActivity.checkUserLogin()) {
+                bundle.putString("userID", mMainActivity.getCurrentUser().getUid());
+            }
             bundle.putSerializable("meal", meal);
             popupMealDetailIntent.putExtras(bundle);
 

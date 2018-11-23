@@ -60,11 +60,11 @@ public class MakeMealFragment extends Fragment {
     }
 
     private void publishMeal() {
-        String mealName = mMealNameInputField.getText().toString().trim().toLowerCase();
-        String mainProteinIngredient = mMainProteinIngredientInputField.getText().toString().trim().toLowerCase();
-        String restaurantName = mRestaurantNameInputField.getText().toString().trim().toLowerCase();
-        String location = mLocationInputField.getText().toString().trim().toLowerCase();
-        String description = mDescriptionInputField.getText().toString().trim().toLowerCase();
+        String mealName = mMealNameInputField.getText().toString().trim();
+        String mainProteinIngredient = mMainProteinIngredientInputField.getText().toString().trim();
+        String restaurantName = mRestaurantNameInputField.getText().toString().trim();
+        String location = mLocationInputField.getText().toString().trim();
+        String description = mDescriptionInputField.getText().toString().trim();
 
         if(isInputValid(mealName, mainProteinIngredient, restaurantName, location)) {
             final DatabaseReference mealDatabase;
