@@ -207,13 +207,9 @@ public class ReduceFragment extends Fragment {
             legend.setEnabled(false);
 
             //Start axis from min value which is 0
-            //chart.getAxisLeft().setAxisMinimum(MIN_VALUE_FOR_CHART);
-
-            // Disable all axises
-            //chart.getAxisRight().setEnabled(false);
-            //chart.getXAxis().setEnabled(true);
-            //chart.getXAxis().setDrawGridLines(false);
-            //chart.getAxisLeft().setEnabled(true);
+            chart.getAxisLeft().setAxisMinimum(0);
+            chart.getAxisRight().setAxisMinimum(0);
+            
 
             XAxis xAxis = mCO2eComparisonChart.getXAxis();
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
