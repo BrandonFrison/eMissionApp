@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -45,7 +46,6 @@ public class ReduceFragment extends Fragment {
 
     private MainActivity mMainActivity;
     private Spinner mMealPlanDropdown;
-    private Button mJoinGreenFoodChallenge;
     private TextView mSavingsAfterNewPlan;
     private TextView mCollectiveSavings;
     ConsumptionTable mOldMealPlan;
@@ -54,6 +54,8 @@ public class ReduceFragment extends Fragment {
     public  float DrivenConvectionNumber = .200f;  // 200 g per 1 km
     //round number  to 2 decimal
     public DecimalFormat df = new DecimalFormat(".00");
+
+    private FloatingActionButton mActionButton;
 
 
 
@@ -120,8 +122,12 @@ public class ReduceFragment extends Fragment {
             }
         });
 
-        mJoinGreenFoodChallenge = (Button) view.findViewById(R.id.join_the_green_food_challenge);
-        mJoinGreenFoodChallenge.setOnClickListener(new View.OnClickListener() {
+
+        mActionButton = mMainActivity.getActionButton();
+        mActionButton.setImageResource(R.drawable.baseline_pan_tool_black_48);
+        mActionButton.show();
+        mMainActivity.showActionButtonLabel(R.string.join_the_green_food_challenge);
+        mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveSavings();
