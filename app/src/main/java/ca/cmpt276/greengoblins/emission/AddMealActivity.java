@@ -3,6 +3,7 @@ package ca.cmpt276.greengoblins.emission;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,10 +43,13 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
+
+import static ca.cmpt276.greengoblins.emission.AddMealActivity.ImgUtils.saveImageToGallery;
 
 
 public class AddMealActivity extends AppCompatActivity {
@@ -54,7 +58,6 @@ public class AddMealActivity extends AppCompatActivity {
     public static final int SELECT_PHOTO = 2;
     private ImageView imageview;
     private Uri imageUri;
-    private Uri filePath;
 
     private FirebaseAuth mAuthenticator;
 
@@ -112,6 +115,7 @@ public class AddMealActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     showChoosePicDialog();
+
                 }
             });
 
@@ -136,10 +140,8 @@ public class AddMealActivity extends AppCompatActivity {
             String mealCreatorID = bundle.getString("userID");
 
             String mealID = mealDatabase.push().getKey();
-            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
+            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
             mealDatabase.child(mealID).setValue(meal);
-
-            pushMealPicToDatabase(mealID);
 
             clearInputFields();
             Toast.makeText(getApplicationContext(), R.string.meal_successfully_published, Toast.LENGTH_SHORT).show();
@@ -208,7 +210,6 @@ public class AddMealActivity extends AppCompatActivity {
     private void take_photo() {
         String status= Environment.getExternalStorageState();
         if(status.equals(Environment.MEDIA_MOUNTED)) {
-            //创建File对象，用于存储拍照后的图片
             File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
             try {
                 if (outputImage.exists()) {
@@ -223,8 +224,6 @@ public class AddMealActivity extends AppCompatActivity {
             } else {
                 imageUri = Uri.fromFile(outputImage);
             }
-
-            //启动相机程序
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(intent, TAKE_PHOTO);
@@ -263,7 +262,6 @@ public class AddMealActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                filePath = data.getData();
                 break;
             case SELECT_PHOTO :
                 if (resultCode == RESULT_OK) {
@@ -273,7 +271,6 @@ public class AddMealActivity extends AppCompatActivity {
                         handleImageBeforeKitKat(data);
                     }
                 }
-                filePath = data.getData();
                 break;
             default:
                 break;
@@ -310,6 +307,7 @@ public class AddMealActivity extends AppCompatActivity {
         if (imagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             mAddMealImageView.setImageBitmap(bitmap);
+            saveImageToGallery(getApplicationContext(),bitmap);
         }else {
             Toast.makeText(this,"failed to get image",Toast.LENGTH_SHORT).show();
         }
@@ -344,12 +342,33 @@ public class AddMealActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
-    private void pushMealPicToDatabase(String mealID) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference();
-
-        storageReference = storageReference.child("MealPics/"+ mealID);
-        storageReference.putFile(filePath);
+    public static class ImgUtils {
+        public static boolean saveImageToGallery(Context context, Bitmap bmp) {
+            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "eMissionImage";
+            File appDir = new File(storePath);
+            if (!appDir.exists()) {
+                appDir.mkdir();
+            }
+            String fileName = System.currentTimeMillis() + ".jpg";
+            File file = new File(appDir, fileName);
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+                boolean isSuccess = bmp.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+                fos.flush();
+                fos.close();
+                MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
+                Uri uri = Uri.fromFile(file);
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+                if (isSuccess) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
+
 }
