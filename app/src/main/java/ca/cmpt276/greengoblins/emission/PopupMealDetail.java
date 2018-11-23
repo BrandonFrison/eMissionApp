@@ -1,5 +1,7 @@
 package ca.cmpt276.greengoblins.emission;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,11 +13,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
+import ca.cmpt276.greengoblins.foodsurveydata.MealAdapter;
 
 public class PopupMealDetail extends AppCompatActivity {
 
@@ -96,17 +106,42 @@ public class PopupMealDetail extends AppCompatActivity {
         if( mSelectedMeal.getMealCreatorID().equals(userID) ){
             mDeleteButton.setVisibility(View.VISIBLE);
         }
+
+
+        // Gets meal pic
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference storageReference = storage.getReference().child("MealPics");
+        Task<Uri> downloadUrl = storageReference.child(mSelectedMeal.getMealID()).getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        setMealPic(storageReference.child(mSelectedMeal.getMealID()));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        setMealPic(storageReference.child("defaultPic.png"));
+                    }
+                });
+    }
+
+    // Maps meal pic onto image view
+    public void setMealPic(StorageReference storageReference) {
+        Glide
+                .with(getBaseContext())
+                .using(new FirebaseImageLoader())
+                .load(storageReference)
+                .override(250,250)
+                .fitCenter()
+                .into(mMealImage);
     }
 
     private void deleteMeal() {
         DatabaseReference mealReference;
         mealReference = FirebaseDatabase.getInstance().getReference("Meals").child(mSelectedMeal.getMealID());
         mealReference.removeValue();
-
-       /* toBeDeleted = usersDatabase.child();
-                //usersDatabase.getRef().child(mSelectedMeal.getMealCreatorID());
-                //usersDatabase.orderByChild("mealCreatorID").equalTo(mSelectedMeal.getMealCreatorID());
-        usersDatabase = toBeDeleted.getRef();
-        usersDatabase.getParent().removeValue();*/
     }
+
+
 }

@@ -1,4 +1,4 @@
-package ca.cmpt276.greengoblins.fragments.Meal;
+package ca.cmpt276.greengoblins.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
