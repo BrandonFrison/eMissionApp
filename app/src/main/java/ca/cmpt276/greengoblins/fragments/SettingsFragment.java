@@ -13,12 +13,13 @@ import android.widget.Button;
 
 import java.io.File;
 
+import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 
 
 public class SettingsFragment extends Fragment {
-
-    private Button clear_hist;
+    private MainActivity mainActivity;
+    private Button find_locale, log_in, log_out;
 
     @Nullable
     @Override
@@ -30,20 +31,27 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.toolbar_settings);
-
-        clear_hist = (Button)view.findViewById(R.id.buttonClearLocalData);
-        clear_hist.setOnClickListener(new View.OnClickListener(){
+        log_in = (Button)view.findViewById(R.id.buttonLogIn);
+        log_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearLocalData();
+            }
+        });
+        find_locale = (Button)view.findViewById(R.id.buttonLocation);
+        find_locale.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        log_out = (Button)view.findViewById(R.id.buttonLogOut);
+        log_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
     }
 
-    public boolean clearLocalData(){
-        boolean deleted = false;
-        File file = new File("table_01.csv");
-        return deleted = file.delete();
-    }
 }

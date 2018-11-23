@@ -12,21 +12,28 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/buttonClearLocalData"
+            android:id="@+id/buttonLogIn"
             android:layout_width="match_parent"
-            style="@style/SpinnerTheme"
-            android:textSize="18sp"
             android:layout_height="wrap_content"
-            android:text="@string/btn_clear" />
+            android:layout_marginBottom="1dp"
+            android:text="@string/button_login"
+            android:background="#FFFFFF"
+            />
 
         <Button
             android:id="@+id/buttonLogOut"
             android:layout_width="match_parent"
-            style="@style/SpinnerTheme"
-            android:layout_marginVertical="1dp"
-            android:textSize="18sp"
             android:layout_height="wrap_content"
-            android:text="@string/btn_logout" />
+            android:text="@string/button_logout"
+            android:layout_marginBottom="1dp"
+            android:background="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/buttonLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_location"
+            android:background="#FFFFFF"/>
 
     </LinearLayout>
 </FrameLayout>

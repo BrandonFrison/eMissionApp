@@ -22,7 +22,7 @@
                 android:layout_width="140dp"
                 android:layout_height="110dp"
                 android:contentDescription="@string/profile_picture"
-                android:src="@drawable/treepledge" />
+                android:src="@drawable/mealimagepic" />
 
             <TextView
                 android:id="@+id/meal_detail_meal_name"
