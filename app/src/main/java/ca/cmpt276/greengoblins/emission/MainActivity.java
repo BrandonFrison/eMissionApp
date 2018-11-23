@@ -171,33 +171,37 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void signUp(String userEmail, String userPassword){
-        mAuthenticator.createUserWithEmailAndPassword(userEmail, userPassword)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("SIGNED_UP", "createUserWithEmail:success");
-                            mCurrentUser = mAuthenticator.getCurrentUser();
-                            updateLoginUI();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.d("SIGNED_UP", "createUserWithEmail:failure", task.getException());
-                            mCurrentUser = null;
-                          //  Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                            updateLoginUI();
+        if(userEmail.isEmpty()){
+            return;
+        }else if( userPassword.isEmpty()){
+            return;
+        }else {
+            mAuthenticator.createUserWithEmailAndPassword(userEmail, userPassword)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("SIGNED_UP", "createUserWithEmail:success");
+                                mCurrentUser = mAuthenticator.getCurrentUser();
+                                updateLoginUI();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.d("SIGNED_UP", "createUserWithEmail:failure", task.getException());
+                                mCurrentUser = null;
+                                //  Toast.makeText(MainActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                updateLoginUI();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     public void signIn(String userEmail, String userPassword){
 
         if(userEmail.isEmpty()){
-            Toast.makeText(MainActivity.this, R.string.empty_username_message, Toast.LENGTH_SHORT).show();
             return;
         }else if( userPassword.isEmpty()){
-            Toast.makeText(MainActivity.this, R.string.empty_password_message, Toast.LENGTH_SHORT).show();
             return;
         }else {
             mAuthenticator.signInWithEmailAndPassword(userEmail, userPassword)
@@ -285,11 +289,6 @@ public class MainActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        /*if(currentUser == null)
-            mLoginTextView.setText(R.string.nav_header_username); //set default
-        else{
-            mLoginTextView.setText(currentUser.getEmail());
-        }*/
     }
 
     public FloatingActionButton getActionButton (){
@@ -342,6 +341,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        hideActionButton();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

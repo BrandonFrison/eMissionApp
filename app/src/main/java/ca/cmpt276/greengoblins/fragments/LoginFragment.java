@@ -16,17 +16,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ca.cmpt276.greengoblins.emission.MainActivity;
 import ca.cmpt276.greengoblins.emission.R;
 
-public class LoginFragment extends DialogFragment implements View.OnClickListener{
+public class LoginFragment extends DialogFragment{
 
     private MainActivity mMainActivity;
     private EditText mUsername;
     private EditText mPassword;
     private Button LoginBtn;
-    private TextView toReg;
+    private Button SignupBtn;
 
 
     @Nullable
@@ -44,38 +45,44 @@ public class LoginFragment extends DialogFragment implements View.OnClickListene
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view= LayoutInflater.from(getActivity()).inflate(R.layout.pop_up_login, null);
-        toReg= view.findViewById(R.id.login_register);
         mUsername= view.findViewById(R.id.login_username);
         LoginBtn= view.findViewById(R.id.login_btn);
+        SignupBtn = view.findViewById(R.id.signup_btn);
         mPassword= view.findViewById(R.id.login_passward);
-        toReg.setOnClickListener(this);
-        LoginBtn.setOnClickListener(this);
+        LoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userEmail = mUsername.getText().toString();
+                String userPassword = mPassword.getText().toString();
+                if(userEmail.isEmpty()){
+                    Toast.makeText(mMainActivity, R.string.empty_username_message, Toast.LENGTH_SHORT).show();
+                }else if( userPassword.isEmpty()) {
+                    Toast.makeText(mMainActivity, R.string.empty_password_message, Toast.LENGTH_SHORT).show();
+                } else {
+                    mMainActivity.signIn( userEmail, userPassword );
+                    dismiss();
+                }
+            }
+        });
+        SignupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userEmail = mUsername.getText().toString();
+                String userPassword = mPassword.getText().toString();
+                if(userEmail.isEmpty()){
+                    Toast.makeText(mMainActivity, R.string.empty_username_message, Toast.LENGTH_SHORT).show();
+                }else if( userPassword.isEmpty()) {
+                    Toast.makeText(mMainActivity, R.string.empty_password_message, Toast.LENGTH_SHORT).show();
+                } else if(userPassword.length() < 6){
+                    Toast.makeText(mMainActivity, R.string.error_short_password, Toast.LENGTH_SHORT).show();
+                } else {
+                    mMainActivity.signUp( userEmail, userPassword );
+                    dismiss();
+                }
+            }
+        });
 
         builder.setView(view);
         return builder.create();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.login_btn:// if u want to send data to an activity/fragment:
-                String userEmail = mUsername.getText().toString();
-                String userPassword = mPassword.getText().toString();
-
-                mMainActivity.signIn( userEmail, userPassword );
-                dismiss();
-                //LoginInputListener listener= (LoginInputListener) getActivity();
-                //listener.onLoginInputComplete(mUsername.getText().toString(), mPassword.getText().toString());
-
-
-                //then,in that activity/fragment:
-                //public class MainActivity extends AppCompatActivity implements LoginFragment.LoginInputListener{
-                //and create a method:
-                //public void onLoginInputComplete(String userName, String userPassword) {
-                //name.setText(userName);
-                //password.setText(userPassword);
-
-                break;
-        }
     }
 }

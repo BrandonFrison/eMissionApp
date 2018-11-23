@@ -71,24 +71,21 @@
                 android:layout_marginTop="35dp"
                 android:background="#000000"
                 android:padding="5dp"
-                android:text="Log in"
+                android:text="@string/button_login"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
 
-            <RelativeLayout
+            <Button
+                android:id="@+id/signup_btn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="40dp"
+                android:layout_marginTop="35dp"
+                android:background="#000000"
+                android:padding="5dp"
+                android:text="@string/button_signup"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/login_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="Don't have an account? Sign up"
-                    android:textSize="10sp" />
-
-            </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

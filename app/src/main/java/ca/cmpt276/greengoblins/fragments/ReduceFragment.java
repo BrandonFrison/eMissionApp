@@ -79,7 +79,12 @@ public class ReduceFragment extends Fragment {
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveSavings();
+                if( !mMainActivity.checkUserLogin() ) {
+                    mMainActivity.popupLogin();
+                } else {
+                    Fragment pledgeFragment = new MakePledgeFragment();
+                    mMainActivity.startFragment(pledgeFragment, true);
+                }
             }
         });
 
@@ -135,21 +140,6 @@ public class ReduceFragment extends Fragment {
 
 
 
-    }
-
-    private void saveSavings(){
-           if( !mMainActivity.checkUserLogin() ) {
-               mMainActivity.popupLogin();
-           } else {
-               Bundle bundle = new Bundle();
-               bundle.putDouble("savings_data", savings);
-
-               Fragment pledgeFragment = new MakePledgeFragment();
-               pledgeFragment.setArguments( bundle );
-
-               mMainActivity.startFragment(pledgeFragment, true);
-
-           }
     }
 
         private void calculateSavingsAndUpdateGraph(double co2eForNewPlan) {

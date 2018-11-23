@@ -55,6 +55,7 @@
     <string name="button_remove_pledge">Remove your pledge</string>
     <string name="button_location">Give Location</string>
     <string name="button_login">Log In</string>
+    <string name="button_signup">Sign Up</string>
     <string name="button_logout">Log Out</string>
     <string name="hint_search_box">Search...</string>
     <string name="history_chart_label">CO2e Calculator Totals</string>
@@ -176,13 +177,14 @@
     <string name="error_bad_pledge_format">Please enter a numerical value greater than 0 for the pledge</string>
     <string name="error_bad_number_format">Please enter a numerical value</string>
     <string name="error_empty_survey">Can\'t submit empty survey</string>
+    <string name="error_short_password">Password must be at least 6 characters</string>
 
     <!--Navigation Drawer Strings-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">LOG ON HERE</string>
     <string name="nav_header_username">Not logged in</string>
-    <string name="nav_header_login">Log in</string>
+    <string name="nav_header_login">Log in / Sign up</string>
     <string name="nav_header_logout">Log out</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
