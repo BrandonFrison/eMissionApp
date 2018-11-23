@@ -30,13 +30,5 @@ public class ExplanationActivity extends AppCompatActivity {
 
         getWindow().setAttributes(params);
 
-        Button CloseButton = (Button) findViewById(R.id.CloseButton);
-        CloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
     }
 }

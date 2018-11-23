@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
+import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
 
 import static ca.cmpt276.greengoblins.emission.AddMealActivity.ImgUtils.saveImageToGallery;
 
@@ -55,6 +58,7 @@ public class AddMealActivity extends AppCompatActivity {
     private ImageView mAddMealImageView;
     public static final int TAKE_PHOTO = 1;
     public static final int SELECT_PHOTO = 2;
+    private ImageView imageview;
     private Uri imageUri;
     private Uri filePath;
 
@@ -68,6 +72,9 @@ public class AddMealActivity extends AppCompatActivity {
     private EditText mRestaurantNameInputField;
     private EditText mLocationInputField;
     private EditText mDescriptionInputField;
+    private String[] locationInfo;
+    private Bundle locationBundle;
+    private Meal meal;
 
     private Button mPostMeal;
 
@@ -113,6 +120,7 @@ public class AddMealActivity extends AppCompatActivity {
             });
 
 
+        fillLocationFromMap();
 
     }
 
@@ -133,7 +141,12 @@ public class AddMealActivity extends AppCompatActivity {
             String mealCreatorID = bundle.getString("userID");
 
             String mealID = mealDatabase.push().getKey();
-            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
+            if(locationInfo != null) {
+                mealCreatorID = locationInfo[4];
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID, Double.parseDouble(locationInfo[2]), Double.parseDouble(locationInfo[3]));
+            }else{
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
+            }
             mealDatabase.child(mealID).setValue(meal);
 
             pushMealPicToDatabase(mealID);
@@ -374,6 +387,17 @@ public class AddMealActivity extends AppCompatActivity {
             }
             return false;
         }
+    }
+
+    private void fillLocationFromMap(){
+        locationBundle = getIntent().getExtras();
+            locationInfo = locationBundle.getStringArray("location_data");
+            if(locationInfo != null) {
+                if (!locationInfo[0].matches(".*\\d+.*")) {
+                    mRestaurantNameInputField.setText(locationInfo[0]);
+                }
+                mLocationInputField.setText(locationInfo[1]);
+            }
     }
 
     private void pushMealPicToDatabase(String mealID) {
