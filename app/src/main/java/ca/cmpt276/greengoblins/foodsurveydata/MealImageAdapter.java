@@ -1,11 +1,21 @@
 package ca.cmpt276.greengoblins.foodsurveydata;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -33,9 +43,9 @@ public class MealImageAdapter extends BaseAdapter {
     }
 
     // create a new ImageView for each item referenced by the Adapter
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         Log.d("LOAD_EXCEPTION", mealList.get(position).getMealName());
-        ImageView imageView;
+        final ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
@@ -46,9 +56,33 @@ public class MealImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(R.drawable.treepledge); //set meal image reference here
+        // Gets meal pic
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference storageReference = storage.getReference().child("MealPics");
+        Task<Uri> downloadUrl = storageReference.child(mealList.get(position).getMealID()).getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        setMealPic(parent.getContext(), storageReference.child(mealList.get(position).getMealID()), imageView);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        setMealPic(parent.getContext(), storageReference.child("defaultPic.png"), imageView);
+                    }
+                });
+
         return imageView;
     }
 
-
+    public void setMealPic(Context context, StorageReference storageReference, ImageView imageView) {
+        Glide
+                .with(context)
+                .using(new FirebaseImageLoader())
+                .load(storageReference)
+                .override(150,150)
+                .centerCrop()
+                .into(imageView);
+    }
 }

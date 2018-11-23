@@ -66,7 +66,6 @@ import java.util.List;
 import ca.cmpt276.greengoblins.PlaceModel.CustomInfoWindowAdapter;
 import ca.cmpt276.greengoblins.PlaceModel.PlaceInfo;
 import ca.cmpt276.greengoblins.PlaceModel.PlaceAutoCompleteAdapter;
-import ca.cmpt276.greengoblins.fragments.Meal.MakeMealFragment;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
