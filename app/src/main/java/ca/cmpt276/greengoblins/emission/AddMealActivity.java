@@ -17,6 +17,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -59,6 +60,9 @@ public class AddMealActivity extends AppCompatActivity {
     private ImageView imageview;
     private Uri imageUri;
 
+    private FloatingActionButton mActionButton;
+    private TextView mActionButtonLabel;
+
     private FirebaseAuth mAuthenticator;
 
     private EditText mMealNameInputField;
@@ -75,22 +79,19 @@ public class AddMealActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meals);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        mActionButton = (FloatingActionButton) findViewById(R.id.add_meal_fab);
+        mActionButtonLabel = (TextView) findViewById(R.id.add_meal_fab_label);
+        mActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(publishMeal()) {
+                    finish();
+                }
 
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
+            }
+        });
+        mActionButtonLabel.setText("Post meal");
 
-        getWindow().setLayout((int)(width*0.9),(int)(height*0.9));
-
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.gravity = Gravity.CENTER;
-        params.x = 0;
-        params.y = -20;
-
-        getWindow().setAttributes(params);
-
-        //================================================================
         mAuthenticator = FirebaseAuth.getInstance();
 
         mMealNameInputField = (EditText) findViewById(R.id.add_meal_name);
@@ -98,16 +99,6 @@ public class AddMealActivity extends AppCompatActivity {
         mRestaurantNameInputField = (EditText) findViewById(R.id.restaurant_name);
         mLocationInputField = (EditText) findViewById(R.id.restaurant_location);
         mDescriptionInputField = (EditText) findViewById(R.id.add_meal_description);
-        mPostMeal = (Button) findViewById(R.id.post_meal);
-
-        mPostMeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(publishMeal()) {
-                    finish();
-                }
-            }
-        });
 
 
         mAddMealImageView = findViewById(R.id.add_meal_image);
