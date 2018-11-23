@@ -18,7 +18,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -31,23 +30,21 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
-import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
 
 import static ca.cmpt276.greengoblins.emission.AddMealActivity.ImgUtils.saveImageToGallery;
 
@@ -56,8 +53,8 @@ public class AddMealActivity extends AppCompatActivity {
     private ImageView mAddMealImageView;
     public static final int TAKE_PHOTO = 1;
     public static final int SELECT_PHOTO = 2;
-    private ImageView imageview;
     private Uri imageUri;
+    private Uri filePath;
 
     private FirebaseAuth mAuthenticator;
 
@@ -68,7 +65,11 @@ public class AddMealActivity extends AppCompatActivity {
     private EditText mDescriptionInputField;
 
     private Button mPostMeal;
-    
+
+    byte mMealPicByteArray[];
+    private boolean mUserHasTakenPic;
+    private boolean mUserHasChosenPic;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,9 @@ public class AddMealActivity extends AppCompatActivity {
         mDescriptionInputField = (EditText) findViewById(R.id.add_meal_description);
         mPostMeal = (Button) findViewById(R.id.post_meal);
 
+        mUserHasTakenPic = false;
+        mUserHasChosenPic = false;
+
         mPostMeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,7 +119,6 @@ public class AddMealActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     showChoosePicDialog();
-
                 }
             });
 
@@ -143,6 +146,8 @@ public class AddMealActivity extends AppCompatActivity {
             Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
             mealDatabase.child(mealID).setValue(meal);
 
+            pushMealPicToDatabase(mealID);
+
             clearInputFields();
             Toast.makeText(getApplicationContext(), R.string.meal_successfully_published, Toast.LENGTH_SHORT).show();
 
@@ -169,6 +174,10 @@ public class AddMealActivity extends AppCompatActivity {
         }
         else if( location.isEmpty() ) {
             Toast.makeText(getApplicationContext(), R.string.empty_location_message, Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        else if( !mUserHasTakenPic && !mUserHasChosenPic ) {
+            Toast.makeText(getApplicationContext(), R.string.no_pic_selected_message, Toast.LENGTH_SHORT).show();
             isValid = false;
         }
 
@@ -258,6 +267,8 @@ public class AddMealActivity extends AppCompatActivity {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         mAddMealImageView.setImageBitmap(bitmap);
+                        mMealPicByteArray = bitmapToByteArray(bitmap);
+                        mUserHasTakenPic = true;
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -270,7 +281,10 @@ public class AddMealActivity extends AppCompatActivity {
                     }else {
                         handleImageBeforeKitKat(data);
                     }
+                    filePath = data.getData();
+                    mUserHasChosenPic = true;
                 }
+
                 break;
             default:
                 break;
@@ -342,6 +356,7 @@ public class AddMealActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
     public static class ImgUtils {
         public static boolean saveImageToGallery(Context context, Bitmap bmp) {
             String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "eMissionImage";
@@ -371,4 +386,26 @@ public class AddMealActivity extends AppCompatActivity {
         }
     }
 
+    private void pushMealPicToDatabase(String mealID) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+
+        storageReference = storageReference.child("MealPics/"+ mealID);
+
+        if(mUserHasChosenPic) {
+            storageReference.putFile(filePath);
+        }
+        else if(mUserHasTakenPic){
+            storageReference.putBytes(mMealPicByteArray);
+        }
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        return byteArray;
+    }
 }
