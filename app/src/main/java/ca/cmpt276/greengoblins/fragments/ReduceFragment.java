@@ -72,6 +72,17 @@ public class ReduceFragment extends Fragment {
         mMainActivity = (MainActivity) getActivity();
         mMainActivity.setTitle(R.string.toolbar_reduce);
 
+        mActionButton = mMainActivity.getActionButton();
+        mActionButton.setImageResource(R.drawable.baseline_pan_tool_black_48);
+        mActionButton.show();
+        mMainActivity.showActionButtonLabel(R.string.join_the_green_food_challenge);
+        mActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveSavings();
+            }
+        });
+
         Bundle historyBundle = getArguments();
         mOldMealPlan = (ConsumptionTable) historyBundle.getSerializable("resultTable");
         mSavingsAfterNewPlan = (TextView) view.findViewById(R.id.meal_plan_savings);
@@ -123,20 +134,10 @@ public class ReduceFragment extends Fragment {
         });
 
 
-        mActionButton = mMainActivity.getActionButton();
-        mActionButton.setImageResource(R.drawable.baseline_pan_tool_black_48);
-        mActionButton.show();
-        mMainActivity.showActionButtonLabel(R.string.join_the_green_food_challenge);
-        mActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveSavings();
-            }
-        });
+
     }
 
     private void saveSavings(){
-       if(savings > 0){
            if( !mMainActivity.checkUserLogin() ) {
                mMainActivity.popupLogin();
            } else {
@@ -146,24 +147,19 @@ public class ReduceFragment extends Fragment {
                Fragment pledgeFragment = new MakePledgeFragment();
                pledgeFragment.setArguments( bundle );
 
-               FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-               FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-               fragmentTransaction.replace( R.id.frame_activity_content, pledgeFragment );
-               fragmentTransaction.addToBackStack(null);
-               fragmentTransaction.commit();
+               mMainActivity.startFragment(pledgeFragment, true);
+
            }
-       }
     }
 
         private void calculateSavingsAndUpdateGraph(double co2eForNewPlan) {
             savings = mOldMealPlan.calculateTotalCO2e() - co2eForNewPlan;
 
             // If negative savings
-            if(savings < 0) {
+            if(savings <= 0) {
                 String toastString = getResources().getString(R.string.meal_plan_negative_savings_toast);
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastString, Toast.LENGTH_LONG);
                 toast.show();
-                return;
             }
 
             String savingsText = getString(R.string.meal_plan_savings);
@@ -171,13 +167,9 @@ public class ReduceFragment extends Fragment {
             //String savingsText = "You have saved: " + String.format(Locale.US, "%.1f", savings) + " kg CO2e / year";
             mSavingsAfterNewPlan.setText(savingsText);
 
-            // TO DO: Implement collective savings using convertor class
             double collectiveSavings = savings * METRO_VANCOUVER_POPULATION;
             String collectiveSavingsText = getString(R.string.meal_plan_collective_savings);
             collectiveSavingsText = String.format( collectiveSavingsText, collectiveSavings, Convertor.toKmDriven(collectiveSavings));
-            /*String collectiveSavingsText = "If everyone in Metro Vancouver made these " +
-                    "changes, together we could save: " +  String.format(Locale.US, "%.1f", collectiveSavings) + " kg CO2e per year!\n"+
-                    "That's the same carbon footprint as driving "+ df.format((collectiveSavings/ DrivenConvectionNumber))+" km!";*/
 
             mCollectiveSavings.setText(collectiveSavingsText);
 
