@@ -90,6 +90,8 @@ public class MakePledgeFragment extends Fragment {
 
         populateForm( mMainActivity.getCurrentUser().getUid() );
 
+        fillReductionFromReduceFragment();
+
         mSharePledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -316,6 +318,14 @@ public class MakePledgeFragment extends Fragment {
     public void  onActivityResult(final int requestCode, final int resultCode, final Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void fillReductionFromReduceFragment(){
+        Bundle reduceBundle = getArguments();
+        if(reduceBundle != null) {
+            Double pledgeAmt = reduceBundle.getDouble("savings_data");
+            mPledgeAmountInputField.setText(String.format("%.2f", pledgeAmt));
+        }
     }
 
 

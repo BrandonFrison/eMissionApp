@@ -25,4 +25,12 @@
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/bg_spinner</item>
     </style>
+
+    <style name="SearchTheme" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/bg_search</item>
+    </style>
+
+    <style name="ButtonTheme" parent="android:Widget.Button">
+        <item name="android:background">@drawable/bg_button</item>
+    </style>
 </resources>

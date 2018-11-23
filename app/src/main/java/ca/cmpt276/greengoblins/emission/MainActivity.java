@@ -1,9 +1,12 @@
 package ca.cmpt276.greengoblins.emission;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -22,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -47,6 +52,8 @@ import ca.cmpt276.greengoblins.fragments.SurveyFragment;
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int ERROR_MAPS_SERVICES = 9001;
 
     //Firebase authentication fields
     private FirebaseAuth mAuthenticator;
@@ -383,14 +390,44 @@ public class MainActivity extends AppCompatActivity
             fragment = new AboutPageFragment();
         } else if (id == R.id.nav_community) {
             fragment = new PledgeListFragment();
+        }else if (id == R.id.nav_map) {
+            if (servicesVersionCorrect()) {
+                mapInitiation();
+            }
         }else if (id == R.id.nav_meals) {
             fragment = new MealListFragment();
         }
 
-        startFragment( fragment, true, showFloatingActionButton );
-
+        if(fragment != null) {
+            startFragment(fragment, true, showFloatingActionButton);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void mapInitiation(){
+        Intent intent = new Intent(MainActivity.this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    public boolean servicesVersionCorrect(){
+        Log.d("main activity", "servicesVersionCorrect: checking google play services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
+        if(available == ConnectionResult.SUCCESS){
+            //works user can use map
+            Log.d("main activity", "servicesVersionCorrect: Google play working");
+            return true;
+        }
+        else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //error but can be updated
+            Log.d("main activity", "servicesVersionCorrect: error just needs update");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_MAPS_SERVICES);
+            dialog.show();
+        }else{
+            Toast.makeText(this, "Your device cannot make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 }

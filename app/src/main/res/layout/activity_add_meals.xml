@@ -25,7 +25,7 @@
         android:layout_marginStart="164dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/profile_picture"
-        android:src="@drawable/default_pic"
+        android:src="@drawable/mealimagepic"
         app:layout_constraintStart_toStartOf="@id/add_meal_table_layout"
         app:layout_constraintTop_toTopOf="@id/add_meal_table_layout" />
 
