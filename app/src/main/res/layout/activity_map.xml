@@ -95,10 +95,4 @@
             android:id="@+id/icon_passlocation"
             android:src="@drawable/icon_passlocation"/>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/frame_activity_map">
-    </FrameLayout>
-
     </android.support.constraint.ConstraintLayout>

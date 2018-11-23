@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,6 +55,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -244,26 +249,46 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //either to grab location of device or place longitude and latitude that you have chosen
         Double longitude, latitude = 0d;
         if(mPlace != null) {
+            Toast.makeText(this, "Location For Meal Saved", Toast.LENGTH_SHORT).show();
             LatLng mealLocation = mPlace.getLatLng();
             longitude = mealLocation.longitude;
             latitude = mealLocation.latitude;
 
             String[] locationData = {mPlace.getName(), latitude.toString(), longitude.toString()};
 
+            // The name of the file to open.
+            String fileName = "locationdata.txt";
+
+            try {
+                FileWriter fileWriter =
+                        new FileWriter(fileName);
+
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                bufferedWriter.write(locationData[0]+ "," +locationData[1]+ "," +locationData[2]);
+                // close file
+                bufferedWriter.close();
+            }
+            catch(IOException ex) {
+                 ex.printStackTrace();
+            }
+
+           /*
             Bundle bundle = new Bundle();
             bundle.putStringArray("location_data", locationData );
 
             Fragment mealFragment = new MakeMealFragment();
             mealFragment.setArguments( bundle );
 
-            FragmentManager fragmentManager = MapActivity.this.getSupportFragmentManager();
+            FragmentManager fragmentManager = this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace( R.id.frame_activity_map, mealFragment );
+            fragmentTransaction.add( R.id.frame_activity_map, mealFragment );
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            fragmentTransaction.commit();*/
         }
         //here is where we can either pass meal location to the meal plan screen or pass the latitude and longitude so we can display the entire database of green meals on the map.
     }
+
 
         private void getLocationOfSearch(){
             hideKeyboard();
