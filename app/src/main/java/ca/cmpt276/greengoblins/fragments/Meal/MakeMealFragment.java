@@ -54,23 +54,20 @@ public class MakeMealFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
+/*
         mMainActivity = (MainActivity)getActivity();
 
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.ic_menu_send);
         mActionButton.show();
-
+*/
         mMealNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_meal_name);
         mMainProteinIngredientInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_main_protein_ingredient);
         mRestaurantNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_restaurant_name);
         mLocationInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_location);
         mDescriptionInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_description);
-
-
-        if(locationInfo != null) {
-
-        }
+        fillLocationFromMap();
+        /*
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +75,7 @@ public class MakeMealFragment extends Fragment {
             }
         });
 
-
+*/
     }
 
     private void publishMeal() {
@@ -139,7 +136,7 @@ public class MakeMealFragment extends Fragment {
     }
 
     private void fillLocationFromMap(){
-        String fileName = "locationdata.txt";
+        /*String fileName = "locationdata.txt";
         String line = "";
         Toast.makeText(mMainActivity, fileName, Toast.LENGTH_SHORT).show();
         try {
@@ -163,11 +160,12 @@ public class MakeMealFragment extends Fragment {
         }
         catch(IOException ex) {
              ex.printStackTrace();
-        }
-        /*
+        }*/
+        locationBundle = getArguments();
         if(locationBundle != null) {
             locationInfo = locationBundle.getStringArray("location_data");
-            mLocationInputField.setText(locationInfo[0]);
-        }*/
+            mRestaurantNameInputField.setText(locationInfo[0]);
+            mLocationInputField.setText(locationInfo[1]);
+        }
     }
 }

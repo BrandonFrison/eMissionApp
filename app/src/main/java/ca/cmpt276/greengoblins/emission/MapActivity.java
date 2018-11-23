@@ -254,8 +254,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             longitude = mealLocation.longitude;
             latitude = mealLocation.latitude;
 
-            String[] locationData = {mPlace.getName(), latitude.toString(), longitude.toString()};
-
+            String[] locationData = {mPlace.getName(), mPlace.getAddress(), latitude.toString(), longitude.toString()};
+/*
             // The name of the file to open.
             String fileName = "locationdata.txt";
 
@@ -272,8 +272,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             catch(IOException ex) {
                  ex.printStackTrace();
             }
+*/
 
-           /*
             Bundle bundle = new Bundle();
             bundle.putStringArray("location_data", locationData );
 
@@ -282,9 +282,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             FragmentManager fragmentManager = this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add( R.id.frame_activity_map, mealFragment );
+            fragmentTransaction.replace( R.id.frame_activity_map, mealFragment );
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();*/
+            fragmentTransaction.commit();
         }
         //here is where we can either pass meal location to the meal plan screen or pass the latitude and longitude so we can display the entire database of green meals on the map.
     }
