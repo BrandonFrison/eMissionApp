@@ -11,6 +11,8 @@ public class Meal implements Serializable {
     private String location;
     private String description;
     private String mealCreatorID;
+    private Double latitude;
+    private Double longitude;
     private String mealID;
 
     // Need this default constructor in order for datasnapshot to work
@@ -25,6 +27,17 @@ public class Meal implements Serializable {
         this.description = description;
         this.mealCreatorID = mealCreatorID;
         this.mealID = mealID;
+    }
+//constructor for having latitude and longitude
+    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID, Double latitude, Double longitude) {
+        this.mealName = mealName;
+        this.mainProteinIngredient = mainProteinIngredient;
+        this.restaurantName = restaurantName;
+        this.location = location;
+        this.description = description;
+        this.mealCreatorID = mealCreatorID;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getMealName() {
@@ -73,6 +86,22 @@ public class Meal implements Serializable {
 
     public void setMealCreatorID(String mealCreatorID) {
         this.mealCreatorID = mealCreatorID;
+    }
+
+    public Double getLatitude(){
+        return latitude;
+    }
+
+    public void setLatitude(double latitude){
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude(){
+        return longitude;
+    }
+
+    public void setLongitude(double longitude){
+        this.longitude = longitude;
     }
 
     public static Comparator<Meal> COMPARE_BY_MEAL_NAME = new Comparator<Meal>() {
