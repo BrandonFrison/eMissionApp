@@ -49,7 +49,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
-import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
 
 import static ca.cmpt276.greengoblins.emission.AddMealActivity.ImgUtils.saveImageToGallery;
 

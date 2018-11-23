@@ -209,7 +209,7 @@ public class ReduceFragment extends Fragment {
             //Start axis from min value which is 0
             chart.getAxisLeft().setAxisMinimum(0);
             chart.getAxisRight().setAxisMinimum(0);
-            
+
 
             XAxis xAxis = mCO2eComparisonChart.getXAxis();
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
