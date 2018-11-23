@@ -54,20 +54,21 @@ public class MakeMealFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-/*
-        mMainActivity = (MainActivity)getActivity();
+        mMainActivity = (MainActivity) getActivity();
+        mMainActivity.setTitle(R.string.toolbar_meal_create);
 
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.ic_menu_send);
         mActionButton.show();
-*/
+
         mMealNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_meal_name);
         mMainProteinIngredientInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_main_protein_ingredient);
         mRestaurantNameInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_restaurant_name);
         mLocationInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_location);
         mDescriptionInputField = (EditText) view.findViewById(R.id.fragment_make_meal_input_description);
+
         fillLocationFromMap();
-        /*
+
         mActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +76,7 @@ public class MakeMealFragment extends Fragment {
             }
         });
 
-*/
+
     }
 
     private void publishMeal() {
@@ -93,9 +94,9 @@ public class MakeMealFragment extends Fragment {
 
             String mealID = mealDatabase.push().getKey();
             if(locationInfo != null) {
-                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, Double.parseDouble(locationInfo[1]), Double.parseDouble(locationInfo[2]));
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID, Double.parseDouble(locationInfo[1]), Double.parseDouble(locationInfo[2]));
             }else{
-                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
             }
             mealDatabase.child(mealID).setValue(meal);
 

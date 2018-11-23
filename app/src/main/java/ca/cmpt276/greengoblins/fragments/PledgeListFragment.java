@@ -68,6 +68,7 @@ public class PledgeListFragment extends Fragment {
         mActionButton = mMainActivity.getActionButton();
         mActionButton.setImageResource(R.drawable.baseline_add_24);
         mActionButton.show();
+        mMainActivity.showActionButtonLabel(R.string.fablabel_add_pledge);
 
         mPledgeListView = (TextView) view.findViewById(R.id.pledge_list_text);
         mPledgeListView.setText(R.string.pledge_list_text);

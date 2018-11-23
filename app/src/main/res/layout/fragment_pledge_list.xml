@@ -44,8 +44,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:layout_weight="0.4"
-                style="@style/SpinnerTheme"
-                 />
+                android:background="?attr/colorButtonNormal" />
 
         </LinearLayout>
 
@@ -56,16 +55,6 @@
             android:layout_weight="1"
             android:background="?android:attr/colorBackground"
             android:scrollbars="vertical" />
-
-        <Button
-            android:id="@+id/button_make_pledge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            style="@style/ButtonTheme"
-            android:textSize="20sp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/button_make_pledge" />
 
     </LinearLayout>
 
