@@ -1,4 +1,4 @@
-package ca.cmpt276.greengoblins.fragments.Meal;
+package ca.cmpt276.greengoblins.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,9 +36,11 @@ import java.util.Collections;
 
 import ca.cmpt276.greengoblins.emission.AddMealActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
+import ca.cmpt276.greengoblins.emission.PopupMealDetail;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 import ca.cmpt276.greengoblins.foodsurveydata.MealAdapter;
+import ca.cmpt276.greengoblins.foodsurveydata.MealImageAdapter;
 
 
 public class MealListFragment extends Fragment {
@@ -57,7 +61,9 @@ public class MealListFragment extends Fragment {
     private String[] mFilterOptions;
 
     private MealAdapter mMealAdapter;
+    private MealImageAdapter mMealImageAdapter;
     private RecyclerView mRecyclerView;
+    private GridView mGridView;
 
 
     @Nullable
@@ -97,6 +103,11 @@ public class MealListFragment extends Fragment {
         mMealAdapter = new MealAdapter(mMainActivity.getBaseContext(), mFilteredMealList, mRecyclerView, mMainActivity);
         mRecyclerView.setAdapter(mMealAdapter);
 
+        mGridView = (GridView) view.findViewById(R.id.meal_gridview);
+        mMealImageAdapter = new MealImageAdapter(mMainActivity.getBaseContext(), mFilteredMealList);
+        mGridView.setAdapter(mMealImageAdapter);
+        mGridView.setVisibility(View.GONE);
+
         mMealsDatabase = FirebaseDatabase.getInstance().getReference("Meals");
         queryData(mMealsDatabase);
 
@@ -127,7 +138,9 @@ public class MealListFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if( keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP ){ //enter button handling (physical and soft keyboard)
+                    String searchText = mSearchBox.getText().toString().trim().toLowerCase();
                     filterList();
+                    searchCategory(4, searchText);
                 }
                 return false;
             }
@@ -152,12 +165,37 @@ public class MealListFragment extends Fragment {
         mFilterDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                filterList();
+                if(i == 4){
+                    mRecyclerView.setVisibility(View.GONE);
+                    mGridView.setVisibility(View.VISIBLE);
+                } else {
+                    mGridView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    filterList();
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                Meal meal = mFilteredMealList.get(position);
+
+                Intent popupMealDetailIntent = new Intent(mMainActivity, PopupMealDetail.class);
+
+                Bundle bundle = new Bundle();
+                if(mMainActivity.checkUserLogin()) {
+                    bundle.putString("userID", mMainActivity.getCurrentUser().getUid());
+                }
+                bundle.putSerializable("meal", meal);
+                popupMealDetailIntent.putExtras(bundle);
+
+                mMainActivity.startActivity(popupMealDetailIntent);
             }
         });
 
@@ -169,15 +207,16 @@ public class MealListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mDatabaseMealList.clear();
-                if(mViewMyMeals.isChecked() && mMainActivity.checkUserLogin()){
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Meal mealData = (Meal) snapshot.getValue(Meal.class);
-                        if(mealData.getMealCreatorID().equalsIgnoreCase(mMainActivity.getCurrentUser().getUid())) {
-                            mDatabaseMealList.add(mealData);
+                if(mViewMyMeals.isChecked()){
+                    if(mMainActivity.checkUserLogin()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Meal mealData = (Meal) snapshot.getValue(Meal.class);
+                            if (mealData.getMealCreatorID().equalsIgnoreCase(mMainActivity.getCurrentUser().getUid())) {
+                                mDatabaseMealList.add(mealData);
+                            }
                         }
                     }
-                }
-                else{
+                }else{
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Meal mealData = (Meal) snapshot.getValue(Meal.class);
                         mDatabaseMealList.add(mealData);
@@ -193,12 +232,17 @@ public class MealListFragment extends Fragment {
         });
     }
 
+    private void updateAdapters(){
+        mMealAdapter.notifyDataSetChanged();
+        mMealImageAdapter.notifyDataSetChanged();
+    }
+
     private void clearFilters(){
         mFilteredMealList.clear();
         for ( Meal listedDatabaseMeal : mDatabaseMealList) {
             mFilteredMealList.add( listedDatabaseMeal );
         }
-        mMealAdapter.notifyDataSetChanged();
+        updateAdapters();
     }
 
     //category int relates to order of spinner, aka meal_list_filters in values.xml
@@ -206,55 +250,62 @@ public class MealListFragment extends Fragment {
         mFilteredMealList.clear();
         for ( Meal listedDatabaseMeal : mDatabaseMealList) {
             switch(category){
+                case 1:
+                    if ( listedDatabaseMeal.getMealName().toLowerCase().contains( searchTerm ) ){
+                        mFilteredMealList.add( listedDatabaseMeal );
+                    }
+                    break;
                 case 2: // Protein Type
-                    if ( listedDatabaseMeal.getMainProteinIngredient().contains( searchTerm ) ){
+                    if ( listedDatabaseMeal.getMainProteinIngredient().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
                     break;
                 case 3: // Location
-                    if ( listedDatabaseMeal.getLocation().contains( searchTerm ) ){
+                    if ( listedDatabaseMeal.getLocation().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
                     break;
-                default: //No Category or Meal Name
-                    if ( listedDatabaseMeal.getMealName().contains( searchTerm ) ){
+                default: //No Category
+                    if ( listedDatabaseMeal.getMealName().toLowerCase().contains( searchTerm ) ||
+                            listedDatabaseMeal.getLocation().toLowerCase().contains( searchTerm ) ||
+                            listedDatabaseMeal.getRestaurantName().toLowerCase().contains( searchTerm ) ||
+                            listedDatabaseMeal.getMainProteinIngredient().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
             }
         }
-        mMealAdapter.notifyDataSetChanged();
+        updateAdapters();
     }
 
-    private void filterList(){
+    private void filterList() {
         String searchText = mSearchBox.getText().toString().trim().toLowerCase();
         String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
 
         //if searchtext is empty, sort elements alphabetically by filter field
-        if( searchText.isEmpty() ){
+        if (searchText.isEmpty()) {
             clearFilters();
-            if( searchFilter.equals(mFilterOptions[0]) ){ //No Filter
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME );
-                mMealAdapter.notifyDataSetChanged();
-            } else if ( searchFilter.equals(mFilterOptions[1]) ){ //Name
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME );
-                mMealAdapter.notifyDataSetChanged();
-            } else if ( searchFilter.equals(mFilterOptions[2]) ){ //Protein Type
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_PROTEIN_TYPE );
-                mMealAdapter.notifyDataSetChanged();
-            } else if ( searchFilter.equals(mFilterOptions[3]) ){ //Location
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_LOCATION );
-                mMealAdapter.notifyDataSetChanged();
+            if (searchFilter.equals(mFilterOptions[0])) { //No Filter
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME);
+            } else if (searchFilter.equals(mFilterOptions[1])) { //Name
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME);
+            } else if (searchFilter.equals(mFilterOptions[2])) { //Protein Type
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_PROTEIN_TYPE);
+            } else if (searchFilter.equals(mFilterOptions[3])) { //Location
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_LOCATION);
+            } else if (searchFilter.equals(mFilterOptions[4])) { //Name
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME);
             }
+            updateAdapters();
         //if search text not empty, only show elements matching input text
         } else {
             if (searchFilter.equals(mFilterOptions[0])) { //No Filter
-                searchCategory( 0, searchText );
+                searchCategory(0, searchText);
             } else if (searchFilter.equals(mFilterOptions[1])) { //Name
-                searchCategory( 1, searchText );
+                searchCategory(1, searchText);
             } else if (searchFilter.equals(mFilterOptions[2])) { //Protein Type
-                searchCategory( 2, searchText );
+                searchCategory(2, searchText);
             } else if (searchFilter.equals(mFilterOptions[3])) { //Location
-                searchCategory( 3, searchText );
+                searchCategory(3, searchText);
             }
         }
     }

@@ -40,7 +40,7 @@ import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.AboutPageFragment;
 import ca.cmpt276.greengoblins.fragments.HistoryFragment;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
-import ca.cmpt276.greengoblins.fragments.Meal.MealListFragment;
+import ca.cmpt276.greengoblins.fragments.MealListFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeFragment;
 import ca.cmpt276.greengoblins.fragments.SettingsFragment;
 import ca.cmpt276.greengoblins.fragments.PledgeListFragment;

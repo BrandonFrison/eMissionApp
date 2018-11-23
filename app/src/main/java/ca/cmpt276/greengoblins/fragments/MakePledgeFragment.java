@@ -290,10 +290,10 @@ public class MakePledgeFragment extends Fragment {
         String email = "";
         Double pledgeAmount = 0.0;
 
-        firstName = mFirstNameInputField.getText().toString().trim().toLowerCase();
-        lastName = mLastNameInputField.getText().toString().trim().toLowerCase();
-        city = mMunicipalityInputField.getText().toString().trim().toLowerCase();
-        email = mMainActivity.getCurrentUser().getEmail().toLowerCase();
+        firstName = mFirstNameInputField.getText().toString().trim();
+        lastName = mLastNameInputField.getText().toString().trim();
+        city = mMunicipalityInputField.getText().toString().trim();
+        email = mMainActivity.getCurrentUser().getEmail();
         String pledgeAmountString = mPledgeAmountInputField.getText().toString().trim();
         boolean showName = mShowNameCheckbox.isChecked();
 

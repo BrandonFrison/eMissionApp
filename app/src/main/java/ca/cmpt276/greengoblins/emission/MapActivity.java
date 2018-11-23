@@ -78,7 +78,6 @@ import ca.cmpt276.greengoblins.PlaceModel.PlaceAutoCompleteAdapter;
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 import ca.cmpt276.greengoblins.foodsurveydata.User;
 import ca.cmpt276.greengoblins.fragments.LoginFragment;
-import ca.cmpt276.greengoblins.fragments.Meal.MakeMealFragment;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
