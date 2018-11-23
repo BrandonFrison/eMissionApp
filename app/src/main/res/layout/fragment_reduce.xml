@@ -61,6 +61,8 @@
             android:id="@+id/join_the_green_food_challenge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/ButtonTheme"
+            android:textSize="20sp"
             android:text="@string/join_the_green_food_challenge" />
 
     </LinearLayout>

@@ -54,18 +54,30 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.greengoblins.PlaceModel.CustomInfoWindowAdapter;
 import ca.cmpt276.greengoblins.PlaceModel.PlaceInfo;
 import ca.cmpt276.greengoblins.PlaceModel.PlaceAutoCompleteAdapter;
+import ca.cmpt276.greengoblins.foodsurveydata.Meal;
+import ca.cmpt276.greengoblins.foodsurveydata.User;
+import ca.cmpt276.greengoblins.fragments.LoginFragment;
 import ca.cmpt276.greengoblins.fragments.Meal.MakeMealFragment;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
@@ -76,6 +88,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final float MAP_ZOOM = 15f;
 
+    private User mUserData;
+    private FirebaseUser mCurrentUser;
+    private FirebaseAuth mAuthenticator;
+
+    private ArrayList<Meal> mDatabaseMealList;
+    private DatabaseReference mMealsDatabase;
     private LatLngBounds currentBounds;
     private AutoCompleteTextView searchBar;
     private ImageView locationButton, infoButton, nearbyButton, passLocationButton;
@@ -114,10 +132,40 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+    public String getUserDisplayName(){
+        FirebaseUser user = mAuthenticator.getCurrentUser();
+        if(user == null){
+            return getString(R.string.nav_header_username);
+        }
+        return user.getUid();
+    }
+
+    public FirebaseUser getCurrentUser(){
+        return mAuthenticator.getCurrentUser();
+    }
+
+    public void popupLogin(){
+        LoginFragment loginFragment = new LoginFragment();
+        loginFragment.show(getSupportFragmentManager(), "login");
+    }
+
+    public boolean checkUserLogin(){
+        FirebaseUser currentUser = mAuthenticator.getCurrentUser();
+        if(currentUser == null){
+            Log.d("SIGN_IN", "User is not logged in");
+
+            return false;
+        }
+        Log.d("SIGN_IN", "User is somehow logged in");
+        return true;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        mUserData = new User();
 
         searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar_map);
         locationButton = (ImageView)findViewById(R.id.icon_gps);
@@ -125,7 +173,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         nearbyButton = (ImageView)findViewById(R.id.icon_nearby);
         passLocationButton = (ImageView)findViewById(R.id.icon_passlocation);
         getLocationPermission();
-
+        mAuthenticator = FirebaseAuth.getInstance();
         }
 
         private void initialization(){
@@ -202,9 +250,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     }
                 }
             });
-
-            ArrayList<LatLng> latLngs = fillArrayFromDatabase();
-            fillMapFromArray(latLngs);
+            mDatabaseMealList = new ArrayList<Meal>();
+            mMealsDatabase = FirebaseDatabase.getInstance().getReference("Meals");
+            queryData(mMealsDatabase);
             hideKeyboard();
         }
 
@@ -233,58 +281,55 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-    private void fillMapFromArray(ArrayList<LatLng> mealLocations){
-        for(int i = 0; i < mealLocations.size(); i++){
-            MarkerOptions mOptions = new MarkerOptions().position(mealLocations.get(i)).title("Green Meal").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            map.addMarker(mOptions);
+    private void fillMapFromArray(ArrayList<Meal> mealLocations){
+        map.clear();
+            for (int i = 0; i < mealLocations.size(); i++) {
+                if(mealLocations.get(i).getLatitude() != null && mealLocations.get(i).getLongitude() != null) {
+                    MarkerOptions mOptions = new MarkerOptions().position(new LatLng(mealLocations.get(i).getLatitude(), mealLocations.get(i).getLongitude())).title(mealLocations.get(i).getMealName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    map.addMarker(mOptions);
+                }
         }
     }
 
-    private ArrayList<LatLng> fillArrayFromDatabase(){
-        ArrayList<LatLng> mealLocationsDatabase = new ArrayList<>();
-        return mealLocationsDatabase;
+    private void queryData(Query query) {
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Meal mealData = (Meal) snapshot.getValue(Meal.class);
+                        mDatabaseMealList.add(mealData);
+                }
+                fillMapFromArray(mDatabaseMealList);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void passMealLocation(){
         //either to grab location of device or place longitude and latitude that you have chosen
         Double longitude, latitude = 0d;
         if(mPlace != null) {
-            Toast.makeText(this, "Location For Meal Saved", Toast.LENGTH_SHORT).show();
-            LatLng mealLocation = mPlace.getLatLng();
-            longitude = mealLocation.longitude;
-            latitude = mealLocation.latitude;
+            if( !checkUserLogin() ) {
+                popupLogin();
+            } else {
+                Toast.makeText(this, "Location For Meal Saved", Toast.LENGTH_SHORT).show();
+                LatLng mealLocation = mPlace.getLatLng();
+                longitude = mealLocation.longitude;
+                latitude = mealLocation.latitude;
 
-            String[] locationData = {mPlace.getName(), mPlace.getAddress(), latitude.toString(), longitude.toString()};
-/*
-            // The name of the file to open.
-            String fileName = "locationdata.txt";
+                String[] locationData = {mPlace.getName(), mPlace.getAddress(), latitude.toString(), longitude.toString(), getUserDisplayName()};
 
-            try {
-                FileWriter fileWriter =
-                        new FileWriter(fileName);
+                Bundle bundle = new Bundle();
+                bundle.putStringArray("location_data", locationData);
 
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-                bufferedWriter.write(locationData[0]+ "," +locationData[1]+ "," +locationData[2]);
-                // close file
-                bufferedWriter.close();
+                Intent intent = new Intent(MapActivity.this, AddMealActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
-            catch(IOException ex) {
-                 ex.printStackTrace();
-            }
-*/
-
-            Bundle bundle = new Bundle();
-            bundle.putStringArray("location_data", locationData );
-
-            Fragment mealFragment = new MakeMealFragment();
-            mealFragment.setArguments( bundle );
-
-            FragmentManager fragmentManager = this.getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace( R.id.frame_activity_map, mealFragment );
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
         }
         //here is where we can either pass meal location to the meal plan screen or pass the latitude and longitude so we can display the entire database of green meals on the map.
     }
@@ -333,6 +378,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
         private void getCurrentLocation(){
+
             Log.d("map activity", "getCurrentLocation: gets the devices location if enabled");
             Toast.makeText(this, "Loading Current Location", Toast.LENGTH_SHORT).show();
             mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapActivity.this);

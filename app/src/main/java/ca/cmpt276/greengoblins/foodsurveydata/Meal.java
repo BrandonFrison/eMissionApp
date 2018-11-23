@@ -29,7 +29,7 @@ public class Meal implements Serializable {
         this.mealID = mealID;
     }
 //constructor for having latitude and longitude
-    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID, Double latitude, Double longitude) {
+    public Meal(String mealName, String mainProteinIngredient, String restaurantName, String location, String description, String mealCreatorID, String mealID, Double latitude, Double longitude) {
         this.mealName = mealName;
         this.mainProteinIngredient = mainProteinIngredient;
         this.restaurantName = restaurantName;
@@ -38,6 +38,7 @@ public class Meal implements Serializable {
         this.mealCreatorID = mealCreatorID;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.mealID = mealID;
     }
 
     public String getMealName() {

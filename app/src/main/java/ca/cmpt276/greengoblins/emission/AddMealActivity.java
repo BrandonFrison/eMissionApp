@@ -66,6 +66,9 @@ public class AddMealActivity extends AppCompatActivity {
     private EditText mRestaurantNameInputField;
     private EditText mLocationInputField;
     private EditText mDescriptionInputField;
+    private String[] locationInfo;
+    private Bundle locationBundle;
+    private Meal meal;
 
     private Button mPostMeal;
     
@@ -120,6 +123,7 @@ public class AddMealActivity extends AppCompatActivity {
             });
 
 
+        fillLocationFromMap();
 
     }
 
@@ -140,7 +144,12 @@ public class AddMealActivity extends AppCompatActivity {
             String mealCreatorID = bundle.getString("userID");
 
             String mealID = mealDatabase.push().getKey();
-            Meal meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
+            if(locationInfo != null) {
+                mealCreatorID = locationInfo[4];
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID, Double.parseDouble(locationInfo[2]), Double.parseDouble(locationInfo[3]));
+            }else{
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
+            }
             mealDatabase.child(mealID).setValue(meal);
 
             clearInputFields();
@@ -148,7 +157,6 @@ public class AddMealActivity extends AppCompatActivity {
 
             isPosted = true;
         }
-
         return isPosted;
     }
 
@@ -369,6 +377,17 @@ public class AddMealActivity extends AppCompatActivity {
             }
             return false;
         }
+    }
+
+    private void fillLocationFromMap(){
+        locationBundle = getIntent().getExtras();
+            locationInfo = locationBundle.getStringArray("location_data");
+            if(locationInfo != null) {
+                if (!locationInfo[0].matches(".*\\d+.*")) {
+                    mRestaurantNameInputField.setText(locationInfo[0]);
+                }
+                mLocationInputField.setText(locationInfo[1]);
+            }
     }
 
 }

@@ -137,35 +137,13 @@ public class MakeMealFragment extends Fragment {
     }
 
     private void fillLocationFromMap(){
-        /*String fileName = "locationdata.txt";
-        String line = "";
-        Toast.makeText(mMainActivity, fileName, Toast.LENGTH_SHORT).show();
-        try {
-            FileReader fileReader =
-                    new FileReader(fileName);
-
-            // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader =
-                    new BufferedReader(fileReader);
-
-            line = bufferedReader.readLine();
-            locationInfo = line.split(",");
-            mLocationInputField.setText(locationInfo[0]);
-            // Always close files.
-            bufferedReader.close();
-        }
-        catch(FileNotFoundException ex) {
-            System.out.println(
-                    "Unable to open file " +
-                            fileName);
-        }
-        catch(IOException ex) {
-             ex.printStackTrace();
-        }*/
         locationBundle = getArguments();
         if(locationBundle != null) {
             locationInfo = locationBundle.getStringArray("location_data");
-            mRestaurantNameInputField.setText(locationInfo[0]);
+            if(locationInfo[0].indexOf('\u00b0') != -1) {
+                mRestaurantNameInputField.setText(locationInfo[0]);
+                Toast.makeText(mMainActivity, "failed to see degree", Toast.LENGTH_SHORT).show();
+            }
             mLocationInputField.setText(locationInfo[1]);
         }
     }
