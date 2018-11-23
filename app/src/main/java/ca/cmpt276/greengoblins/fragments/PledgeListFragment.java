@@ -43,7 +43,6 @@ public class PledgeListFragment extends Fragment {
     private DatabaseReference mUsersDatabase;
 
     private MainActivity mMainActivity;
-    private TextView mPledgeListView;
     private FloatingActionButton mActionButton;
     private Spinner mFilterDropdown;
     private EditText mSearchBox;
@@ -70,8 +69,6 @@ public class PledgeListFragment extends Fragment {
         mActionButton.show();
         mMainActivity.showActionButtonLabel(R.string.fablabel_add_pledge);
 
-        mPledgeListView = (TextView) view.findViewById(R.id.pledge_list_text);
-        mPledgeListView.setText(R.string.pledge_list_text);
         mFilterDropdown = (Spinner) view.findViewById(R.id.dropdown_filter);
         mSearchBox = (EditText) view.findViewById(R.id.textview_search_box);
 

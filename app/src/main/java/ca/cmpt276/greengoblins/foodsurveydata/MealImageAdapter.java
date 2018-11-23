@@ -24,10 +24,12 @@ import ca.cmpt276.greengoblins.emission.R;
 public class MealImageAdapter extends BaseAdapter {
     private Context mContext;
     private List<Meal> mealList;
+    private StorageReference firebaseStorageReference;
 
     public MealImageAdapter(Context c, List<Meal> mealList) {
         this.mContext = c;
         this.mealList = mealList;
+        firebaseStorageReference = FirebaseStorage.getInstance().getReference().child("MealPics");
     }
 
     public int getCount() {
@@ -44,7 +46,6 @@ public class MealImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        Log.d("LOAD_EXCEPTION", mealList.get(position).getMealName());
         final ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
@@ -57,19 +58,19 @@ public class MealImageAdapter extends BaseAdapter {
         }
 
         // Gets meal pic
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference storageReference = storage.getReference().child("MealPics");
-        Task<Uri> downloadUrl = storageReference.child(mealList.get(position).getMealID()).getDownloadUrl()
+        Task<Uri> downloadUrl = firebaseStorageReference.child(mealList.get(position).getMealID()).getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        setMealPic(parent.getContext(), storageReference.child(mealList.get(position).getMealID()), imageView);
+                        if(position < mealList.size()){
+                            setMealPic(parent.getContext(), firebaseStorageReference.child(mealList.get(position).getMealID()), imageView);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        setMealPic(parent.getContext(), storageReference.child("defaultPic.png"), imageView);
+                        setMealPic(parent.getContext(), firebaseStorageReference.child("defaultPic.png"), imageView);
                     }
                 });
 

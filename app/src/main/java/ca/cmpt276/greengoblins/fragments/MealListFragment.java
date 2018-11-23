@@ -36,6 +36,7 @@ import java.util.Collections;
 
 import ca.cmpt276.greengoblins.emission.AddMealActivity;
 import ca.cmpt276.greengoblins.emission.MainActivity;
+import ca.cmpt276.greengoblins.emission.PopupMealDetail;
 import ca.cmpt276.greengoblins.emission.R;
 import ca.cmpt276.greengoblins.foodsurveydata.Meal;
 import ca.cmpt276.greengoblins.foodsurveydata.MealAdapter;
@@ -137,7 +138,9 @@ public class MealListFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if( keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP ){ //enter button handling (physical and soft keyboard)
+                    String searchText = mSearchBox.getText().toString().trim().toLowerCase();
                     filterList();
+                    searchCategory(4, searchText);
                 }
                 return false;
             }
@@ -180,7 +183,19 @@ public class MealListFragment extends Fragment {
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(mMainActivity, "" + position, Toast.LENGTH_SHORT).show();
+
+                Meal meal = mFilteredMealList.get(position);
+
+                Intent popupMealDetailIntent = new Intent(mMainActivity, PopupMealDetail.class);
+
+                Bundle bundle = new Bundle();
+                if(mMainActivity.checkUserLogin()) {
+                    bundle.putString("userID", mMainActivity.getCurrentUser().getUid());
+                }
+                bundle.putSerializable("meal", meal);
+                popupMealDetailIntent.putExtras(bundle);
+
+                mMainActivity.startActivity(popupMealDetailIntent);
             }
         });
 
@@ -217,12 +232,17 @@ public class MealListFragment extends Fragment {
         });
     }
 
+    private void updateAdapters(){
+        mMealAdapter.notifyDataSetChanged();
+        mMealImageAdapter.notifyDataSetChanged();
+    }
+
     private void clearFilters(){
         mFilteredMealList.clear();
         for ( Meal listedDatabaseMeal : mDatabaseMealList) {
             mFilteredMealList.add( listedDatabaseMeal );
         }
-        mMealAdapter.notifyDataSetChanged();
+        updateAdapters();
     }
 
     //category int relates to order of spinner, aka meal_list_filters in values.xml
@@ -230,6 +250,11 @@ public class MealListFragment extends Fragment {
         mFilteredMealList.clear();
         for ( Meal listedDatabaseMeal : mDatabaseMealList) {
             switch(category){
+                case 1:
+                    if ( listedDatabaseMeal.getMealName().toLowerCase().contains( searchTerm ) ){
+                        mFilteredMealList.add( listedDatabaseMeal );
+                    }
+                    break;
                 case 2: // Protein Type
                     if ( listedDatabaseMeal.getMainProteinIngredient().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
@@ -240,45 +265,47 @@ public class MealListFragment extends Fragment {
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
                     break;
-                default: //No Category or Meal Name
-                    if ( listedDatabaseMeal.getMealName().toLowerCase().contains( searchTerm ) ){
+                default: //No Category
+                    if ( listedDatabaseMeal.getMealName().toLowerCase().contains( searchTerm ) ||
+                            listedDatabaseMeal.getLocation().toLowerCase().contains( searchTerm ) ||
+                            listedDatabaseMeal.getRestaurantName().toLowerCase().contains( searchTerm ) ||
+                            listedDatabaseMeal.getMainProteinIngredient().toLowerCase().contains( searchTerm ) ){
                         mFilteredMealList.add( listedDatabaseMeal );
                     }
             }
         }
-        mMealAdapter.notifyDataSetChanged();
+        updateAdapters();
     }
 
-    private void filterList(){
+    private void filterList() {
         String searchText = mSearchBox.getText().toString().trim().toLowerCase();
         String searchFilter = String.valueOf(mFilterDropdown.getSelectedItem());
 
         //if searchtext is empty, sort elements alphabetically by filter field
-        if( searchText.isEmpty() ){
+        if (searchText.isEmpty()) {
             clearFilters();
-            if( searchFilter.equals(mFilterOptions[0]) ){ //No Filter
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME );
-                mMealAdapter.notifyDataSetChanged();
-            } else if ( searchFilter.equals(mFilterOptions[1]) ){ //Name
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME );
-                mMealAdapter.notifyDataSetChanged();
-            } else if ( searchFilter.equals(mFilterOptions[2]) ){ //Protein Type
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_PROTEIN_TYPE );
-                mMealAdapter.notifyDataSetChanged();
-            } else if ( searchFilter.equals(mFilterOptions[3]) ){ //Location
-                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_LOCATION );
-                mMealAdapter.notifyDataSetChanged();
+            if (searchFilter.equals(mFilterOptions[0])) { //No Filter
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME);
+            } else if (searchFilter.equals(mFilterOptions[1])) { //Name
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME);
+            } else if (searchFilter.equals(mFilterOptions[2])) { //Protein Type
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_PROTEIN_TYPE);
+            } else if (searchFilter.equals(mFilterOptions[3])) { //Location
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_LOCATION);
+            } else if (searchFilter.equals(mFilterOptions[4])) { //Name
+                Collections.sort(mFilteredMealList, Meal.COMPARE_BY_MEAL_NAME);
             }
+            updateAdapters();
         //if search text not empty, only show elements matching input text
         } else {
             if (searchFilter.equals(mFilterOptions[0])) { //No Filter
-                searchCategory( 0, searchText );
+                searchCategory(0, searchText);
             } else if (searchFilter.equals(mFilterOptions[1])) { //Name
-                searchCategory( 1, searchText );
+                searchCategory(1, searchText);
             } else if (searchFilter.equals(mFilterOptions[2])) { //Protein Type
-                searchCategory( 2, searchText );
+                searchCategory(2, searchText);
             } else if (searchFilter.equals(mFilterOptions[3])) { //Location
-                searchCategory( 3, searchText );
+                searchCategory(3, searchText);
             }
         }
     }
