@@ -98,7 +98,7 @@ public class MakeMealFragment extends Fragment {
             if(locationInfo != null) {
                 meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, Double.parseDouble(locationInfo[1]), Double.parseDouble(locationInfo[2]));
             }else{
-                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID);
+                meal = new Meal(mealName, mainProteinIngredient, restaurantName, location, description, mealCreatorID, mealID);
             }
             mealDatabase.child(mealID).setValue(meal);
 
